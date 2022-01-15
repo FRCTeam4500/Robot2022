@@ -27,7 +27,7 @@ public class FollowStatesCommand extends FollowTrajectoryCommand {
     }
     @Override
     public void execute() {
-        var distance = ExtendedMath.distance(swerve.getCurrentPose().getTranslation(), currentTranslation);
+        double distance = ExtendedMath.distance(swerve.getCurrentPose().getTranslation(), currentTranslation);
         internalTime += (timeTransformer != null)? timeTransformer.apply(distance) : 1/distance;
         applyState(trajectory.sample(internalTime));
     }
