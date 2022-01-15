@@ -19,6 +19,7 @@ public class PrimaryRobotContainer implements RobotContainer{
 
     private Joystick driveStick = new Joystick(1);
     private JoystickButton b1 = new JoystickButton(driveStick, 1);
+    private JoystickButton b2 = new JoystickButton(driveStick, 2);
 
     ControllerInfo controllerInfo = new ControllerInfo();
 
@@ -29,7 +30,10 @@ public class PrimaryRobotContainer implements RobotContainer{
 
         SmartDashboard.putNumber("align kp", 1);
 
-        b1.whenPressed(new AlignWithTargetCommand(SmartDashboard.getNumber("align kp", 1),0,0, vision, swerve));
+
+        b2.whenPressed(() -> {swerve.moveRobotCentric(0,0,1);});
+
+        b1.whenPressed(new AlignWithTargetCommand(SmartDashboard.getNumber("align kp", 1),0d, 0d, 0d,0d, 0d, vision, swerve));
     }
 
 

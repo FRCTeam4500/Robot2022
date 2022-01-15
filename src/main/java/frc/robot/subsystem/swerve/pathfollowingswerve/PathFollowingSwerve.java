@@ -1,4 +1,8 @@
-package frc.robot.subsystem.swerve.PathFollowingSwerve;
+package frc.robot.subsystem.swerve.pathfollowingswerve;
 
-public interface PathFollowingSwerve {
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import frc.robot.subsystem.swerve.Swerve;
+
+public interface PathFollowingSwerve extends Swerve {
+    public Pose2d getCurrentPose();
 }

@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.swerve.odometric.command.v2;
+package frc.robot.subsystem.swerve.pathfollowingswerve.command;
 
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -12,16 +12,14 @@ import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
+import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 
-public class OdometricSwerve_FollowTrajectoryCommand extends CommandBase {
+public class FollowTrajectoryCommand extends CommandBase {
 
-    protected OdometricSwerve swerve;
+    protected PathFollowingSwerve swerve;
     protected Trajectory trajectory;
     protected Timer timer = new Timer();
     protected HolonomicDriveController controller;
@@ -72,7 +70,7 @@ public class OdometricSwerve_FollowTrajectoryCommand extends CommandBase {
         return timer.get() >= trajectory.getTotalTimeSeconds() && controller.atReference();
     }
 
-    public OdometricSwerve_FollowTrajectoryCommand(OdometricSwerve swerve, Trajectory trajectory,
+    public FollowTrajectoryCommand(PathFollowingSwerve swerve, Trajectory trajectory,
                                                    HolonomicDriveController controller) {
         this.swerve = swerve;
         this.trajectory = trajectory;

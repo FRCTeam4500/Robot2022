@@ -2,21 +2,22 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.swerve.odometric.command.v2;
+package frc.robot.subsystem.swerve.pathfollowingswerve.command;
 
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import frc.robot.subsystems.swerve.odometric.OdometricSwerve;
+import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
+import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowTrajectoryCommand;
 import frc.robot.utility.ExtendedMath;
 
-public class OdometricSwerve_FollowDottedTrajectoryCommand extends OdometricSwerve_FollowTrajectoryCommand {
+public class FollowDottedTrajectoryCommand extends FollowTrajectoryCommand {
 
     protected double internalTime = 0.0, timeStep = 0.02, threshold = 0.1;
 
-    public OdometricSwerve_FollowDottedTrajectoryCommand(OdometricSwerve swerve, Trajectory trajectory,
-                                                         HolonomicDriveController controller) {
+    public FollowDottedTrajectoryCommand(PathFollowingSwerve swerve, Trajectory trajectory,
+                                         HolonomicDriveController controller) {
         super(swerve, trajectory, controller);
     }
 
@@ -43,13 +44,13 @@ public class OdometricSwerve_FollowDottedTrajectoryCommand extends OdometricSwer
     public boolean isFinished() {
         return internalTime >= trajectory.getTotalTimeSeconds() && currentTranslation.getDistance(swerve.getCurrentPose().getTranslation()) <= threshold;
     }
-    public OdometricSwerve_FollowDottedTrajectoryCommand(OdometricSwerve swerve, Trajectory trajectory,
+    public FollowDottedTrajectoryCommand(PathFollowingSwerve swerve, Trajectory trajectory,
                                                          HolonomicDriveController controller, double threshold, double timeStep) {
         super(swerve, trajectory, controller);
         this.timeStep = timeStep;
         this.threshold = threshold;
     }
-    public OdometricSwerve_FollowDottedTrajectoryCommand(OdometricSwerve swerve, Trajectory trajectory,
+    public FollowDottedTrajectoryCommand(PathFollowingSwerve swerve, Trajectory trajectory,
                                                          HolonomicDriveController controller, double threshold, double timeStep, boolean rotation, double rotationOffset) {
         super(swerve, trajectory, controller);
         this.timeStep = timeStep;
@@ -57,7 +58,7 @@ public class OdometricSwerve_FollowDottedTrajectoryCommand extends OdometricSwer
         setRotation(rotation);
         setDesiredRotationOffset(rotationOffset);
     }
-    public OdometricSwerve_FollowDottedTrajectoryCommand(OdometricSwerve swerve, Trajectory trajectory,
+    public FollowDottedTrajectoryCommand(PathFollowingSwerve swerve, Trajectory trajectory,
                                                          HolonomicDriveController controller, double threshold) {
         super(swerve, trajectory, controller);
         this.threshold = threshold;
