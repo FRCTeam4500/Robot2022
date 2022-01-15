@@ -20,7 +20,7 @@ public class SpinUpCommand extends CommandBase {
         addRequirements(shooter);
     }
 
-    public void periodic(){
+    public void initialize(){
         shooter.setSpeed(speed);
     }
 

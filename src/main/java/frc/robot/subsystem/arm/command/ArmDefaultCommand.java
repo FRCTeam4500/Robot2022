@@ -18,7 +18,7 @@ public class ArmDefaultCommand extends CommandBase {
         addRequirements(arm);
     }
 
-    public void periodic(){
+    public void execute(){
         arm.setAngle(control.angle);
     }
 }

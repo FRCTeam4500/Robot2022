@@ -20,7 +20,7 @@ public class IntakeDefaultCommand extends CommandBase {
         this.control = control;
     }
 
-    public void periodic(){
+    public void execute(){
         intake.setSpeed(control.speed);
     }
 }

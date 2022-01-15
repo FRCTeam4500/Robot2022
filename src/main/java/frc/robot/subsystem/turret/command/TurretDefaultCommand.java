@@ -10,18 +10,18 @@ import frc.robot.subsystem.vision.Vision;
  * Automatically aims it at target
  */
 
-public class DefaultTurretCommand extends CommandBase {
+public class TurretDefaultCommand extends CommandBase {
     private Turret turret;
     private Vision vision;
     private PIDController controller;
 
-    public DefaultTurretCommand(Turret turret, Vision vision){
+    public TurretDefaultCommand(Turret turret, Vision vision){
         this.turret = turret;
         this.vision = vision;
         addRequirements(turret);
     }
 
-    public void periodic(){
+    public void execute(){
         //TODO: aim the turret with the pid controller
         //not doing this yet so i can explain it in person
     }
