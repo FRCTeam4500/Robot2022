@@ -1,6 +1,6 @@
 package frc.robot.subsystem.turret.command;
 
-import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.turret.Turret;
 import frc.robot.subsystem.vision.Vision;
@@ -19,10 +19,10 @@ public class TurretDefaultCommand extends CommandBase {
         this.turret = turret;
         this.vision = vision;
         addRequirements(turret);
+        controller = new PIDController(1,1,1);
     }
 
     public void execute(){
-        //TODO: aim the turret with the pid controller
-        //not doing this yet so i can explain it in person
+        turret.setAngle(controller.calculate(vision.getHorizontalOffsetFromCrosshair(), 0));
     }
 }
