@@ -5,16 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems.swerve.kinematic;
+package frc.robot.subsystem.swerve;
 
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.components.GyroComponent;
+import frc.robot.component.GyroComponent;
+import frc.robot.subsystem.swerve.Swerve;
 
-public class KinematicSwerve extends SubsystemBase {
+public class KinematicSwerve extends SubsystemBase implements Swerve {
 
     protected SwerveDriveKinematics kinematics;
     protected KinematicWheelModule[] wheelModules;
@@ -95,6 +96,9 @@ public class KinematicSwerve extends SubsystemBase {
     public void moveFieldCentric(double xSpeed, double ySpeed, double wSpeed){
         moveAngleCentric(xSpeed, ySpeed, wSpeed, gyro.getAngle() - currentGyroZero);
     }
+    public void moveFieldCentric(ChassisSpeeds speeds){
+        moveFieldCentric(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond);
+    }
     public void moveFieldCentric(double xSpeed, double ySpeed, double wSpeed, Translation2d centerOfRotation){
         moveAngleCentric(xSpeed, ySpeed, wSpeed, new Rotation2d(gyro.getAngle() - currentGyroZero),centerOfRotation);
     }
@@ -113,7 +117,7 @@ public class KinematicSwerve extends SubsystemBase {
         }
         return lowestMaxSpeed;
     }
-    protected void resetGyro(){
+    public void resetGyro(){
         gyro.reset();
     }
 
@@ -130,7 +134,7 @@ public class KinematicSwerve extends SubsystemBase {
 
     public void resetWheels(){
         for (KinematicWheelModule wheel : wheelModules){
-            wheel.angleSetterComponent.setAngle(0);
+            wheel.angleComponent.setAngle(0);
         }
     }
 }

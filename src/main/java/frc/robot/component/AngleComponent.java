@@ -12,7 +12,7 @@ package frc.robot.component;
  * an encoder. For gyros, use {@link GyroComponent}, as it contains methods
  * such as {@link GyroComponent#reset()} for better gyro control.
  */
-public interface AngleComponent {
+public interface AngleComponent extends AngleGetterComponent{
     /**
      * Gets the measured angle in radians. This angle is measured using standard
      * angles (east is zero, positive is counter clockwise, negative is clockwise)
@@ -30,6 +30,7 @@ public interface AngleComponent {
      * use case.
      *
      * @return radians of measured angle
+     * @param v
      */
-    void setAngle();
+    void setAngle(double v);
 }
