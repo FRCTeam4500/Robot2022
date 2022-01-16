@@ -8,8 +8,8 @@ import frc.robot.subsystem.arm.Arm;
 import frc.robot.subsystem.arm.ArmConstants;
 import frc.robot.subsystem.arm.command.ArmSetAngleCommand;
 import frc.robot.subsystem.intake.Intake;
-import frc.robot.subsystem.intake.IntakeConstants;
-import frc.robot.subsystem.intake.command.IntakeSetSpeedCommand;
+import frc.robot.subsystem.intake.command.IntakeRunCommand;
+import frc.robot.subsystem.loader.Loader;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.command.AutomatedShootingCommand;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
@@ -19,7 +19,7 @@ import frc.robot.utility.ExtendedTrajectoryUtilities;
 
 public class FirstBall extends SequentialCommandGroup {
 
-    public FirstBall(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision){
+    public FirstBall(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader){
         addRequirements(swerve, arm, intake, shooter);
         Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("FirstBall");
         FollowDottedTrajectoryCommand swerveCmd = new FollowDottedTrajectoryCommand(
@@ -30,12 +30,11 @@ public class FirstBall extends SequentialCommandGroup {
                 new InstantCommand(() -> swerve.resetPose(path.getInitialPose())),
                 new ParallelCommandGroup(
                         new ArmSetAngleCommand(arm, ArmConstants.armDownAngle),
-                        new IntakeSetSpeedCommand(intake, IntakeConstants.intakeRunSpeed),
+                        new IntakeRunCommand(intake),
                         swerveCmd
                 ),
                 new ParallelCommandGroup(
-                        new IntakeSetSpeedCommand(intake, 0),
-                        new AutomatedShootingCommand(shooter, vision).withTimeout(2)
+                        new AutomatedShootingCommand(shooter, vision, loader).withTimeout(2)
                 )
         );
     }
