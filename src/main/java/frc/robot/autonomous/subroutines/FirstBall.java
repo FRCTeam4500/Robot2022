@@ -1,10 +1,9 @@
-package frc.robot.autonomous.routines;
+package frc.robot.autonomous.subroutines;
 
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystem.arm.Arm;
 import frc.robot.subsystem.arm.ArmConstants;
 import frc.robot.subsystem.arm.command.ArmSetAngleCommand;
@@ -18,24 +17,27 @@ import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajec
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.utility.ExtendedTrajectoryUtilities;
 
-/**
- * Second Part of the triangular autonomous route, to be run after FirstBall
- */
+public class FirstBall extends SequentialCommandGroup {
 
-public class TriangleSecondPart extends SequentialCommandGroup {
-
-    public TriangleSecondPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision) {
-        Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("TriangleSecondPart");
+    public FirstBall(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision){
+        addRequirements(swerve, arm, intake, shooter);
+        Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("FirstBall");
+        FollowDottedTrajectoryCommand swerveCmd = new FollowDottedTrajectoryCommand(
+                swerve, path,
+                ExtendedTrajectoryUtilities.createBasicController(1,1,1, 4, 1));
+        swerveCmd.setRotation(true);
         addCommands(
+                new InstantCommand(() -> swerve.resetPose(path.getInitialPose())),
                 new ParallelCommandGroup(
-                        new FollowDottedTrajectoryCommand(swerve, path, ExtendedTrajectoryUtilities.createBasicController(1,1,1,4,1)),
-                        new IntakeSetSpeedCommand(intake, IntakeConstants.intakeRunSpeed)
+                        new ArmSetAngleCommand(arm, ArmConstants.armDownAngle),
+                        new IntakeSetSpeedCommand(intake, IntakeConstants.intakeRunSpeed),
+                        swerveCmd
                 ),
-                new WaitCommand(0.25),
                 new ParallelCommandGroup(
-                        new AutomatedShootingCommand(shooter,vision),
-                        new ArmSetAngleCommand(arm, 0)
+                        new IntakeSetSpeedCommand(intake, 0),
+                        new AutomatedShootingCommand(shooter, vision).withTimeout(2)
                 )
         );
     }
 }
+

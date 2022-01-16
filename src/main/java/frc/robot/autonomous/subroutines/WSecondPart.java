@@ -1,4 +1,4 @@
-package frc.robot.autonomous.routines;
+package frc.robot.autonomous.subroutines;
 
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -40,7 +40,7 @@ public class WSecondPart extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new IntakeSetSpeedCommand(intake, 0),
                         new ArmSetAngleCommand(arm, 0),
-                        new AutomatedShootingCommand(shooter, vision)
+                        new AutomatedShootingCommand(shooter, vision).withTimeout(2)
                 )
         );
     }
