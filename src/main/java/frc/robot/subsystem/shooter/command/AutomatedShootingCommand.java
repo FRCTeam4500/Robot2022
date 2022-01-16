@@ -43,17 +43,17 @@ public class AutomatedShootingCommand extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new SpinUpCommand(shooter, targetSpeed, ShooterConstants.speedThreshold),
                         /**
-                         * I would ususally say that its bad to control hardware directly like this, and that
+                         * I would usually say that its bad to control hardware directly like this, and that
                          * you should use a proper command, but this line is literally
                          * the only time in the entire codebase where the turret angle is being changed,
                          * and it does not need to be changed by a human player
                          * so I think this is acceptable.
                          */
                         new InstantCommand(() -> shooter.setAngle(targetAngle)),
-                        new WaitCommand(0.25)//TODO: adjust this to reflect how long it takes for the turret angle to change
+                        new WaitCommand(0.25)//TODO: adjust this to account for how long it takes for the turret angle to change
                 ),
                 new LoaderRunCommand(loader).withTimeout(2), //shoots
-                new SpinUpCommand(shooter, 0, 5) //spin down the shooter
+                new InstantCommand(() -> shooter.setSpeed(0)) //spin down the shooter
         );
     }
 }
