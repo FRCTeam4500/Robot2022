@@ -1,7 +1,6 @@
 package frc.robot.subsystem.arm.command;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-<<<<<<< HEAD
 import frc.robot.subsystem.arm.Arm;
 import frc.robot.subsystem.arm.ArmConstants;
 
