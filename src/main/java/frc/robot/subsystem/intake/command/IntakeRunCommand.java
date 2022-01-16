@@ -2,7 +2,7 @@ package frc.robot.subsystem.intake.command;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.intake.Intake;
-import frc.robot.subsystem.intake.IntakeConstants;
+import frc.robot.subsystem.intake.IntakeConfig;
 
 /**
  * Runs an intake until the command ends
@@ -20,7 +20,7 @@ public class IntakeRunCommand extends CommandBase {
         addRequirements(intake);
     }
     public IntakeRunCommand(Intake intake){
-        this(intake, IntakeConstants.intakeRunSpeed);
+        this(intake, IntakeConfig.intakeRunSpeed);
     }
 
     public void initialize(){

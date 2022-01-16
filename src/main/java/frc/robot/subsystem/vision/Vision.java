@@ -16,4 +16,12 @@ public interface Vision extends Subsystem {
     double getTargetArea();
 
     double getSkew();
+
+    /**
+     * The vision itself should hold height and angle because they are hardware dependent
+     * The constants class should only hold configuration values
+     */
+    double getVisionHeight();
+
+    double getVisionAngle();
 }

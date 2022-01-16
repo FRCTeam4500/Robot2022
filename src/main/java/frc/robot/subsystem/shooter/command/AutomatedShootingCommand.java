@@ -3,12 +3,10 @@ package frc.robot.subsystem.shooter.command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpiutil.math.Pair;
 import frc.robot.subsystem.loader.Loader;
 import frc.robot.subsystem.loader.command.LoaderRunCommand;
 import frc.robot.subsystem.shooter.Shooter;
-import frc.robot.subsystem.shooter.ShooterConstants;
 import frc.robot.subsystem.shooter.ShooterParameterCalculator;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.vision.VisionDistanceCalculator;
@@ -32,7 +30,7 @@ public class AutomatedShootingCommand extends SequentialCommandGroup {
                          * TODO: change the speed to somewhere in the middle of the possible speeds given by the parameter calculator
                          */
                         new SpinUpCommand(shooter, 100d, 4d).withTimeout(0.2),
-                        new WaitForTargetCommand(vision, ShooterConstants.maximumAllowableOffset).withTimeout(1) //all of these timeouts will be adjusted later
+                        new WaitForTargetCommand(vision).withTimeout(1) //all of these timeouts will be adjusted later
                 ),
                 new InstantCommand(() -> { //Calculates the distance to the target and gets the corresponding speed and angle values
                     double distance = VisionDistanceCalculator.calculateDistance(vision);
@@ -40,17 +38,9 @@ public class AutomatedShootingCommand extends SequentialCommandGroup {
                     targetSpeed = speedAndAngle.getFirst();
                     targetAngle = speedAndAngle.getSecond();
                 }),
-                new ParallelCommandGroup(
-                        new SpinUpCommand(shooter, targetSpeed, ShooterConstants.speedThreshold),
-                        /**
-                         * I would usually say that its bad to control hardware directly like this, and that
-                         * you should use a proper command, but this line is literally
-                         * the only time in the entire codebase where the turret angle is being changed,
-                         * and it does not need to be changed by a human player
-                         * so I think this is acceptable.
-                         */
-                        new InstantCommand(() -> shooter.setAngle(targetAngle)),
-                        new WaitCommand(0.25)//TODO: adjust this to account for how long it takes for the turret angle to change
+                new ParallelCommandGroup(//sets shooter speed and angle to the correct values, and waits for the angle to arrive at the correct value
+                        new SpinUpCommand(shooter, targetSpeed).withTimeout(1),
+                        new ShooterSetAngleCommand(shooter, targetAngle).withTimeout(0.25)//TODO: adjust this to account for how long it takes for the turret angle to change
                 ),
                 new LoaderRunCommand(loader).withTimeout(2), //shoots
                 new InstantCommand(() -> shooter.setSpeed(0)) //spin down the shooter
