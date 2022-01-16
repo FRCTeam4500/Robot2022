@@ -2,7 +2,7 @@ package frc.robot.subsystem.shooter.command;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.shooter.Shooter;
-import frc.robot.subsystem.shooter.ShooterConfig;
+import frc.robot.subsystem.shooter.ShooterConstants;
 
 /**
  * Spins up the shooter.
@@ -22,7 +22,7 @@ public class SpinUpCommand extends CommandBase {
     }
 
     public SpinUpCommand(Shooter shooter, double speed){
-        this(shooter, speed, ShooterConfig.speedThreshold);
+        this(shooter, speed, ShooterConstants.speedThreshold);
     }
 
     public void initialize(){

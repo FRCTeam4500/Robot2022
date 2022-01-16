@@ -5,15 +5,13 @@
 package frc.robot.subsystem.swerve.pathfollowingswerve.command;
 
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.Trajectory.State;
-import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 
@@ -54,7 +52,7 @@ public class FollowTrajectoryCommand extends CommandBase {
             Rotation2d rotationOutput = new Rotation2d();
         }
 
-        var output = controller.calculate(swerve.getCurrentPose(), state, new Rotation2d());
+        ChassisSpeeds output = controller.calculate(swerve.getCurrentPose(), state, new Rotation2d());
         swerve.moveFieldCentric(output.vxMetersPerSecond, output.vyMetersPerSecond, output.omegaRadiansPerSecond);
     }
 
@@ -78,6 +76,7 @@ public class FollowTrajectoryCommand extends CommandBase {
         desiredRotationOffset = new Rotation2d(0);
         addRequirements(swerve);
     }
+
 
 
     public Trajectory getTrajectory() {

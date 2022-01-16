@@ -2,7 +2,7 @@ package frc.robot.subsystem.loader.command;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.loader.Loader;
-import frc.robot.subsystem.loader.LoaderConfig;
+import frc.robot.subsystem.loader.LoaderConstants;
 
 /**
  * Runs a loader until the command ends
@@ -18,6 +18,6 @@ public class LoaderRunCommand extends CommandBase {
     }
 
     public void initialize(){
-        loader.setSpeed(LoaderConfig.runSpeed);
+        loader.setSpeed(LoaderConstants.runSpeed);
     }
 }

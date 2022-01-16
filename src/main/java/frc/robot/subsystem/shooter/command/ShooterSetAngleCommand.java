@@ -2,7 +2,7 @@ package frc.robot.subsystem.shooter.command;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.shooter.Shooter;
-import frc.robot.subsystem.shooter.ShooterConfig;
+import frc.robot.subsystem.shooter.ShooterConstants;
 
 public class ShooterSetAngleCommand extends CommandBase {
     private Shooter shooter;
@@ -18,7 +18,7 @@ public class ShooterSetAngleCommand extends CommandBase {
     }
 
     public ShooterSetAngleCommand(Shooter shooter, double angle){
-        this(shooter, angle, ShooterConfig.angleThreshold);
+        this(shooter, angle, ShooterConstants.angleThreshold);
     }
 
     public void initialize(){
