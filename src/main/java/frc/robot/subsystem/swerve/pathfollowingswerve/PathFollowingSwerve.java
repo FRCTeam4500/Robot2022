@@ -6,5 +6,7 @@ import frc.robot.subsystem.swerve.Swerve;
 
 public interface PathFollowingSwerve extends Swerve {
     public Pose2d getCurrentPose();
+    public void resetPose();
     public void resetPose(Translation2d translation);
+    public void resetPose(Pose2d pose);
 }

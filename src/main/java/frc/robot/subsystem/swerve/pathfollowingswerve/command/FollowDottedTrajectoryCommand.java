@@ -5,12 +5,19 @@
 package frc.robot.subsystem.swerve.pathfollowingswerve.command;
 
 import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowTrajectoryCommand;
 import frc.robot.utility.ExtendedMath;
+
+/**
+ * Further improved version of FollowTrajectoryCommand, uses a dot product and ghost robot to follow paths.
+ *
+ */
+
 
 public class FollowDottedTrajectoryCommand extends FollowTrajectoryCommand {
 
@@ -34,10 +41,10 @@ public class FollowDottedTrajectoryCommand extends FollowTrajectoryCommand {
         applyState(trajectory.sample(internalTime));
     }
     double signedDistance(){
-        var sample = trajectory.sample(internalTime);
-        var currPose = swerve.getCurrentPose();
-        var displacement = sample.poseMeters.getTranslation().minus(currPose.getTranslation());
-        var direction = new Translation2d(sample.poseMeters.getRotation().getCos(), sample.poseMeters.getRotation().getSin());
+        Trajectory.State sample = trajectory.sample(internalTime);
+        Pose2d currPose = swerve.getCurrentPose();
+        Translation2d displacement = sample.poseMeters.getTranslation().minus(currPose.getTranslation());
+        Translation2d direction = new Translation2d(sample.poseMeters.getRotation().getCos(), sample.poseMeters.getRotation().getSin());
         return Math.signum(ExtendedMath.dot(displacement, direction))*displacement.getNorm();
     }
     @Override

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
@@ -16,6 +17,11 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
+
+/**
+ * Improved path following command.
+ * Does not rotate the robot be default, call setRotation to change
+ */
 
 public class FollowTrajectoryCommand extends CommandBase {
 
@@ -39,7 +45,7 @@ public class FollowTrajectoryCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        var state = trajectory.sample(timer.get());
+        State state = trajectory.sample(timer.get());
         applyState(state);
     }
 
@@ -47,14 +53,12 @@ public class FollowTrajectoryCommand extends CommandBase {
         currentTranslation = state.poseMeters.getTranslation();
         currentState[0] = state.poseMeters.getX();
         currentState[1] = state.poseMeters.getY();
+        Rotation2d rotationOutput = new Rotation2d();
         if (rotation){
-            Rotation2d rotationOutput = state.poseMeters.getRotation().plus(desiredRotationOffset);
-        }
-        else{
-            Rotation2d rotationOutput = new Rotation2d();
+            rotationOutput = state.poseMeters.getRotation().plus(desiredRotationOffset);
         }
 
-        var output = controller.calculate(swerve.getCurrentPose(), state, new Rotation2d());
+        ChassisSpeeds output = controller.calculate(swerve.getCurrentPose(), state, rotationOutput);
         swerve.moveFieldCentric(output.vxMetersPerSecond, output.vyMetersPerSecond, output.omegaRadiansPerSecond);
     }
 

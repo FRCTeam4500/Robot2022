@@ -11,6 +11,12 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.utility.ExtendedMath;
 
+/**
+ * improved version of FollowDottedTrajectoryCommand, uses a ghost robot to generate robot movement parameters
+ * Use FollowDottedTrajectoryCommand instead
+ */
+
+
 public class FollowStatesCommand extends FollowTrajectoryCommand {
 
     protected double internalTime = 0.0;
