@@ -7,7 +7,7 @@
 
 package frc.robot.utility;
 
-import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 
 /**
  * This is a simple container for math functions which are useful, but are not included in the

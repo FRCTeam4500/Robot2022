@@ -6,8 +6,8 @@ package frc.robot.subsystem.swerve.pathfollowingswerve.command;
 
 import java.util.function.DoubleFunction;
 
-import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.trajectory.Trajectory;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.utility.ExtendedMath;
 
@@ -16,7 +16,7 @@ public class FollowStatesCommand extends FollowTrajectoryCommand {
     protected double internalTime = 0.0;
     protected DoubleFunction<Double> timeTransformer;
     public FollowStatesCommand(PathFollowingSwerve swerve, Trajectory trajectory,
-                                               HolonomicDriveController controller, DoubleFunction<Double> timeTransformer) {
+                               HolonomicDriveController controller, DoubleFunction<Double> timeTransformer) {
         super(swerve, trajectory, controller);
         this.timeTransformer = timeTransformer;
     }

@@ -4,10 +4,10 @@
 
 package frc.robot.subsystem.swerve.pathfollowingswerve.command;
 
-import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowTrajectoryCommand;
 import frc.robot.utility.ExtendedMath;
