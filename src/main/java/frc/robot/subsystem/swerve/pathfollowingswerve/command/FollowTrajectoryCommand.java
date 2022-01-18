@@ -4,16 +4,12 @@
 
 package frc.robot.subsystem.swerve.pathfollowingswerve.command;
 
-import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.Trajectory.State;
-import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 
@@ -43,7 +39,7 @@ public class FollowTrajectoryCommand extends CommandBase {
         applyState(state);
     }
 
-    protected void applyState(State state) {
+    protected void applyState(Trajectory.State state) {
         currentTranslation = state.poseMeters.getTranslation();
         currentState[0] = state.poseMeters.getX();
         currentState[1] = state.poseMeters.getY();

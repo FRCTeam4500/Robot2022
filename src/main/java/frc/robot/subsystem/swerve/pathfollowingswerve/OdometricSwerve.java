@@ -7,12 +7,12 @@
 
 package frc.robot.subsystem.swerve.pathfollowingswerve;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
-import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import frc.robot.component.GyroComponent;
 import frc.robot.subsystem.swerve.KinematicSwerve;
 
