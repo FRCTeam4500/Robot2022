@@ -1,9 +1,9 @@
 package frc.robot.subsystem.shooter.command;
 
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpiutil.math.Pair;
 import frc.robot.subsystem.loader.Loader;
 import frc.robot.subsystem.loader.command.LoaderRunCommand;
 import frc.robot.subsystem.shooter.Shooter;

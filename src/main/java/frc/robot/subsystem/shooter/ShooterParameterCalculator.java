@@ -1,7 +1,7 @@
 package frc.robot.subsystem.shooter;
 
 
-import edu.wpi.first.wpiutil.math.Pair;
+import edu.wpi.first.math.Pair;
 
 import java.util.HashMap;
 
