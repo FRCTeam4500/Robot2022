@@ -14,4 +14,6 @@ public interface Swerve extends Subsystem {
     public void moveFieldCentric(double xSpeed, double ySpeed, double wSpeed, Translation2d centerOfRotation);
     public void moveFieldCentric(double xSpeed, double ySpeed, double wSpeed);
     public void resetGyro();
+
+    void moveFieldCentric(double vxMetersPerSecond, double vyMetersPerSecond, double omegaRadiansPerSecond);
 }
