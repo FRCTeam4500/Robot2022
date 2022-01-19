@@ -2,7 +2,9 @@ package frc.robot.container;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.autonomous.routinesDriveOnly.FirstBallAuto;
 import frc.robot.autonomous.routinesDriveOnly.TriangleAuto;
@@ -23,6 +25,8 @@ public class EntropyRobotContainer implements RobotContainer{
     private void configureSwerve(){
         swerve = EntropySwerveFactory.makeSwerve();
         swerve.setDefaultCommand(new SwerveDefaultCommand(swerve, driveStick));
+        Shuffleboard.getTab("swerve").add(swerve);
+        SmartDashboard.putData(swerve);
     }
 
     private void configureAutonomous(){

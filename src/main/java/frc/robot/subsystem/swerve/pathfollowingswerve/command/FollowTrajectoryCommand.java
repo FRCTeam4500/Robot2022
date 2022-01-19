@@ -4,21 +4,12 @@
 
 package frc.robot.subsystem.swerve.pathfollowingswerve.command;
 
-<<<<<<< HEAD
-import edu.wpi.first.wpilibj.controller.HolonomicDriveController;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-=======
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.util.sendable.SendableBuilder;
->>>>>>> master
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
@@ -50,7 +41,7 @@ public class FollowTrajectoryCommand extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        State state = trajectory.sample(timer.get());
+        Trajectory.State state = trajectory.sample(timer.get());
         applyState(state);
     }
 

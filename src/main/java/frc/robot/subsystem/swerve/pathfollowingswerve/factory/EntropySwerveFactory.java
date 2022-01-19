@@ -7,9 +7,9 @@
 
 package frc.robot.subsystem.swerve.pathfollowingswerve.factory;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.I2C.Port;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.component.hardware.AHRSAngleGetterComponent;
 import frc.robot.component.hardware.TalonFXComponent;
 import frc.robot.component.hardware.TalonSRXComponent;
@@ -52,7 +52,7 @@ public class EntropySwerveFactory {
         );
 
     }
-    public static OdometricWheelModule makeWheelModule(int angleId, int driveId,Translation2d translationFromSwerveCenter, boolean invertSensorPhase, boolean invertAngle, boolean invertSpeed){
+    public static OdometricWheelModule makeWheelModule(int angleId, int driveId, Translation2d translationFromSwerveCenter, boolean invertSensorPhase, boolean invertAngle, boolean invertSpeed){
         var srx = new TalonSRXComponent(angleId);
         srx.setSensorPhase(invertSensorPhase);
         srx.setInverted(invertAngle);

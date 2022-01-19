@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.container.EntropyRobotContainer;
 import frc.robot.container.PrimaryRobotContainer;
 import frc.robot.container.RobotContainer;
 
@@ -27,7 +28,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    robotContainer = new PrimaryRobotContainer();
+    robotContainer = new EntropyRobotContainer();
   }
 
   /**
