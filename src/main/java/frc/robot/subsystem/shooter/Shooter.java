@@ -1,10 +1,19 @@
-package frc.robot.subsystem.shooter;
+package frc.robot.subsystems.shooter;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.components.AngularVelocityComponent;
 
-import edu.wpi.first.wpilibj2.command.Subsystem;
+public class Shooter extends SubsystemBase {
+    private AngularVelocityComponent shooterMotor;
+    public Shooter(AngularVelocityComponent motor) {
+        shooterMotor = motor;
+    }
 
-public interface Shooter extends Subsystem {
-    public void setSpeed(double speed);
-    public double getSpeed();
-    public void setAngle(double angle);
-    public double getAngle();
+    public void setSpeed(double speed) {
+        shooterMotor.setAngularVelocity(speed / 2); //divided by 2 for gear ratio
+    }
+
+    public double getSpeed() {
+        return shooterMotor.getAngularVelocity();
+    }
+
 }

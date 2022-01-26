@@ -41,7 +41,8 @@ import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowTrajectoryCo
 public class ExtendedTrajectoryUtilities {
     private static Trajectory getDeployedTrajectoryExcept(String trajectoryName) throws IOException {
 
-        var trajectoryJSON = "paths/output/"+trajectoryName+".wpilib.json";
+        var trajectoryJSON = "PathWeaver/output/"+trajectoryName+".wpilib.json";
+        System.out.println(trajectoryJSON);
         //Stolen pretty much from the example code
         Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
         Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
@@ -51,6 +52,9 @@ public class ExtendedTrajectoryUtilities {
         try{
             return getDeployedTrajectoryExcept(trajectoryName);
         }catch(IOException ex){
+            DriverStation.reportError("Unable to open trajectory: " + trajectoryName, ex.getStackTrace());
+            return new Trajectory(null);
+        }catch (NullPointerException ex){
             DriverStation.reportError("Unable to open trajectory: " + trajectoryName, ex.getStackTrace());
             return new Trajectory(null);
         }
