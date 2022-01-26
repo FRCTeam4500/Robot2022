@@ -24,10 +24,10 @@ public class IntakeRunCommand extends CommandBase {
     }
 
     public void initialize(){
-        intake.setSpeed(speed);
+        intake.setOutput(speed);
     }
 
     public void end() {
-        intake.setSpeed(0);
+        intake.setOutput(0);
     }
 }

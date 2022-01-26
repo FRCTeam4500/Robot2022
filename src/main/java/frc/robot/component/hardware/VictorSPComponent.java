@@ -5,15 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.components.hardware;
+package frc.robot.component.hardware;
 
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
-import frc.robot.components.OutputSetterComponent;
+import frc.robot.component.OutputComponent;
 
 /**
  * Add your docs here.
  */
-public class VictorSPComponent extends VictorSP implements OutputSetterComponent {
+public class VictorSPComponent extends VictorSP implements OutputComponent {
 
     public VictorSPComponent(int channel) {
         super(channel);
@@ -23,4 +23,9 @@ public class VictorSPComponent extends VictorSP implements OutputSetterComponent
     public void setOutput(double output) {
         set(-output);
     }
+
+    public double getOutput() {
+        return -get();
+    }
+
 }

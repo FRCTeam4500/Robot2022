@@ -22,7 +22,7 @@ public class ArmDownCommand extends CommandBase {
     }
 
     public ArmDownCommand(Arm arm) {
-        this(arm, ArmConstants.armDownAngle);
+        this(arm, ArmConstants.armDownValue);
     }
 
     public void initialize() {

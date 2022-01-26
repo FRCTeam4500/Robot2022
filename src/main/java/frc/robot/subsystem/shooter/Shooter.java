@@ -1,6 +1,6 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystem.shooter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.components.AngularVelocityComponent;
+import frc.robot.component.AngularVelocityComponent;
 
 public class Shooter extends SubsystemBase {
     private AngularVelocityComponent shooterMotor;

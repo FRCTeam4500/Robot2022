@@ -29,7 +29,7 @@ public class FirstBall extends SequentialCommandGroup {
         addCommands(
                 new InstantCommand(() -> swerve.resetPose(path.getInitialPose())),
                 new ParallelCommandGroup(
-                        new ArmSetAngleCommand(arm, ArmConstants.armDownAngle),
+                        new ArmSetAngleCommand(arm, ArmConstants.armDownValue),
                         new IntakeRunCommand(intake),
                         swerveCmd
                 ),

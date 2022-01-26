@@ -1,10 +1,10 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystem.shooter;
 
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import frc.robot.components.DoubleAngularVelocityComponent;
-import frc.robot.components.hardware.SparkMaxComponent;
+import frc.robot.component.DoubleMotorComponent;
+import frc.robot.component.hardware.SparkMaxComponent;
 
 public class HardwareShooterFactory {
     public static Shooter makeShooter(){
@@ -27,7 +27,7 @@ public class HardwareShooterFactory {
          * If they go the same directions, the shooter will explode.
          */
         m2.setInverted(true);
-        DoubleAngularVelocityComponent motors = new DoubleAngularVelocityComponent(m1, m2);
+        DoubleMotorComponent motors = new DoubleMotorComponent(m1, m2);
         return new Shooter(motors);
     }
 }

@@ -1,13 +1,13 @@
-package frc.robot.components;
+package frc.robot.component;
 
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
-import frc.robot.components.OutputSetterComponent;
+import frc.robot.component.OutputComponent;
 
-public class DoubleOutputSetterComponent implements OutputSetterComponent {
-    private OutputSetterComponent c1;
-    private OutputSetterComponent c2;
+public class DoubleOutputSetterComponent implements OutputComponent {
+    private OutputComponent c1;
+    private OutputComponent c2;
     
-    public DoubleOutputSetterComponent(OutputSetterComponent s1, OutputSetterComponent s2) {
+    public DoubleOutputSetterComponent(OutputComponent s1, OutputComponent s2) {
         this.c1 = s1;
         this.c2 = s2;
     }
@@ -17,8 +17,8 @@ public class DoubleOutputSetterComponent implements OutputSetterComponent {
         c2.setOutput(output);
     }
 
- 
+    public double getOutput() {
+        return c1.getOutput();
+    }
 
-   
-    
 }
