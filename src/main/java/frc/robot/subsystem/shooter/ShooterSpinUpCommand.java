@@ -14,6 +14,7 @@ public class ShooterSpinUpCommand extends CommandBase{
         addRequirements(shooter);
     }
 
+
     @Override
     public void initialize() {
         shooter.setSpeed(shooterControl.shooterSpeed);
