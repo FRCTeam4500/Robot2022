@@ -34,9 +34,8 @@ public class AutomatedShootingCommand extends SequentialCommandGroup {
                 ),
                 new InstantCommand(() -> { //Calculates the distance to the target and gets the corresponding speed and angle values
                     double distance = VisionDistanceCalculator.calculateDistance(vision);
-                    Pair<Double, Double> speedAndAngle = ShooterParameterCalculator.getSpeedAndAngle(distance);
-                    targetSpeed = speedAndAngle.getFirst();
-                    targetAngle = speedAndAngle.getSecond();
+                    targetSpeed = ShooterParameterCalculator.getSpeed(distance);
+
                 }),
                 new ParallelCommandGroup(//sets shooter speed and angle to the correct values, and waits for the angle to arrive at the correct value
                         new SpinUpCommand(shooter, targetSpeed).withTimeout(1),

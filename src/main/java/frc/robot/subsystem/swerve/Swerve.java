@@ -13,6 +13,7 @@ public interface Swerve extends Subsystem {
     public void moveFieldCentric(ChassisSpeeds chassisSpeeds);
     public void moveFieldCentric(double xSpeed, double ySpeed, double wSpeed);
     public void moveFieldCentric(double xSpeed, double ySpeed, double wSpeed, Translation2d centerOfRotation);
+    public ChassisSpeeds getSpeeds();
     public void resetGyro();
 
 }
