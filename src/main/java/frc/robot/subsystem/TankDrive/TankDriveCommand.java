@@ -4,7 +4,6 @@
 
 package frc.robot.subsystem.TankDrive;
 
-import frc.robot.subsystem.TankDrive.TankDrive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -27,7 +26,8 @@ public class TankDriveCommand extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -35,24 +35,22 @@ public class TankDriveCommand extends CommandBase {
     double x = joystick.getX();
     double y = joystick.getY();
     double z = joystick.getZ();
-    if (Math.abs(x) < dead) {
+    if (Math.abs(x) < dead) // you don't need {} here, its just one line
       x = 0;
-    }
 
-    if (Math.abs(y) < dead) {
+    if (Math.abs(y) < dead)
       y = 0;
-    }
 
-    if (Math.abs(z) < dead) {
+    if (Math.abs(z) < dead)
       z = 0;
-    }
 
-    tankDrive.move(x*sens, y*sens, z*sens);
+    tankDrive.move(x * sens, y * sens, z * sens);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

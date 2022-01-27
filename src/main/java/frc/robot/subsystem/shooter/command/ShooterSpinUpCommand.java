@@ -1,19 +1,22 @@
-package frc.robot.subsystem.shooter;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+package frc.robot.subsystem.shooter.command;
 
-public class ShooterSpinUpCommand extends CommandBase{
+import edu.wpi.first.networktables.NetworkTableEntry; //do we need
+import edu.wpi.first.networktables.NetworkTableInstance; //
+import edu.wpi.first.wpilibj.command.Command; //
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard; //any of this?
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystem.shooter.Shooter;
+import frc.robot.subsystem.shooter.ShooterControl;
+
+public class ShooterSpinUpCommand extends CommandBase {
     private Shooter shooter;
     private ShooterControl shooterControl;
+
     public ShooterSpinUpCommand(Shooter shooter, ShooterControl shooterControl) {
         this.shooter = shooter;
         this.shooterControl = shooterControl;
         addRequirements(shooter);
     }
-
 
     @Override
     public void initialize() {
@@ -35,5 +38,4 @@ public class ShooterSpinUpCommand extends CommandBase{
         return (Math.abs(shooterControl.shooterSpeed - shooter.getSpeed()) < shooterControl.speedThreshold);
     }
 
-    
 }

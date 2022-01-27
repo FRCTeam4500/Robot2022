@@ -1,22 +1,22 @@
 package frc.robot.container;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.InstantCommand; // do we need this?
+import edu.wpi.first.networktables.NetworkTableEntry; // or this? (this was for fiddling with shuffleboard right?)
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.subsystem.TankDrive.TankDrive;
 import frc.robot.subsystem.TankDrive.TankDriveFactory;
 import frc.robot.subsystem.TankDrive.TankDriveCommand;
 import frc.robot.subsystem.shooter.*;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.networktables.NetworkTableEntry;
+import frc.robot.subsystem.shooter.command.ShooterSpinDownCommand;
+import frc.robot.subsystem.shooter.command.ShooterSpinUpCommand;
 import frc.robot.subsystem.intake.HardwareIntakeFactory;
-import frc.robot.subsystem.arm.HardwareArmFactory;
 import frc.robot.subsystem.intake.Intake;
-import frc.robot.subsystem.arm.Arm;
 import frc.robot.subsystem.intake.command.IntakeRunCommand;
+import frc.robot.subsystem.arm.HardwareArmFactory;
+import frc.robot.subsystem.arm.Arm;
 import frc.robot.subsystem.arm.command.ArmDownCommand;
-
 
 public class NewRobotContainer implements RobotContainer {
     private Joystick driveStick = new Joystick(0);
@@ -29,8 +29,8 @@ public class NewRobotContainer implements RobotContainer {
     private JoystickButton shooterButton = new JoystickButton(driveStick, 2);
     private JoystickButton intakeButton = new JoystickButton(driveStick, 1);
 
-    public NewRobotContainer() { 
-        
+    public NewRobotContainer() {
+
         configureTankDrive();
         configureShooter();
 
@@ -39,7 +39,7 @@ public class NewRobotContainer implements RobotContainer {
     public void configureTankDrive() {
         TankDriveCommand tankCommand = new TankDriveCommand(tankDrive, driveStick, xDeadzone, xSensitivity);
         tankDrive.setDefaultCommand(tankCommand);
-        
+
     }
 
     public void configureShooter() {
@@ -54,7 +54,7 @@ public class NewRobotContainer implements RobotContainer {
         intake = HardwareIntakeFactory.makeIntake();
         arm = HardwareArmFactory.makeArm();
         intakeButton.whileHeld(new IntakeRunCommand(intake).alongWith(new ArmDownCommand(arm)));
-    
+
     }
 
 }
