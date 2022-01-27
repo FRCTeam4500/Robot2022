@@ -11,7 +11,7 @@ public class ArmImpl implements Arm {
     }
 
     public void setAngle(double angle) {
-        motor.setAngle(angle);
+        motor.setAngle(angle * ArmConstants.armGearRatio);
     }
 
 }
