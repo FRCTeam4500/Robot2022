@@ -28,8 +28,10 @@ public class PolarVelocityCalculator {
          * vr = vxcosA  + vycos(90-A)
          * vt = vxcos(90-A) + vycos(A)
          */
-        double radialVelocity = (speeds.vxMetersPerSecond * Math.cos(angleFromTarget)) + (speeds.vyMetersPerSecond * Math.cos(pi/2 - angleFromTarget));
-        double tangentialVelocity = (speeds.vxMetersPerSecond * Math.cos(pi/2 - angleFromTarget)) + (speeds.vyMetersPerSecond * Math.cos(angleFromTarget));
+        double radialVelocity = (speeds.vxMetersPerSecond * Math.cos(angleFromTarget)) +
+                (speeds.vyMetersPerSecond * Math.cos(pi/2 - angleFromTarget));
+        double tangentialVelocity = (speeds.vxMetersPerSecond * Math.cos(pi/2 - angleFromTarget)) +
+                (speeds.vyMetersPerSecond * Math.cos(angleFromTarget));
         return new Pair<> (radialVelocity, tangentialVelocity);
     }
 
