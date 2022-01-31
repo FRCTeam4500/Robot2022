@@ -3,6 +3,7 @@ package frc.robot.container;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.DashboardNumberDisplay;
 import frc.robot.subsystem.TankDrive.TankDrive;
 import frc.robot.subsystem.TankDrive.TankDriveFactory;
 import frc.robot.subsystem.TankDrive.TankDriveCommand;
@@ -10,6 +11,8 @@ import frc.robot.subsystem.shooter.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import frc.robot.subsystem.vision.Vision;
+import frc.robot.subsystem.vision.VisionDistanceCalculator;
 
 
 public class NewRobotContainer implements RobotContainer {
@@ -20,6 +23,7 @@ public class NewRobotContainer implements RobotContainer {
     private ShooterControl shooterControl;
     private JoystickButton shooterButton = new JoystickButton(driveStick, 1);
     private JoystickButton shooterOff = new JoystickButton(driveStick, 2);
+    private Vision vision;
 
 
 
@@ -40,9 +44,13 @@ public class NewRobotContainer implements RobotContainer {
 
     public void configureShooter() {
         shooterControl = new frc.robot.subsystems.shooter.ShooterControl();
-        shooter = HardwareShooterFactory.makeShooter();
+        shooter = frc.robot.subsystems.shooter.HardwareShooterFactory.makeShooter();
         shooterButton.whileHeld(new ShooterSpinUpCommand(shooter, shooterControl));
         shooterButton.whenReleased(new ShooterSpinDownCommand(shooter));
         Shuffleboard.getTab("Shooter").add("Shooter", new ShooterShuffleboardControls(shooterControl));
+    }
+    public void configureVision(){
+        Shuffleboard.getTab("Shooting").add(new DashboardNumberDisplay("Distance from rim",
+                () -> {return VisionDistanceCalculator.calculateDistance(vision);}));
     }
 }
