@@ -1,12 +1,12 @@
-package frc.robot.containers;
+package frc.robot.container;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import frc.robot.subsystems.TankDrive.TankDrive;
-import frc.robot.subsystems.TankDrive.TankDriveFactory;
-import frc.robot.subsystems.TankDrive.TankDriveCommand;
-import frc.robot.subsystems.shooter.*;
+import frc.robot.subsystem.TankDrive.TankDrive;
+import frc.robot.subsystem.TankDrive.TankDriveFactory;
+import frc.robot.subsystem.TankDrive.TankDriveCommand;
+import frc.robot.subsystem.shooter.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -39,7 +39,7 @@ public class NewRobotContainer implements RobotContainer {
     }
 
     public void configureShooter() {
-        shooterControl = new ShooterControl();
+        shooterControl = new frc.robot.subsystems.shooter.ShooterControl();
         shooter = HardwareShooterFactory.makeShooter();
         shooterButton.whileHeld(new ShooterSpinUpCommand(shooter, shooterControl));
         shooterButton.whenReleased(new ShooterSpinDownCommand(shooter));
