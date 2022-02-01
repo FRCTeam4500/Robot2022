@@ -2,19 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.TankDrive;
+package frc.robot.subsystem.TankDrive;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import frc.robot.components.OutputSetterComponent;
+import frc.robot.component.OutputComponent;
 
 
 public class TankDrive extends SubsystemBase {
-	private OutputSetterComponent doubleLeft;
-	private OutputSetterComponent doubleRight;
+	private OutputComponent doubleLeft;
+	private OutputComponent doubleRight;
 
 	private double inX;
 
@@ -22,7 +22,7 @@ public class TankDrive extends SubsystemBase {
 	private DifferentialDriveKinematics driveKinematic;
 	private double maxWheelSpeed = 900d;
 	/** Creates a new TankDrive. */
-    public TankDrive(OutputSetterComponent left, OutputSetterComponent right) {
+    public TankDrive(OutputComponent left, OutputComponent right) {
     	this.doubleLeft = left;
     	this.doubleRight = right;
     	this.driveKinematic = new DifferentialDriveKinematics(0.8);

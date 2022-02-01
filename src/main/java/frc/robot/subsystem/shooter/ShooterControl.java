@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystem.shooter;
 
 public class ShooterControl {
     public double shooterSpeed = 20000;

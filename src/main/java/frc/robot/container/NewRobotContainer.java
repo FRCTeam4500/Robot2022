@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.DashboardNumberDisplay;
+import frc.robot.component.hardware.LimelightVisionComponent;
 import frc.robot.subsystem.TankDrive.TankDrive;
 import frc.robot.subsystem.TankDrive.TankDriveFactory;
 import frc.robot.subsystem.TankDrive.TankDriveCommand;
@@ -11,8 +12,11 @@ import frc.robot.subsystem.shooter.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import frc.robot.subsystem.shooter.command.ShooterSpinDownCommand;
+import frc.robot.subsystem.shooter.command.ShooterSpinUpCommand;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.vision.VisionDistanceCalculator;
+import frc.robot.subsystem.vision.VisionImpl;
 
 
 public class NewRobotContainer implements RobotContainer {
@@ -33,6 +37,7 @@ public class NewRobotContainer implements RobotContainer {
         
         configureTankDrive();
         configureShooter();
+        configureVision();
 
     }
 
@@ -43,13 +48,14 @@ public class NewRobotContainer implements RobotContainer {
     }
 
     public void configureShooter() {
-        shooterControl = new frc.robot.subsystems.shooter.ShooterControl();
-        shooter = frc.robot.subsystems.shooter.HardwareShooterFactory.makeShooter();
+        shooterControl = new ShooterControl();
+        shooter = HardwareShooterFactory.makeShooter();
         shooterButton.whileHeld(new ShooterSpinUpCommand(shooter, shooterControl));
         shooterButton.whenReleased(new ShooterSpinDownCommand(shooter));
-        Shuffleboard.getTab("Shooter").add("Shooter", new ShooterShuffleboardControls(shooterControl));
+        Shuffleboard.getTab("Shooting").add("Shooter Parameters", new ShooterShuffleboardControls(shooterControl));
     }
     public void configureVision(){
+        vision = new VisionImpl(new LimelightVisionComponent());
         Shuffleboard.getTab("Shooting").add(new DashboardNumberDisplay("Distance from rim",
                 () -> {return VisionDistanceCalculator.calculateDistance(vision);}));
     }

@@ -1,9 +1,10 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystem.shooter.command;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystem.shooter.Shooter;
+import frc.robot.subsystem.shooter.ShooterControl;
 
 public class ShooterSpinUpCommand extends CommandBase{
     private Shooter shooter;

@@ -3,10 +3,12 @@ package frc.robot.subsystem.shooter;
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.robot.component.AngularVelocityComponent;
+import frc.robot.component.DoubleMotorComponent;
 import frc.robot.component.hardware.SparkMaxComponent;
 import frc.robot.subsystem.shooter.Shooter;
 public class HardwareShooterFactory {
-    public static frc.robot.subsystems.shooter.Shooter makeShooter(){
+    public static Shooter makeShooter(){
         SparkMaxComponent m1 = new SparkMaxComponent(1, CANSparkMaxLowLevel.MotorType.kBrushless);
         SparkMaxComponent m2 = new SparkMaxComponent(2, CANSparkMaxLowLevel.MotorType.kBrushless);
 
@@ -26,7 +28,7 @@ public class HardwareShooterFactory {
          * If they go the same directions, the shooter will explode.
          */
         m2.setInverted(true);
-        DoubleAngularVelocityComponent motors = new DoubleAngularVelocityComponent(m1, m2);
+        AngularVelocityComponent motors = new DoubleMotorComponent(m1,m2);
         return new Shooter(motors);
     }
 }
