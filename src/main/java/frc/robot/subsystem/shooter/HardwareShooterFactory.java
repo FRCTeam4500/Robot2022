@@ -1,13 +1,12 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystem.shooter;
 
 import com.revrobotics.CANSparkMaxLowLevel;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import frc.robot.components.DoubleAngularVelocityComponent;
-import frc.robot.components.hardware.SparkMaxComponent;
-
+import frc.robot.component.hardware.SparkMaxComponent;
+import frc.robot.subsystem.shooter.Shooter;
 public class HardwareShooterFactory {
-    public static Shooter makeShooter(){
+    public static frc.robot.subsystems.shooter.Shooter makeShooter(){
         SparkMaxComponent m1 = new SparkMaxComponent(1, CANSparkMaxLowLevel.MotorType.kBrushless);
         SparkMaxComponent m2 = new SparkMaxComponent(2, CANSparkMaxLowLevel.MotorType.kBrushless);
 
