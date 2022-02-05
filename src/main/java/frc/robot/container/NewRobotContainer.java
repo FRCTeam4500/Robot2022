@@ -3,7 +3,7 @@ package frc.robot.container;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import frc.robot.DashboardNumberDisplay;
+import frc.robot.dashboard.DashboardNumberDisplay;
 import frc.robot.component.hardware.LimelightVisionComponent;
 import frc.robot.subsystem.TankDrive.TankDrive;
 import frc.robot.subsystem.TankDrive.TankDriveFactory;
