@@ -33,7 +33,7 @@ public class ShooterParameterCalculator {
      * @param distance The robot's horizontal distance from the target
      * @return a Pair containing the reequired speed and angle for the shooter
      */
-    public static double getSpeedAndAngle(double distance){
+    public static double getSpeed(double distance){
         Double speed = 0d;
         Double difference = Double.MAX_VALUE;
         for (Double key : parameters.keySet()) { //finds the closest key (distance) to the given distance

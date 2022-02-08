@@ -34,14 +34,11 @@ public class AutomatedShootingCommand extends SequentialCommandGroup {
                 ),
                 new InstantCommand(() -> { //Calculates the distance to the target and gets the corresponding speed and angle values
                     double distance = VisionDistanceCalculator.calculateDistance(vision);
-                    targetSpeed = ShooterParameterCalculator.getSpeedAndAngle(distance);
+                    targetSpeed = ShooterParameterCalculator.getSpeed(distance);
 
                 }),
-                new ParallelCommandGroup(//sets shooter speed and angle to the correct values, and waits for the angle to arrive at the correct value
-                        new SpinUpCommand(shooter, targetSpeed).withTimeout(1),
-                        new ShooterSetAngleCommand(shooter, targetAngle).withTimeout(0.25)//TODO: adjust this to account for how long it takes for the turret angle to change
-                ),
-                new LoaderRunCommand(loader).withTimeout(2), //shoots
+                new SpinUpCommand(shooter, targetSpeed).withTimeout(1),
+                new LoaderRunCommand(loader).withTimeout(0.5), //shoots
                 new InstantCommand(() -> shooter.setSpeed(0)) //spin down the shooter
         );
     }

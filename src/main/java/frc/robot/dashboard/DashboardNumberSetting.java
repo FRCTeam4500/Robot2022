@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.dashboard;
 
 import edu.wpi.first.networktables.NTSendableBuilder;
 
