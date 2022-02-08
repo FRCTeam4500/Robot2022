@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.command.AlignWithTargetCommand;
 import frc.robot.subsystem.swerve.Swerve;
+import frc.robot.subsystem.swerve.command.SwerveDefaultCommand;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.utility.ControllerInfo;
 
@@ -18,7 +19,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     private Vision vision;
 
     private Joystick driveStick = new Joystick(1);
-    private JoystickButton b1 = new JoystickButton(driveStick, 1);
+    private JoystickButton switchDriveMode = new JoystickButton(driveStick, 1);
     private JoystickButton b2 = new JoystickButton(driveStick, 2);
 
     ControllerInfo controllerInfo = new ControllerInfo();
@@ -33,9 +34,14 @@ public class PrimaryRobotContainer implements RobotContainer{
 
         b2.whenPressed(() -> {swerve.moveRobotCentric(0,0,1);});
 
-        b1.whenPressed(new AlignWithTargetCommand(SmartDashboard.getNumber("align kp", 1),0d, 0d, 0d,0d, 0d, vision, swerve));
     }
 
+    void configureSwerve(){
+        SwerveDefaultCommand swerveCommand = new SwerveDefaultCommand(swerve, driveStick, controllerInfo);
+        switchDriveMode.whenPressed(() -> {swerveCommand.isRobotCentric = true;});
+        switchDriveMode.whenReleased(() -> {swerveCommand.isRobotCentric = false;});
+        swerve.setDefaultCommand(swerveCommand); 
+    }
 
 
 
