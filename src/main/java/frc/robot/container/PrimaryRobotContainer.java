@@ -32,7 +32,7 @@ public class PrimaryRobotContainer implements RobotContainer{
         SmartDashboard.putNumber("align kp", 1);
 
 
-        b2.whenPressed(() -> {swerve.moveRobotCentric(0,0,1);});
+
 
     }
 

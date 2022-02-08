@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.dashboard.DashboardMessageDisplay;
 import frc.robot.subsystem.swerve.Swerve;
 import frc.robot.subsystem.turret.Turret;
 import frc.robot.subsystem.vision.Vision;
@@ -38,6 +39,7 @@ public class TriModeSwerveCommand extends CommandBase {
     private ControllerInfo info;
     private Vision vision;
     private Turret turret;
+    private DashboardMessageDisplay messageDisplay;
     private PolarVelocityCalculator polarCalculator;
 
     /**
@@ -49,12 +51,13 @@ public class TriModeSwerveCommand extends CommandBase {
     public ControlMode controlMode;
 
 
-    public TriModeSwerveCommand(Swerve swerve, Joystick joystick, ControllerInfo controllerInfo, Vision vision, Turret turret){
+    public TriModeSwerveCommand(Swerve swerve, Joystick joystick, ControllerInfo controllerInfo, Vision vision, Turret turret, DashboardMessageDisplay messageDisplay){
         this.swerve = swerve;
         this.joystick = joystick;
         info = controllerInfo;
         this.vision = vision;
         this.turret = turret;
+        this.messageDisplay = messageDisplay;
         polarCalculator = new PolarVelocityCalculator(swerve, vision, turret);
         controlMode = ControlMode.FieldCentric; //default control mode is field-centric
         /**
@@ -109,6 +112,7 @@ public class TriModeSwerveCommand extends CommandBase {
              * but will continue to try to align itself with the turret,
              * in the hopes that it regains sight of the target.
              */
+            messageDisplay.addMessage("Could not move polar-ly, No vision targets found", this);
             double wSpeed = polarAngleAdjustmentController.calculate(turret.getAngle(), 0);
             moveRobotCentric(r,t,wSpeed);
         }
