@@ -5,7 +5,7 @@ import com.revrobotics.CANSparkMax;
 import frc.robot.component.SmartMotorComponent;
 
 /**
- * Wrapper for CANSparkMax motor controllwer which implements SmartMotorComponent
+ * Wrapper for CANSparkMax motor controller which implements SmartMotorComponent
  */
 public class SparkMaxComponent extends CANSparkMax implements SmartMotorComponent {
 
