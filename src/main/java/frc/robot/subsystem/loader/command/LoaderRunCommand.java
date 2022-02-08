@@ -18,6 +18,6 @@ public class LoaderRunCommand extends CommandBase {
     }
 
     public void initialize(){
-        loader.setSpeed(LoaderConstants.runSpeed);
+        loader.setOutput(LoaderConstants.runSpeed);
     }
 }
