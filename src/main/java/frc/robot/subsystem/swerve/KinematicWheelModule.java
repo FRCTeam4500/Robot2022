@@ -7,8 +7,8 @@
 
 package frc.robot.subsystem.swerve;
 
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.component.AngleComponent;
 import frc.robot.component.AngularVelocityComponent;

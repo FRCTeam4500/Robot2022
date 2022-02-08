@@ -7,10 +7,10 @@
 
 package frc.robot.subsystem.swerve;
 
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.component.GyroComponent;
 import frc.robot.subsystem.swerve.Swerve;
@@ -67,7 +67,7 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
     }
     public void moveRobotCentric(ChassisSpeeds chassisSpeeds, Translation2d centerOfRotation){
         var states = kinematics.toSwerveModuleStates(chassisSpeeds, centerOfRotation);
-        SwerveDriveKinematics.normalizeWheelSpeeds(states, lowestMaximumWheelSpeed);
+        SwerveDriveKinematics.desaturateWheelSpeeds(states, lowestMaximumWheelSpeed);
 
         for(int i = 0;i<wheelModules.length;i++){
             wheelModules[i].drive(states[i]);

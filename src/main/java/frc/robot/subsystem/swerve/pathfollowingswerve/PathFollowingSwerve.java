@@ -1,7 +1,7 @@
 package frc.robot.subsystem.swerve.pathfollowingswerve;
 
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystem.swerve.Swerve;
 
 public interface PathFollowingSwerve extends Swerve {
