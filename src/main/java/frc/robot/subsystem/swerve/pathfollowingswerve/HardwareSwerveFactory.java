@@ -22,8 +22,8 @@ public class HardwareSwerveFactory {
     private static final int AFLPORT = 0; //angle front left port
 
     private static final double WHEEL_DIAMETER = 0; //Wheel diameter, in meters
-    private static final double DRIVE_X_TRANSLATION = 0; //x-axis translation of left wheels
-    private static final double DRIVE_Y_TRANSLATION = 0; //x-axis translation of right wheels
+    private static final double DRIVE_X_TRANSLATION = 0; //x-axis translation of wheels
+    private static final double DRIVE_Y_TRANSLATION = 0; //x-axis translation of wheels
 
     public static PathFollowingSwerve makeSwerve(){
         OdometricWheelModule fl = makeWheelModule(AFLPORT, DFLPORT, new Translation2d(DRIVE_Y_TRANSLATION / 2, DRIVE_X_TRANSLATION/2), true, true,true);
@@ -40,7 +40,7 @@ public class HardwareSwerveFactory {
         );
     }
     public static OdometricWheelModule makeWheelModule(int angleId, int driveId,Translation2d translationFromSwerveCenter, boolean invertSensorPhase, boolean invertAngle, boolean invertSpeed){
-        var srx = new TalonSRXComponent(angleId);
+        TalonSRXComponent srx = new TalonSRXComponent(angleId);
         srx.setSensorPhase(invertSensorPhase);
         srx.setInverted(invertAngle);
         srx.config_kP(0, 2);
@@ -49,7 +49,7 @@ public class HardwareSwerveFactory {
         srx.configMotionAcceleration(5500);
         srx.configAllowableClosedloopError(0, 0);
 
-        var falcon = new TalonFXComponent(driveId);
+        TalonFXComponent falcon = new TalonFXComponent(driveId);
         falcon.config_kP(0, 0.03);
         falcon.config_kI(0, 0);
         falcon.config_kD(0,0);

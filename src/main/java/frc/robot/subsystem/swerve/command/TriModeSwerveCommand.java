@@ -125,7 +125,6 @@ public class TriModeSwerveCommand extends CommandBase {
             return value;
     }
 
-
     public enum ControlMode{
         FieldCentric,
         RobotCentric,
