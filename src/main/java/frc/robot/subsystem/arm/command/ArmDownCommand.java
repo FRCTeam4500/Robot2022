@@ -4,8 +4,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.arm.Arm;
 import frc.robot.subsystem.arm.ArmConstants;
 
-public class ArmDownCommand extends CommandBase {
+/**
+ * Command which puts down the arm
+ * Use ArmSetAngleCommand if you need the arm to stay down
+ */
 
+public class ArmDownCommand extends CommandBase {
     private Arm arm;
     private double angle;
 
@@ -13,6 +17,7 @@ public class ArmDownCommand extends CommandBase {
         this.arm = arm;
         this.angle = angle;
     }
+
     public ArmDownCommand(Arm arm){
         this(arm, ArmConstants.armDownAngle);
     }
@@ -22,6 +27,7 @@ public class ArmDownCommand extends CommandBase {
     }
 
     public void end(){
-        arm.setAngle(ArmConstants.armUpAngle);
+        arm.setAngle(0);
     }
+
 }

@@ -32,9 +32,6 @@ public class AutomatedShootingCommand extends SequentialCommandGroup {
                     new WaitForTargetCommand(vision, ShooterConstants.maximumAllowableOffset).withTimeout(1)
                 ),
                 new LoaderRunCommand(loader).withTimeout(1) //shoots
-        );;
-    }
-    public void end(){
-        new ShooterSpinDownCommand(shooter).schedule(); //spins down the shooter when the command ends, as the shooter does not spin down on its own
+        );
     }
 }
