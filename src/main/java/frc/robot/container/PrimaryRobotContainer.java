@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.command.AlignWithTargetCommand;
+import frc.robot.dashboard.DashboardMessageDisplay;
 import frc.robot.dashboard.DashboardNumberDisplay;
 import frc.robot.subsystem.arm.Arm;
 import frc.robot.subsystem.arm.HardwareArmFactory;
@@ -28,6 +29,7 @@ import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.subsystem.turret.HardwareTurretFactory;
 import frc.robot.subsystem.turret.Turret;
+import frc.robot.subsystem.turret.command.TurretDefaultCommand;
 import frc.robot.subsystem.vision.HardwareVisionFactory;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.vision.util.VisionDistanceCalculator;
@@ -55,6 +57,8 @@ public class PrimaryRobotContainer implements RobotContainer{
 
     private JoystickButton intakeButton = new JoystickButton(controlStick, 1);
     private JoystickButton shootButton = new JoystickButton(controlStick, 2);
+
+    private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
 
 
 
@@ -92,6 +96,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     }
 
     void configureShooting() {
+        turret.setDefaultCommand(new TurretDefaultCommand(turret, vision));
         ShooterControl control = new ShooterControl(10000, 50);
         Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
         shootButton.whenHeld(shootCommand);
