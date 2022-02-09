@@ -27,32 +27,32 @@ public class TalonFXComponent extends TalonFX implements SmartMotorComponent {
 
     @Override
     public double getAngle() {
-        return -getSelectedSensorPosition() / TICKS_PER_RADIAN;
+        return getSelectedSensorPosition() / TICKS_PER_RADIAN;
     }
 
     @Override
     public void setAngle(double angle) {
-        set(TalonFXControlMode.MotionMagic, -angle * TICKS_PER_RADIAN);
+        set(TalonFXControlMode.MotionMagic, angle * TICKS_PER_RADIAN);
     }
 
     @Override
     public void setOutput(double speed) {
-        set(TalonFXControlMode.PercentOutput,-speed);
+        set(TalonFXControlMode.PercentOutput,speed);
     }
 
     @Override
     public double getOutput() {
-        return -getMotorOutputPercent();
+        return getMotorOutputPercent();
     }
 
     @Override
     public double getAngularVelocity() {
-        return -getSelectedSensorVelocity() / TICKS_PER_RADIAN * 10;
+        return getSelectedSensorVelocity() / TICKS_PER_RADIAN * 10;
     }
 
     @Override
     public void setAngularVelocity(double velocity) {
-        set(TalonFXControlMode.Velocity,-velocity * TICKS_PER_RADIAN/10.0);
+        set(TalonFXControlMode.Velocity, velocity * TICKS_PER_RADIAN/10.0);
     }
 }
 

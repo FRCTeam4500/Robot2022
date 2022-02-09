@@ -1,10 +1,11 @@
 package frc.robot.subsystem.loader;
 
 import frc.robot.component.OutputComponent;
+import frc.robot.component.hardware.VictorSPXComponent;
 
 public class HardwareLoaderFactory {
-    public Loader makeLoader(){
-        OutputComponent motor = null; //TODO: add motor
+    public static Loader makeLoader(){
+        OutputComponent motor = new VictorSPXComponent(13);
         return new LoaderImpl(motor);
     }
 }

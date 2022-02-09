@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.component.GyroComponent;
 import frc.robot.subsystem.swerve.KinematicSwerve;
@@ -19,7 +20,7 @@ import frc.robot.subsystem.swerve.KinematicSwerve;
 /**
  * Add your docs here.
  */
-public class OdometricSwerve extends KinematicSwerve implements PathFollowingSwerve {
+public class OdometricSwerve extends KinematicSwerve implements PathFollowingSwerve  {
 
     SwerveDriveOdometry odometry;
     OdometricWheelModule[] odometricWheelModules;
@@ -77,6 +78,11 @@ public class OdometricSwerve extends KinematicSwerve implements PathFollowingSwe
         for(var module : odometricWheelModules){
             module.coast();
         }
+    }
+
+    @Override
+    public void initSendable(SendableBuilder builder) {
+        super.initSendable(builder);
     }
 }
 
