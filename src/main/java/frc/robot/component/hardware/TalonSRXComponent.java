@@ -30,31 +30,31 @@ public class TalonSRXComponent extends TalonSRX
 
     @Override
     public void setOutput(double speed) {
-        set(ControlMode.PercentOutput, -speed);
+        set(ControlMode.PercentOutput, speed);
     }
 
     @Override
     public void setAngle(double angle) {
-        set(ControlMode.MotionMagic, -angle * TICKS_PER_RADIAN);
+        set(ControlMode.MotionMagic, angle * TICKS_PER_RADIAN);
     }
 
     @Override
     public double getAngle() {
-        return -getSelectedSensorPosition() / TICKS_PER_RADIAN;
+        return getSelectedSensorPosition() / TICKS_PER_RADIAN;
     }
 
     @Override
     public double getAngularVelocity() {
-        return -getSelectedSensorVelocity() / TICKS_PER_RADIAN * 10;
+        return getSelectedSensorVelocity() / TICKS_PER_RADIAN * 10;
     }
 
     @Override
     public double getOutput() {
-        return -getMotorOutputPercent();
+        return getMotorOutputPercent();
     }
 
     @Override
     public void setAngularVelocity(double velocity) {
-        set(ControlMode.Velocity, -velocity * TICKS_PER_RADIAN / 10.0);
+        set(ControlMode.Velocity, velocity * TICKS_PER_RADIAN / 10.0);
     }
 }

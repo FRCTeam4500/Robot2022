@@ -1,6 +1,7 @@
 package frc.robot.dashboard;
 
-import edu.wpi.first.networktables.NTSendableBuilder;
+
+import edu.wpi.first.util.sendable.SendableBuilder;
 
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
@@ -8,18 +9,18 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class DashboardNumberSetting {
-    Supplier<Double> number;
-    Consumer<Double> setting;
+    DoubleSupplier number;
+    DoubleConsumer setting;
     String name;
 
-    public DashboardNumberSetting (String name, Supplier<Double> number, Consumer<Double> setting){
+    public DashboardNumberSetting (String name, DoubleSupplier number, DoubleConsumer setting){
         this.name = name;
         this.number = number;
         this.setting = setting;
     }
 
-    public void initSendable(NTSendableBuilder builder){
+    public void initSendable(SendableBuilder builder){
         builder.setSmartDashboardType("RobotPreferences");
-        builder.addDoubleProperty(name, (DoubleSupplier) number, (DoubleConsumer) setting);
+        builder.addDoubleProperty(name, number, setting);
     }
 }

@@ -1,8 +1,7 @@
 package frc.robot.dashboard;
 
 import edu.wpi.first.math.Pair;
-import edu.wpi.first.networktables.NTSendable;
-import edu.wpi.first.networktables.NTSendableBuilder;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -15,7 +14,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 /**
  * Widget which displays a queue of messages on shuffleboard.
  */
-public class DashboardMessageDisplay extends CommandBase implements NTSendable {
+public class DashboardMessageDisplay extends CommandBase implements Sendable {
     private List<Pair<Object,Integer>> cooldownList = new ArrayList<Pair<Object, Integer>>();
     private Queue<String> messages;
     private int cooldown;
@@ -73,7 +72,7 @@ public class DashboardMessageDisplay extends CommandBase implements NTSendable {
     }
 
     @Override
-    public void initSendable(NTSendableBuilder builder){
+    public void initSendable(SendableBuilder builder){
         builder.addStringArrayProperty("Driver Messages", () -> {
             String[] messageArr = new String[messages.size()];
             messages.toArray(messageArr);

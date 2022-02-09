@@ -1,5 +1,6 @@
 package frc.robot.subsystem.swerve.pathfollowingswerve;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.I2C;
 import frc.robot.component.hardware.AHRSAngleGetterComponent;
@@ -10,16 +11,16 @@ public class HardwareSwerveFactory {
 
     private static final double DRIVE_RATIO = 0; //drive rotations per motor rotation
     private static final double ANGLE_RATIO = 0; //angle rotations per motor rotation
-    private static final double MAX_SPEED = 0; //max surface speed, meters per second
+    private static final double MAX_SPEED = 4.8; //max surface speed, meters per second
 
-    private static final int DBRPORT = 0; //drive back right port
-    private static final int ABRPORT = 0; //angle back right port
-    private static final int DBLPORT = 0; //drive back right port
-    private static final int ABLPORT = 0; //angle back right port
-    private static final int DFRPORT = 0; //drive front right port
-    private static final int AFRPORT = 0; //angle front right port
-    private static final int DFLPORT = 0; //drive front left port
-    private static final int AFLPORT = 0; //angle front left port
+    private static final int DBRPORT = 2; //drive back right port
+    private static final int ABRPORT = 3; //angle back right port
+    private static final int DBLPORT = 12; //drive back right port
+    private static final int ABLPORT = 11; //angle back right port
+    private static final int DFRPORT = 4; //drive front right port
+    private static final int AFRPORT = 5; //angle front right port
+    private static final int DFLPORT = 7; //drive front left port
+    private static final int AFLPORT = 6; //angle front left port
 
     private static final double WHEEL_DIAMETER = 0; //Wheel diameter, in meters
     private static final double DRIVE_X_TRANSLATION = 0; //x-axis translation of wheels
@@ -40,25 +41,25 @@ public class HardwareSwerveFactory {
         );
     }
     public static OdometricWheelModule makeWheelModule(int angleId, int driveId,Translation2d translationFromSwerveCenter, boolean invertSensorPhase, boolean invertAngle, boolean invertSpeed){
-        TalonSRXComponent srx = new TalonSRXComponent(angleId);
-        srx.setSensorPhase(invertSensorPhase);
-        srx.setInverted(invertAngle);
-        srx.config_kP(0, 2);
-        srx.config_kF(0,0);
-        srx.configMotionCruiseVelocity(5500);
-        srx.configMotionAcceleration(5500);
-        srx.configAllowableClosedloopError(0, 0);
+        TalonFXComponent angleMotor = new TalonFXComponent(angleId);
+        angleMotor.setSensorPhase(invertSensorPhase);
+        angleMotor.setInverted(invertAngle);
+        angleMotor.config_kP(0, 2);
+        angleMotor.config_kF(0,0);
+        angleMotor.configMotionCruiseVelocity(5500);
+        angleMotor.configMotionAcceleration(5500);
+        angleMotor.configAllowableClosedloopError(0, 0);
 
-        TalonFXComponent falcon = new TalonFXComponent(driveId);
-        falcon.config_kP(0, 0.03);
-        falcon.config_kI(0, 0);
-        falcon.config_kD(0,0);
-        falcon.config_kF(0, 0.047);
-        falcon.config_IntegralZone(0, 0);
-        falcon.setInverted(invertSpeed);
+        TalonFXComponent driveMotor = new TalonFXComponent(driveId);
+        driveMotor.config_kP(0, 0.03);
+        driveMotor.config_kI(0, 0);
+        driveMotor.config_kD(0,0);
+        driveMotor.config_kF(0, 0.047);
+        driveMotor.config_IntegralZone(0, 0);
+        driveMotor.setInverted(invertSpeed);
         return new OdometricWheelModule(
-                srx,
-                falcon,
+                angleMotor,
+                driveMotor,
                 translationFromSwerveCenter,
                 MAX_SPEED,
                 WHEEL_DIAMETER,
