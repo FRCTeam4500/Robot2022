@@ -1,7 +1,7 @@
 package frc.robot.utility;
 
-import edu.wpi.first.networktables.NTSendable;
-import edu.wpi.first.networktables.NTSendableBuilder;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 
 /**
  * A class representing controller configuration values
@@ -10,15 +10,15 @@ import edu.wpi.first.networktables.NTSendableBuilder;
  * Its not super standard java but I don't see anything wrong with it
  */
 
-public class ControllerInfo implements NTSendable {
-    public double xDeadzone;
-    public double yDeadzone;
-    public double zDeadzone;
-    public double xSensitivity;
-    public double ySensitivity;
-    public double zSensitivity;
+public class ControllerInfo implements Sendable {
+    public double xDeadzone = 0;
+    public double yDeadzone = 0;
+    public double zDeadzone = 0;
+    public double xSensitivity = 0;
+    public double ySensitivity = 0;
+    public double zSensitivity = 0;
 
-    public void initSendable(NTSendableBuilder builder){
+    public void initSendable(SendableBuilder builder){
         builder.setSmartDashboardType("RobotPreferences");
         builder.addDoubleProperty("X Axis Sensitivity", () -> {return xSensitivity;}, (value) -> {xSensitivity = value;});
         builder.addDoubleProperty("Y Axis Sensitivity", () -> {return ySensitivity;}, (value) -> {ySensitivity = value;});

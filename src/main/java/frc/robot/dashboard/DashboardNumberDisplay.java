@@ -1,11 +1,11 @@
 package frc.robot.dashboard;
 
-import edu.wpi.first.networktables.NTSendable;
-import edu.wpi.first.networktables.NTSendableBuilder;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 
 import java.util.function.DoubleSupplier;
 
-public class DashboardNumberDisplay implements NTSendable {
+public class DashboardNumberDisplay implements Sendable {
     DoubleSupplier number;
     String name;
     public DashboardNumberDisplay (String name, DoubleSupplier number){
@@ -13,7 +13,7 @@ public class DashboardNumberDisplay implements NTSendable {
         this.number = number;
     }
 
-    public void initSendable(NTSendableBuilder builder){
+    public void initSendable(SendableBuilder builder){
         builder.addDoubleProperty(name, number, null);
     }
 }

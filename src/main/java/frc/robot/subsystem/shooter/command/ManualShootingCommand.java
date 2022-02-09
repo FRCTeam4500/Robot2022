@@ -6,24 +6,24 @@ import frc.robot.subsystem.loader.Loader;
 import frc.robot.subsystem.loader.command.LoaderRunCommand;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.ShooterConstants;
+import frc.robot.subsystem.shooter.command.ShooterSpinDownCommand;
+import frc.robot.subsystem.shooter.command.ShooterSpinUpCommand;
 import frc.robot.subsystem.shooter.util.ShooterControl;
 import frc.robot.subsystem.shooter.util.ShooterParameterCalculator;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.vision.command.WaitForTargetCommand;
 import frc.robot.subsystem.vision.util.VisionDistanceCalculator;
 
-public class AutomatedShootingCommand extends SequentialCommandGroup {
+public class ManualShootingCommand extends SequentialCommandGroup {
     private Shooter shooter;
     private Vision vision;
 
-    public AutomatedShootingCommand(Shooter shooter, Vision vision, Loader loader){
+    public ManualShootingCommand(Shooter shooter, Vision vision, Loader loader, ShooterControl control){
         this.shooter = shooter;
         this.vision = vision;
         addCommands(
                 new ParallelCommandGroup( //spins up the shooter and waits for the turret to find a target
-                    new ShooterSpinUpCommand(shooter,
-                        new ShooterControl(ShooterParameterCalculator.getSpeed(VisionDistanceCalculator.calculateDistance(vision)), ShooterConstants.speedThreshold))
-                        .withTimeout(1),
+                    new ShooterSpinUpCommand(shooter, control).withTimeout(1),
                     new WaitForTargetCommand(vision, ShooterConstants.maximumAllowableOffset).withTimeout(1)
                 ),
                 new LoaderRunCommand(loader).withTimeout(1) //shoots
