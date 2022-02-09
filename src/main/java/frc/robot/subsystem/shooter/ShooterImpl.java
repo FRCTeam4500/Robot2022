@@ -1,5 +1,6 @@
 package frc.robot.subsystem.shooter;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.component.AngularVelocityComponent;
 
@@ -17,7 +18,8 @@ public class ShooterImpl implements Shooter{
      */
     public void setSpeed(double speed) {
         targetSpeed = speed;
-        shooterMotor.setAngularVelocity(speed / 2); //divided by 2 for gear ratio
+        double speedRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(speed);
+        shooterMotor.setAngularVelocity(speedRadPerSec / 2); //divided by 2 for gear ratio
     }
 
     public double getSpeed() {

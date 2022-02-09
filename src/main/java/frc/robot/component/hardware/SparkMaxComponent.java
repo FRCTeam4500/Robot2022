@@ -2,6 +2,7 @@
 package frc.robot.component.hardware;
 
 import com.revrobotics.CANSparkMax;
+import edu.wpi.first.math.util.Units;
 import frc.robot.component.SmartMotorComponent;
 
 /**
@@ -36,12 +37,16 @@ public class SparkMaxComponent extends CANSparkMax implements SmartMotorComponen
 
     @Override
     public double getAngularVelocity() {
-        return getEncoder().getVelocity();
+        return Units.rotationsPerMinuteToRadiansPerSecond(getEncoder().getVelocity());
     }
 
+    /**
+     * set velocity, in rad/s
+     * @param velocity angular velocity, in rad/s
+     */
     @Override
     public void setAngularVelocity(double velocity) {
-        getPIDController().setReference(velocity, ControlType.kVelocity);
+        getPIDController().setReference(Units.radiansPerSecondToRotationsPerMinute(velocity), ControlType.kVelocity);
     }
 
 }
