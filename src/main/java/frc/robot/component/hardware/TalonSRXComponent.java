@@ -35,7 +35,7 @@ public class TalonSRXComponent extends TalonSRX
 
     @Override
     public void setAngle(double angle) {
-        set(ControlMode.MotionMagic, angle * TICKS_PER_RADIAN);
+        set(ControlMode.Position, angle * TICKS_PER_RADIAN);
     }
 
     @Override

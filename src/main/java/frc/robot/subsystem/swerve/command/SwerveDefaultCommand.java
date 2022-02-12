@@ -1,11 +1,13 @@
 package frc.robot.subsystem.swerve.command;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystem.swerve.Swerve;
 import frc.robot.utility.ControllerInfo;
 
-public class SwerveDefaultCommand extends CommandBase {
+ public class SwerveDefaultCommand extends CommandBase implements Sendable {
     private Swerve swerve;
     private Joystick joystick;
     private ControllerInfo info;
@@ -42,4 +44,11 @@ public class SwerveDefaultCommand extends CommandBase {
                 zSpeed * info.zSensitivity
         );
     }
-}
+
+     @Override
+     public void initSendable(SendableBuilder builder) {
+        builder.addDoubleProperty("Controller X", joystick::getX, null);
+        builder.addDoubleProperty("Controller Y", joystick::getY, null);
+        builder.addDoubleProperty("Controller Z", joystick::getZ, null);
+     }
+ }

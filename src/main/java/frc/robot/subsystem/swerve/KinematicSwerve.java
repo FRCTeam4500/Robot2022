@@ -24,6 +24,7 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
     protected double currentGyroZero = 0.0;
     protected GyroComponent gyro;
     private int resetCounter;
+    private ChassisSpeeds currentSpeeds = new ChassisSpeeds();
     /**
      * Creates a new KinematicSwerve.
      */
@@ -67,6 +68,7 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
         moveRobotCentric(chassisSpeeds, new Translation2d());
     }
     public void moveRobotCentric(ChassisSpeeds chassisSpeeds, Translation2d centerOfRotation){
+        currentSpeeds = chassisSpeeds;
         var states = kinematics.toSwerveModuleStates(chassisSpeeds, centerOfRotation);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, lowestMaximumWheelSpeed);
 
@@ -142,6 +144,11 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Gyro Angle", gyro::getAngle, null);
+        builder.addDoubleArrayProperty("Swerve Speeds", () -> {return new double[]{
+                currentSpeeds.vxMetersPerSecond,
+                currentSpeeds.vyMetersPerSecond,
+                currentSpeeds.omegaRadiansPerSecond
+        };}, null );
     }
 }
 
