@@ -5,7 +5,7 @@ import frc.robot.component.hardware.VictorSPXComponent;
 
 public class HardwareLoaderFactory {
     public static Loader makeLoader(){
-        OutputComponent motor = new VictorSPXComponent(13);
+        VictorSPXComponent motor = new VictorSPXComponent(13);
         return new LoaderImpl(motor);
     }
 }

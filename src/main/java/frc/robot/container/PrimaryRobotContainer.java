@@ -57,12 +57,13 @@ public class PrimaryRobotContainer implements RobotContainer{
     private ControllerInfo info = new ControllerInfo();
 
     private JoystickButton switchDriveMode = new JoystickButton(driveStick, 1);
+    private JoystickButton resetGyro = new JoystickButton(driveStick, 5);
 
     private Joystick controlStick = new Joystick(1);
 
     private JoystickButton intakeButton = new JoystickButton(controlStick, 1);
-    private JoystickButton shootButton = new JoystickButton(controlStick, 2);
-
+    private JoystickButton shootButton = new JoystickButton(controlStick, 3);
+    
     private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
 
 
@@ -70,17 +71,17 @@ public class PrimaryRobotContainer implements RobotContainer{
     public PrimaryRobotContainer(){
         configureControls();
         configureSwerve();
-        //configureIntakeAndArm();
-        //configureShooting();
+        configureIntakeAndArm();
+        configureShooting();
     }
 
     void configureControls() {
         info.xSensitivity = 4;
         info.ySensitivity = 4;
-        info.zSensitivity = 4;
+        info.zSensitivity = 3.5;
         info.xDeadzone = 0.1;
         info.yDeadzone = 0.1;
-        info.zDeadzone = 0.1;
+        info.zDeadzone = 0.2;
         Shuffleboard.getTab("Driver Controls").add("Driver Controls", info);
     }
 
@@ -88,6 +89,7 @@ public class PrimaryRobotContainer implements RobotContainer{
         SwerveDefaultCommand swerveCommand = new SwerveDefaultCommand(swerve, driveStick, info);
         switchDriveMode.whenPressed(() -> {swerveCommand.isRobotCentric = true;});
         switchDriveMode.whenReleased(() -> {swerveCommand.isRobotCentric = false;});
+        resetGyro.whenPressed(new InstantCommand(() -> {swerve.resetGyro();}));
         swerve.setDefaultCommand(swerveCommand);
         Shuffleboard.getTab("Swerve").add("Swerve", swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Controls", swerveCommand);
@@ -95,13 +97,12 @@ public class PrimaryRobotContainer implements RobotContainer{
     }
 
     void configureIntakeAndArm(){
-        Command intakeCommand = new IntakeRunCommand(intake);
-        Command armCommand = new ArmDownCommand(arm);
         intakeButton.whenPressed(new ArmSetAngleCommand(arm, ArmConstants.ARM_DOWN_ANGLE)
-                .alongWith(new IntakeRunCommand(intake, IntakeConstants.intakeRunSpeed))).whenReleased(
-                        new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE).alongWith(
-                                new IntakeRunCommand(intake, 0)
-                        )
+                .alongWith(new IntakeRunCommand(intake, IntakeConstants.intakeRunSpeed)));
+        intakeButton.whenReleased(
+            new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE).alongWith(
+            new IntakeRunCommand(intake, 0))
+                        
         );
         Shuffleboard.getTab("Intake").add("Intake", intake);
         Shuffleboard.getTab("Intake").add("Arm", arm);
@@ -111,7 +112,8 @@ public class PrimaryRobotContainer implements RobotContainer{
         turret.setDefaultCommand(new TurretDefaultCommand(turret, vision));
         ShooterControl control = new ShooterControl(10000, 50);
         Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
-        shootButton.whileHeld(shootCommand);
+        shootButton.whenPressed(shootCommand);
+        shootButton.whenReleased(new InstantCommand(() -> {shooter.setSpeed(0); loader.setOutput(0);}));
         ShuffleboardTab tab = Shuffleboard.getTab("Shooting");
         tab.add("Shooter", shooter);
         tab.add("Shooter Controls", control);
@@ -122,6 +124,6 @@ public class PrimaryRobotContainer implements RobotContainer{
 
     @Override
     public void teleopInit() {
-        //new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE).schedule(); //deploy the arm
+        new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE).schedule(); //deploy the arm
     }
 }

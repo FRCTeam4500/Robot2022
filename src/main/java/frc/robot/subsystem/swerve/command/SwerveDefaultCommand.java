@@ -21,9 +21,9 @@ import frc.robot.utility.ControllerInfo;
     }
 
     public void execute(){
-        double xSpeed = joystick.getX();
-        double ySpeed = joystick.getY();
-        double zSpeed = joystick.getZ();
+        double xSpeed = -joystick.getX();
+        double ySpeed = -joystick.getY();
+        double zSpeed = -joystick.getZ();
         if (Math.abs(xSpeed) < info.xDeadzone)
             xSpeed = 0;
         if (Math.abs(ySpeed) < info.yDeadzone)
@@ -32,15 +32,15 @@ import frc.robot.utility.ControllerInfo;
             zSpeed = 0;
         if (isRobotCentric){
             swerve.moveRobotCentric(
-                    xSpeed * info.xSensitivity,
                     ySpeed * info.ySensitivity,
+                    xSpeed * info.xSensitivity,
                     zSpeed * info.zSensitivity
             );
             return;
         }
         swerve.moveFieldCentric(
-                xSpeed * info.xSensitivity,
                 ySpeed * info.ySensitivity,
+                xSpeed * info.xSensitivity,
                 zSpeed * info.zSensitivity
         );
     }

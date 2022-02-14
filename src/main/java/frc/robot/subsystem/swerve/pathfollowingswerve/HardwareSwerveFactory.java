@@ -10,7 +10,7 @@ import frc.robot.component.hardware.TalonSRXComponent;
 public class HardwareSwerveFactory {
 
     private static final double DRIVE_RATIO = 1/4.3329; //drive rotations per motor rotation
-    private static final double ANGLE_RATIO = 1/10.58; //angle rotations per motor rotation
+    private static final double ANGLE_RATIO = 1/12.34567901234; //angle rotations per motor rotation
     private static final double MAX_SPEED = 4.8; //max surface speed, meters per second
 
     private static final int DBRPORT = 2; //drive back right port
@@ -29,7 +29,7 @@ public class HardwareSwerveFactory {
     public static PathFollowingSwerve makeSwerve(){
         OdometricWheelModule fl = makeWheelModule(AFLPORT, DFLPORT, new Translation2d(DRIVE_Y_TRANSLATION, DRIVE_X_TRANSLATION), true, true,true);
         OdometricWheelModule fr = makeWheelModule(AFRPORT, DFRPORT, new Translation2d(DRIVE_Y_TRANSLATION, -DRIVE_X_TRANSLATION), true, true,false);
-        OdometricWheelModule bl = makeWheelModule(ABLPORT, DBLPORT, new Translation2d(-DRIVE_Y_TRANSLATION, DRIVE_X_TRANSLATION), false, false,true);
+        OdometricWheelModule bl = makeWheelModule(ABLPORT, DBLPORT, new Translation2d(-DRIVE_Y_TRANSLATION, DRIVE_X_TRANSLATION), false, true,true);
         OdometricWheelModule br = makeWheelModule(ABRPORT, DBRPORT, new Translation2d(-DRIVE_Y_TRANSLATION, -DRIVE_X_TRANSLATION ), true, true,false);
 
         return new OdometricSwerve(
@@ -44,7 +44,7 @@ public class HardwareSwerveFactory {
         TalonFXComponent angleMotor = new TalonFXComponent(angleId);
         angleMotor.setSensorPhase(invertSensorPhase);
         angleMotor.setInverted(invertAngle);
-        angleMotor.config_kP(0, 1);
+        angleMotor.config_kP(0, 0.5);
         angleMotor.config_kF(0,0);
         angleMotor.configMotionCruiseVelocity(5500);
         angleMotor.configMotionAcceleration(5500);
