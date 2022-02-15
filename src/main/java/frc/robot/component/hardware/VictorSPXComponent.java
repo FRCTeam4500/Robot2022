@@ -16,6 +16,7 @@ public class VictorSPXComponent extends VictorSPX implements OutputComponent {
 
     @Override
     public double getOutput() {
-        return getMotorOutputPercent();
+        //return getMotorOutputPercent();
+        return 0;
     }
 }

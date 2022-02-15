@@ -18,5 +18,6 @@ public class LoaderImpl implements Loader{
     public void initSendable(SendableBuilder builder){
         builder.addBooleanProperty("Running", () -> !(targetOutput == 0), null);
         builder.addDoubleProperty("Output", motor::getOutput, null);
+        builder.addDoubleProperty("Target output", () -> targetOutput, null);
     }
 }

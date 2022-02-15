@@ -23,8 +23,8 @@ public class ManualShootingCommand extends SequentialCommandGroup {
         this.vision = vision;
         addCommands(
                 new ParallelCommandGroup( //spins up the shooter and waits for the turret to find a target
-                    new ShooterSpinUpCommand(shooter, control).withTimeout(1),
-                    new WaitForTargetCommand(vision, ShooterConstants.maximumAllowableOffset).withTimeout(1)
+                    new ShooterSpinUpCommand(shooter, control).withTimeout(0.25),
+                    new WaitForTargetCommand(vision, ShooterConstants.maximumAllowableOffset).withTimeout(0.25)
                 ),
                 new LoaderRunCommand(loader).withTimeout(1) //shoots
         );;

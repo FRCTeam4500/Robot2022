@@ -32,7 +32,7 @@ public class AHRSAngleGetterComponent extends AHRS implements GyroComponent {
     }
 
     public void reset(){
-
+        //reset();
     }
 
 }
