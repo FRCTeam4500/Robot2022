@@ -9,6 +9,8 @@ public class HardwareTurretFactory {
         motor.configReverseSoftLimitEnable(true);
         motor.configForwardSoftLimitThreshold(TurretConstants.MAX_SENSOR); //TODO: set these limits
         motor.configReverseSoftLimitThreshold(-TurretConstants.MAX_SENSOR);
+        motor.configPeakOutputForward(0.7);
+        motor.configPeakOutputReverse(-0.7);
         return new TurretImpl(motor);
     }
 }

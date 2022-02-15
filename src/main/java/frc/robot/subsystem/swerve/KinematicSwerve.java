@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.component.GyroComponent;
@@ -120,9 +121,7 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
         }
         return lowestMaxSpeed;
     }
-    public void resetGyro(){
-        gyro.reset();
-    }
+    
 
     public double getGyroAngle(){
         return gyro.getAngle() - currentGyroZero;
@@ -149,6 +148,16 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
                 currentSpeeds.vyMetersPerSecond,
                 currentSpeeds.omegaRadiansPerSecond
         };}, null );
+    }
+
+    public ChassisSpeeds getSpeeds(){
+        SwerveModuleState[] states = {
+            wheelModules[0].getState(),
+            wheelModules[1].getState(),
+            wheelModules[2].getState(),
+            wheelModules[3].getState()
+        };
+        return kinematics.toChassisSpeeds(states);
     }
 }
 

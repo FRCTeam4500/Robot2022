@@ -30,6 +30,8 @@ import frc.robot.subsystem.shooter.command.AutomatedShootingCommand;
 import frc.robot.subsystem.shooter.command.ManualShootingCommand;
 import frc.robot.subsystem.shooter.util.ShooterControl;
 import frc.robot.subsystem.swerve.command.SwerveDefaultCommand;
+import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
+import frc.robot.subsystem.swerve.command.TriModeSwerveCommand.ControlMode;
 import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.subsystem.turret.HardwareTurretFactory;
@@ -56,7 +58,8 @@ public class PrimaryRobotContainer implements RobotContainer{
     private Joystick driveStick = new Joystick(0);
     private ControllerInfo info = new ControllerInfo();
 
-    private JoystickButton switchDriveMode = new JoystickButton(driveStick, 1);
+    private JoystickButton switchDriveModeRobotCentric = new JoystickButton(driveStick, 1);
+    private JoystickButton switchDriveModePolar = new JoystickButton(driveStick, 2);
     private JoystickButton resetGyro = new JoystickButton(driveStick, 5);
 
     private Joystick controlStick = new Joystick(1);
@@ -83,13 +86,17 @@ public class PrimaryRobotContainer implements RobotContainer{
         info.yDeadzone = 0.1;
         info.zDeadzone = 0.2;
         Shuffleboard.getTab("Driver Controls").add("Driver Controls", info);
+        Shuffleboard.getTab("Driver Controls").add("Messages", messages);
     }
 
     void configureSwerve(){
-        SwerveDefaultCommand swerveCommand = new SwerveDefaultCommand(swerve, driveStick, info);
-        switchDriveMode.whenPressed(() -> {swerveCommand.isRobotCentric = true;});
-        switchDriveMode.whenReleased(() -> {swerveCommand.isRobotCentric = false;});
-        resetGyro.whenPressed(new InstantCommand(() -> {swerve.resetGyro();}));
+        TriModeSwerveCommand swerveCommand = new TriModeSwerveCommand(swerve, driveStick, info, vision, turret, messages);
+        swerveCommand.controlMode = ControlMode.FieldCentric;
+        switchDriveModeRobotCentric.whenPressed(() -> {swerveCommand.controlMode = ControlMode.RobotCentric;});
+        switchDriveModeRobotCentric.whenReleased(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;});
+        switchDriveModePolar.whenPressed(() -> {swerveCommand.controlMode = ControlMode.Polar;});
+        switchDriveModePolar.whenPressed(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;});
+        resetGyro.whenPressed(new InstantCommand(() -> {swerve.resetRobotAngle();}));
         swerve.setDefaultCommand(swerveCommand);
         Shuffleboard.getTab("Swerve").add("Swerve", swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Controls", swerveCommand);
@@ -115,6 +122,9 @@ public class PrimaryRobotContainer implements RobotContainer{
         shootButton.whenPressed(shootCommand);
         shootButton.whenReleased(new InstantCommand(() -> {shooter.setSpeed(0); loader.setOutput(0);}));
         ShuffleboardTab tab = Shuffleboard.getTab("Shooting");
+        tab.add("vision height", new DashboardNumberDisplay("h", vision::getVisionHeight));
+        tab.add("vision hangle", new DashboardNumberDisplay("a", vision::getVisionAngle));
+        tab.add("VIsion offset", new DashboardNumberDisplay("o", vision::getVerticalOffsetFromCrosshair));
         tab.add("Shooter", shooter);
         tab.add("Shooter Controls", control);
         tab.add("Turret", turret);

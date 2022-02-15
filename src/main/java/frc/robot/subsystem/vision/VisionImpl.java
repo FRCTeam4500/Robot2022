@@ -4,9 +4,13 @@ import frc.robot.component.VisionComponent;
 
 public class VisionImpl implements Vision{
     private  VisionComponent visionComponent;
+    private double height;
+    private double angle;
 
-    public VisionImpl(VisionComponent camera){
+    public VisionImpl(VisionComponent camera, double height, double angle){
         visionComponent = camera;
+        this.height = height;
+        this.angle = angle;
     }
 
     public boolean hasValidTargets(){
@@ -29,4 +33,11 @@ public class VisionImpl implements Vision{
         return visionComponent.getSkew();
     }
 
+    public double getVisionAngle(){
+        return angle;
+    }
+
+    public double getVisionHeight(){
+        return height;
+    }
 }

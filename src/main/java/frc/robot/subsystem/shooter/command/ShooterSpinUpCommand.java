@@ -29,7 +29,8 @@ public class ShooterSpinUpCommand extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return (Math.abs(shooterControl.shooterSpeed - shooter.getSpeed()) < shooterControl.speedThreshold);
+        //return (Math.abs(shooterControl.shooterSpeed - shooter.getSpeed()) < shooterControl.speedThreshold);
+        return false;
     }
 
     

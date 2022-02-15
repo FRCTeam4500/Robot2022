@@ -19,12 +19,12 @@ public class TurretDefaultCommand extends CommandBase {
         this.turret = turret;
         this.vision = vision;
         addRequirements(turret);
-        controller = new PIDController(-1.5,0,0); //TODO: tune
+        controller = new PIDController(-0.7,0,0); //TODO: tune
     }
 
     public void execute(){
         if (vision.hasValidTargets()){
-            turret.setOutput(controller.calculate(vision.getHorizontalOffsetFromCrosshair(), 0));
+            turret.setOutput(controller.calculate(vision.getHorizontalOffsetFromCrosshair()*2, 0));
         }
         else{
             turret.setAngle(0);

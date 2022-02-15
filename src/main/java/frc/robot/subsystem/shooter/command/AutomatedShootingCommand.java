@@ -28,8 +28,8 @@ public class AutomatedShootingCommand extends SequentialCommandGroup {
                 new ParallelCommandGroup( //spins up the shooter and waits for the turret to find a target
                     new ShooterSpinUpCommand(shooter,
                         new ShooterControl(ShooterParameterCalculator.getSpeed(VisionDistanceCalculator.calculateDistance(vision)), ShooterConstants.speedThreshold))
-                        .withTimeout(1),
-                    new WaitForTargetCommand(vision, ShooterConstants.maximumAllowableOffset).withTimeout(1)
+                        .withTimeout(0.25),
+                    new WaitForTargetCommand(vision, ShooterConstants.maximumAllowableOffset).withTimeout(0.25)
                 ),
                 new LoaderRunCommand(loader).withTimeout(1) //shoots
         );;

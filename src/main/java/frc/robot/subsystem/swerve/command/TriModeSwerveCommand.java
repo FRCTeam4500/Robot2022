@@ -72,9 +72,9 @@ public class TriModeSwerveCommand extends CommandBase {
 
     @Override
     public void execute(){
-        double xSpeed = withDeadzone(joystick.getX(), info.xDeadzone) * info.xSensitivity;
-        double ySpeed = withDeadzone(joystick.getY(), info.yDeadzone) * info.ySensitivity;
-        double zSpeed = withDeadzone(joystick.getZ(), info.zDeadzone) * info.zSensitivity;
+        double xSpeed = -withDeadzone(joystick.getX(), info.xDeadzone) * info.xSensitivity;
+        double ySpeed = -withDeadzone(joystick.getY(), info.yDeadzone) * info.ySensitivity;
+        double zSpeed = -withDeadzone(joystick.getZ(), info.zDeadzone) * info.zSensitivity;
         switch (controlMode){
             case FieldCentric:
                 moveFieldCentric(xSpeed, ySpeed, zSpeed);
@@ -89,10 +89,10 @@ public class TriModeSwerveCommand extends CommandBase {
     }
 
     private void moveFieldCentric(double x, double y, double w){
-        swerve.moveFieldCentric(x,y,w);
+        swerve.moveFieldCentric(y,x,w);
     }
     private void moveRobotCentric(double x, double y, double w){
-        swerve.moveRobotCentric(x,y,w);
+        swerve.moveRobotCentric(y,x,w);
     }
     private void movePolar(double r, double t, double w){
         if(vision.hasValidTargets()) {
@@ -104,7 +104,7 @@ public class TriModeSwerveCommand extends CommandBase {
              * This assumes that the turret is always seeking out the target, that is, that the angle between turret and target is zero.
              */
             double wSpeed = polarAngleAdjustmentController.calculate(turret.getAngle(), 0);
-            moveRobotCentric(xSpeed, ySpeed, wSpeed);
+            moveRobotCentric(ySpeed, xSpeed, wSpeed);
         }
         else{
             /**

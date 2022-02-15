@@ -14,8 +14,8 @@ public class VisionDistanceCalculator {
      */
     public static double calculateDistance(Vision vision){
         double offset = vision.getVerticalOffsetFromCrosshair();
-        double heightDiff = targetHeight - VisionConstants.visionHeight; //opposite side of triangle
-        double distance = heightDiff / Math.tan(VisionConstants.visionAngle + offset);
+        double heightDiff = targetHeight - vision.getVisionHeight(); //opposite side of triangle
+        double distance = heightDiff / Math.tan(vision.getVisionAngle() + offset);
         return distance;
     }
 }
