@@ -118,13 +118,11 @@ public class PrimaryRobotContainer implements RobotContainer{
     void configureShooting() {
         turret.setDefaultCommand(new TurretDefaultCommand(turret, vision));
         ShooterControl control = new ShooterControl(10000, 50);
-        Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
+        //Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
+        Command shootCommand = new AutomatedShootingCommand(shooter, vision, loader);
         shootButton.whenPressed(shootCommand);
         shootButton.whenReleased(new InstantCommand(() -> {shooter.setSpeed(0); loader.setOutput(0);}));
         ShuffleboardTab tab = Shuffleboard.getTab("Shooting");
-        tab.add("vision height", new DashboardNumberDisplay("h", vision::getVisionHeight));
-        tab.add("vision hangle", new DashboardNumberDisplay("a", vision::getVisionAngle));
-        tab.add("VIsion offset", new DashboardNumberDisplay("o", vision::getVerticalOffsetFromCrosshair));
         tab.add("Shooter", shooter);
         tab.add("Shooter Controls", control);
         tab.add("Turret", turret);

@@ -1,15 +1,11 @@
 package frc.robot.subsystem.shooter.command;
 
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.subsystem.loader.Loader;
 import frc.robot.subsystem.loader.command.LoaderRunCommand;
 import frc.robot.subsystem.shooter.Shooter;
-import frc.robot.subsystem.shooter.ShooterConstants;
-import frc.robot.subsystem.shooter.ShooterParameterCalculator;
-import frc.robot.subsystem.shooter.util.ShooterControl;
+import frc.robot.subsystem.shooter.util.ShooterParameterCalculator;
 import frc.robot.subsystem.vision.Vision;
-import frc.robot.subsystem.vision.command.WaitForTargetCommand;
 import frc.robot.subsystem.vision.util.VisionDistanceCalculator;
 
 public class AutomatedShootingCommand extends SequentialCommandGroup {
