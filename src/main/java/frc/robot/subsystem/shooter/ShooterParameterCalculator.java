@@ -13,36 +13,21 @@ public class ShooterParameterCalculator {
 
 
     /**
-     * HashMap containing parameters for different distances for the shooter
-     * The key is the distance
-     * The first item of the pair is the shooter speed for that distance
-     * The second item is the shooter angle for that distance.
+     * The function for getting shooter speed is
+     * f(d) = 6710d + 7430, where d is the distance in meters from the rim of the goal
+     *
+     *
      */
-    private static final HashMap<Double, Double> parameters;
 
-    static {
-        parameters = new HashMap<Double, Double>();
-        addParam(0, 0);
-    }
-    private static void addParam(double distance, double speed){
-        parameters.put(distance, speed);
-    }
+
 
     /**
      *
      * @param distance The robot's horizontal distance from the target
-     * @return a Pair containing the reequired speed and angle for the shooter
+     * @return a Pair containing the required speed and angle for the shooter
      */
     public static double getSpeed(double distance){
-        Double speed = 0d;
-        Double difference = Double.MAX_VALUE;
-        for (Double key : parameters.keySet()) { //finds the closest key (distance) to the given distance
-            double newDifference = Math.abs(distance - key);
-            if (newDifference < difference) {
-                difference = newDifference;
-                speed = parameters.get(key);
-            }
-        }
+        double speed = 6710*distance + 7430;
         return speed;
     }
 }
