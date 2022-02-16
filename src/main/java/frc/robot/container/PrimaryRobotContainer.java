@@ -24,6 +24,7 @@ import frc.robot.subsystem.intake.IntakeConstants;
 import frc.robot.subsystem.intake.command.IntakeRunCommand;
 import frc.robot.subsystem.loader.HardwareLoaderFactory;
 import frc.robot.subsystem.loader.Loader;
+import frc.robot.subsystem.loader.command.LoaderRunConditionalCommand;
 import frc.robot.subsystem.shooter.HardwareShooterFactory;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.command.AutomatedShootingCommand;
@@ -118,13 +119,13 @@ public class PrimaryRobotContainer implements RobotContainer{
     void configureShooting() {
         turret.setDefaultCommand(new TurretDefaultCommand(turret, vision));
         ShooterControl control = new ShooterControl(10000, 50);
-        //Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
-        Command shootCommand = new AutomatedShootingCommand(shooter, vision, loader);
+        Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
+        //Command shootCommand = new AutomatedShootingCommand(shooter, vision, loader);
         shootButton.whenPressed(shootCommand);
-        shootButton.whenReleased(new InstantCommand(() -> {shooter.setSpeed(0); loader.setOutput(0);}));
+        shootButton.whenReleased(() -> {shooter.setSpeed(0); loader.setOutput(0);});
         ShuffleboardTab tab = Shuffleboard.getTab("Shooting");
+        tab.add("Shooter control", control);
         tab.add("Shooter", shooter);
-        tab.add("Shooter Controls", control);
         tab.add("Turret", turret);
         tab.add("Loader", loader);
         tab.add("Distance", new DashboardNumberDisplay("Distance", () -> VisionDistanceCalculator.calculateDistance(vision)));

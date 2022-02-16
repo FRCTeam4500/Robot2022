@@ -13,10 +13,15 @@ public class ShooterContinuousRunCommand extends CommandBase {
     public ShooterContinuousRunCommand(Shooter shooter, DoubleSupplier speed){
         this.shooter = shooter;
         this.speed = speed;
+        shooter.setSpeed(speed.getAsDouble());
     }
 
     public void execute(){
-        shooter.setSpeed(speed.getAsDouble());
+        
+    }
+
+    public void end(){
+        shooter.setSpeed(0);
     }
 
 }

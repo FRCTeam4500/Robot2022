@@ -29,11 +29,11 @@ public class ShooterImpl implements Shooter{
     }
 
     public double getSpeed() {
-        return shooterMotor.getAngularVelocity() * 2;
+        return shooterMotor.getAngularVelocity() * 2 * 30;
     }
 
     public boolean atSpeed(){
-        return Math.abs(shooterMotor.getAngularVelocity() - targetSpeed) <= threshold;
+        return (Math.abs(getSpeed() - targetSpeed) <= threshold) && targetSpeed != 0;
     }
 
     @Override
@@ -43,5 +43,6 @@ public class ShooterImpl implements Shooter{
         builder.addBooleanProperty("Running", () -> !(targetSpeed == 0), null);
         builder.addDoubleProperty("Target Speed", () -> targetSpeed, null);
         builder.addDoubleProperty("Current Speed", this::getSpeed, null);
+        builder.addBooleanProperty("at speed", this::atSpeed, null);
     }
 }
