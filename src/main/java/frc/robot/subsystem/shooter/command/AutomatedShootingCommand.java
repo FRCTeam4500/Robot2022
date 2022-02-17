@@ -7,23 +7,23 @@ import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.util.ShooterParameterCalculator;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.vision.util.VisionDistanceCalculator;
+import frc.robot.subsystem.loader.command.LoaderRunConditionalCommand;
 
 public class AutomatedShootingCommand extends SequentialCommandGroup {
     private Shooter shooter;
     private Vision vision;
     private Loader loader;
 
-    private double targetSpeed;
-    private double targetAngle;
 
     public AutomatedShootingCommand(Shooter shooter, Vision vision, Loader loader){
         this.shooter = shooter;
         this.vision = vision;
         this.loader = loader;
+        addRequirements(shooter, loader);
         addCommands(
+            new ParallelCommandGroup(
                 new ShooterContinuousRunCommand(shooter, () -> {return ShooterParameterCalculator.getSpeed(VisionDistanceCalculator.calculateDistance(vision));}),
-                new WaitUntilCommand(shooter::atSpeed).withTimeout(1),
-                new LoaderRunCommand(loader).withTimeout(1) //shoots
+                new LoaderRunConditionalCommand(loader, shooter::atSpeed)) //shoots
         );
     }
     public void end(){
