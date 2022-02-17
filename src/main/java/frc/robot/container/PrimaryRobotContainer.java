@@ -31,6 +31,7 @@ import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.command.AutomatedShootingCommand;
 import frc.robot.subsystem.shooter.command.ManualShootingCommand;
 import frc.robot.subsystem.shooter.command.ShooterContinuousRunCommand;
+import frc.robot.subsystem.shooter.command.ShooterSpinUpCommand;
 import frc.robot.subsystem.shooter.util.ShooterControl;
 import frc.robot.subsystem.swerve.command.SwerveDefaultCommand;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
@@ -69,6 +70,7 @@ public class PrimaryRobotContainer implements RobotContainer{
 
     private JoystickButton intakeButton = new JoystickButton(controlStick, 1);
     private JoystickButton shootButton = new JoystickButton(controlStick, 3);
+    private JoystickButton reverseLoadButton = new JoystickButton(controlStick, 4);
     
     private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
 
@@ -122,11 +124,23 @@ public class PrimaryRobotContainer implements RobotContainer{
         turret.setDefaultCommand(new TurretDefaultCommand(turret, vision));
         shooter.setDefaultCommand(new ShooterContinuousRunCommand(shooter, () -> 0));
         loader.setDefaultCommand(new LoaderRunCommand(loader, 0));
+
+        //manual shooting
         //ShooterControl control = new ShooterControl(10000, 50);
         //Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
+
+        //Automated shooting
         Command shootCommand = new AutomatedShootingCommand(shooter, vision, loader);
         shootButton.whenPressed(shootCommand);
-        shootButton.whenReleased(() -> {shootCommand.cancel(); ; shooter.setSpeed(0); loader.setOutput(0);});
+        shootButton.whenReleased(() -> {shootCommand.cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+
+        //Run shooter and loader in reverse
+        Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(10000,50)),
+                new LoaderRunCommand(loader, -1));
+        reverseLoadButton.whenPressed(reverseLoadCommand);
+        reverseLoadButton.whenReleased(() -> {shooter.setSpeed(0); loader.setOutput(0);});
+
+        //Shuffleboard
         ShuffleboardTab tab = Shuffleboard.getTab("Shooting");
         //tab.add("Shooter control", control);
         tab.add("Shooter", shooter);
