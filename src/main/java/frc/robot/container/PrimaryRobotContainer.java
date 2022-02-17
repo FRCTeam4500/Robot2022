@@ -28,6 +28,7 @@ import frc.robot.subsystem.shooter.HardwareShooterFactory;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.command.AutomatedShootingCommand;
 import frc.robot.subsystem.shooter.command.ManualShootingCommand;
+import frc.robot.subsystem.shooter.command.ShooterContinuousRunCommand;
 import frc.robot.subsystem.shooter.util.ShooterControl;
 import frc.robot.subsystem.swerve.command.SwerveDefaultCommand;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
@@ -117,11 +118,12 @@ public class PrimaryRobotContainer implements RobotContainer{
 
     void configureShooting() {
         turret.setDefaultCommand(new TurretDefaultCommand(turret, vision));
+        shooter.setDefaultCommand(new ShooterContinuousRunCommand(shooter, () -> 0));
         ShooterControl control = new ShooterControl(10000, 50);
         //Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
         Command shootCommand = new AutomatedShootingCommand(shooter, vision, loader);
         shootButton.whenPressed(shootCommand);
-        shootButton.whenReleased(new InstantCommand(() -> {shooter.setSpeed(0); loader.setOutput(0);}));
+        shootButton.whenReleased(() -> {shootCommand.cancel(); ; shooter.setSpeed(0); loader.setOutput(0);});
         ShuffleboardTab tab = Shuffleboard.getTab("Shooting");
         tab.add("Shooter", shooter);
         tab.add("Shooter Controls", control);

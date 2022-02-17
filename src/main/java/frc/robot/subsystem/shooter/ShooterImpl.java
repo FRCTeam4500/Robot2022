@@ -29,7 +29,7 @@ public class ShooterImpl implements Shooter{
     }
 
     public double getSpeed() {
-        return shooterMotor.getAngularVelocity() * 2;
+        return Units.radiansPerSecondToRotationsPerMinute(shooterMotor.getAngularVelocity() * 2);
     }
 
     public boolean atSpeed(){

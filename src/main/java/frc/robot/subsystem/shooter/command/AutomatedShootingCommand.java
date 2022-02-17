@@ -30,4 +30,8 @@ public class AutomatedShootingCommand extends SequentialCommandGroup {
         loader.setOutput(0);
         shooter.setSpeed(0);
     }
+
+    public void interrupted(){
+        end();
+    }
 }
