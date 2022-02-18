@@ -62,8 +62,9 @@ public class PrimaryRobotContainer implements RobotContainer{
     private Joystick driveStick = new Joystick(0);
     private ControllerInfo info = new ControllerInfo();
 
-    private JoystickButton switchDriveModeRobotCentric = new JoystickButton(driveStick, 1);
-    private JoystickButton switchDriveModePolar = new JoystickButton(driveStick, 2);
+    private JoystickButton lockSwerveRotationButton = new JoystickButton(driveStick, 1);
+    private JoystickButton switchDriveModeRobotCentric = new JoystickButton(driveStick, 2);
+    private JoystickButton switchDriveModePolar = new JoystickButton(driveStick, 4);
     private JoystickButton resetGyro = new JoystickButton(driveStick, 5);
 
     private Joystick controlStick = new Joystick(1);
@@ -97,14 +98,18 @@ public class PrimaryRobotContainer implements RobotContainer{
     void configureSwerve(){
         TriModeSwerveCommand swerveCommand = new TriModeSwerveCommand(swerve, driveStick, info, vision, turret, messages);
         swerveCommand.controlMode = ControlMode.FieldCentric;
+
         switchDriveModeRobotCentric.whenPressed(() -> {swerveCommand.controlMode = ControlMode.RobotCentric;});
         switchDriveModeRobotCentric.whenReleased(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;});
         switchDriveModePolar.whenPressed(() -> {swerveCommand.controlMode = ControlMode.Polar;});
         switchDriveModePolar.whenPressed(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;});
+        lockSwerveRotationButton.whenPressed(() -> {swerveCommand.lockRotation = true;});
+        lockSwerveRotationButton.whenReleased(() -> {swerveCommand.lockRotation = false;});
+
         resetGyro.whenPressed(new InstantCommand(() -> {swerve.resetRobotAngle();}));
         swerve.setDefaultCommand(swerveCommand);
         Shuffleboard.getTab("Swerve").add("Swerve", swerve);
-        Shuffleboard.getTab("Swerve").add("Swerve Controls", swerveCommand);
+        Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);
 
     }
 

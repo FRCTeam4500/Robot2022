@@ -29,10 +29,10 @@ public class HardwareSwerveFactory {
 
 
     public static PathFollowingSwerve makeSwerve(){
-        OdometricWheelModule fl = makeWheelModule(AFLPORT, DFLPORT, new Translation2d(DRIVE_Y_TRANSLATION, DRIVE_X_TRANSLATION), true, true,true);
-        OdometricWheelModule fr = makeWheelModule(AFRPORT, DFRPORT, new Translation2d(DRIVE_Y_TRANSLATION, -DRIVE_X_TRANSLATION), true, true,false);
-        OdometricWheelModule bl = makeWheelModule(ABLPORT, DBLPORT, new Translation2d(-DRIVE_Y_TRANSLATION, DRIVE_X_TRANSLATION), false, true,true);
-        OdometricWheelModule br = makeWheelModule(ABRPORT, DBRPORT, new Translation2d(-DRIVE_Y_TRANSLATION, -DRIVE_X_TRANSLATION ), true, true,false);
+        OdometricWheelModule fl = makeWheelModule(AFLPORT, DFLPORT, new Translation2d(DRIVE_Y_TRANSLATION, DRIVE_X_TRANSLATION), true, true,true, .4, .75);
+        OdometricWheelModule fr = makeWheelModule(AFRPORT, DFRPORT, new Translation2d(DRIVE_Y_TRANSLATION, -DRIVE_X_TRANSLATION), true, true,false, .75, .75);
+        OdometricWheelModule bl = makeWheelModule(ABLPORT, DBLPORT, new Translation2d(-DRIVE_Y_TRANSLATION, DRIVE_X_TRANSLATION), false, true,true, .9, .8);
+        OdometricWheelModule br = makeWheelModule(ABRPORT, DBRPORT, new Translation2d(-DRIVE_Y_TRANSLATION, -DRIVE_X_TRANSLATION ), true, true,false, 1, .8);
 
         return new OdometricSwerve(
                 new AHRSAngleGetterComponent(I2C.Port.kMXP),
@@ -42,12 +42,13 @@ public class HardwareSwerveFactory {
                 br
         );
     }
-    public static OdometricWheelModule makeWheelModule(int angleId, int driveId,Translation2d translationFromSwerveCenter, boolean invertSensorPhase, boolean invertAngle, boolean invertSpeed){
+    public static OdometricWheelModule makeWheelModule(int angleId, int driveId,Translation2d translationFromSwerveCenter, boolean invertSensorPhase, boolean invertAngle, boolean invertSpeed,
+    double anglekP, double anglekF){
         TalonFXComponent angleMotor = new TalonFXComponent(angleId);
         angleMotor.setSensorPhase(invertSensorPhase);
         angleMotor.setInverted(invertAngle);
-        //angleMotor.config_kP(0, 1.5);
-        //angleMotor.config_kF(0,0.0005);
+        angleMotor.config_kP(0, anglekP);
+        angleMotor.config_kF(0,anglekF);
         angleMotor.configMotionCruiseVelocity(10000);
         angleMotor.configMotionAcceleration(10000);
         angleMotor.configAllowableClosedloopError(0, 0);
