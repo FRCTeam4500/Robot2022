@@ -46,15 +46,15 @@ public class HardwareSwerveFactory {
         TalonFXComponent angleMotor = new TalonFXComponent(angleId);
         angleMotor.setSensorPhase(invertSensorPhase);
         angleMotor.setInverted(invertAngle);
-        angleMotor.config_kP(0, 0.18);
-        angleMotor.config_kF(0,.004);
-        angleMotor.configMotionCruiseVelocity(5500);
-        angleMotor.configMotionAcceleration(5500);
+        //angleMotor.config_kP(0, 1.5);
+        //angleMotor.config_kF(0,0.0005);
+        angleMotor.configMotionCruiseVelocity(10000);
+        angleMotor.configMotionAcceleration(10000);
         angleMotor.configAllowableClosedloopError(0, 0);
         angleMotor.configClearPositionOnQuadIdx(true, 10);
 
         TalonFXComponent driveMotor = new TalonFXComponent(driveId);
-        driveMotor.config_kP(0, 0.3);
+        driveMotor.config_kP(0, .1);
         driveMotor.config_kI(0, 0);
         driveMotor.config_kD(0,0);
         driveMotor.config_kF(0, 0.047);
