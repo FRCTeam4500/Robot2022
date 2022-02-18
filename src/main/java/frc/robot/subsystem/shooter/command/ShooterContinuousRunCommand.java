@@ -11,6 +11,7 @@ public class ShooterContinuousRunCommand extends CommandBase {
     private DoubleSupplier speed;
 
     public ShooterContinuousRunCommand(Shooter shooter, DoubleSupplier speed){
+        addRequirements(shooter);
         this.shooter = shooter;
         this.speed = speed;
         shooter.setSpeed(speed.getAsDouble());

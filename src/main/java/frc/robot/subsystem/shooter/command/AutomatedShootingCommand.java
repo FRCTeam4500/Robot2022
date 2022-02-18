@@ -14,21 +14,24 @@ public class AutomatedShootingCommand extends SequentialCommandGroup {
     private Vision vision;
     private Loader loader;
 
-    private double targetSpeed;
-    private double targetAngle;
 
     public AutomatedShootingCommand(Shooter shooter, Vision vision, Loader loader){
         this.shooter = shooter;
         this.vision = vision;
         this.loader = loader;
+        addRequirements(shooter, loader);
         addCommands(
             new ParallelCommandGroup(
                 new ShooterContinuousRunCommand(shooter, () -> {return ShooterParameterCalculator.getSpeed(VisionDistanceCalculator.calculateDistance(vision));}),
-                new LoaderRunConditionalCommand(loader, shooter::atSpeed)) //shoots
+                new LoaderRunConditionalCommand(loader, shooter::atSpeed)) //shoots when shooter is at speed
         );
     }
     public void end(){
         loader.setOutput(0);
         shooter.setSpeed(0);
+    }
+
+    public void interrupted(){
+        end();
     }
 }
