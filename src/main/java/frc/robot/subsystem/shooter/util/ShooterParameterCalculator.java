@@ -9,6 +9,7 @@ package frc.robot.subsystem.shooter.util;
         /**
          * The function for getting shooter speed is
          * f(d) = 6710d + 7430, where d is the distance in meters from the rim of the goal
+         * f(d) = 3399d + 15671 if the shooter does actually max out at 28500
          */
 
 
@@ -19,7 +20,7 @@ package frc.robot.subsystem.shooter.util;
          * @return Target speed for the shooter
          */
         public static double getSpeed(double distance){
-            double speed = 6710*distance + 7430;
+            double speed = 3399*distance + 15671;
             return speed;
         }
     }
