@@ -7,7 +7,7 @@ import frc.robot.component.SmartMotorComponent;
 public class TurretImpl implements Turret{
     private SmartMotorComponent motor;
     private double targetAngle;
-    public TurretImpl(AngleComponent motor){
+    public TurretImpl(SmartMotorComponent motor){
         this.motor = motor;
     }
 
