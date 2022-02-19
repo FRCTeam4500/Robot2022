@@ -2,6 +2,7 @@ package frc.robot.subsystem.swerve.command;
 
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -12,6 +13,7 @@ import frc.robot.subsystem.turret.Turret;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.utility.ControllerInfo;
 import frc.robot.utility.PolarVelocityCalculator;
+import edu.wpi.first.util.sendable.Sendable;
 
 /**
  * A swerve command with support for three swerve control modes:
@@ -33,7 +35,7 @@ import frc.robot.utility.PolarVelocityCalculator;
  * This only works when the robot has a vision target, the robot will not move if it doesn't.
  * TODO: make this automatically align the robot rotationally with the goal, to avoid the goal going out of view of the vision
  */
-public class TriModeSwerveCommand extends CommandBase {
+public class TriModeSwerveCommand extends CommandBase implements Sendable {
     private Swerve swerve;
     private Joystick joystick;
     private ControllerInfo info;
@@ -49,6 +51,8 @@ public class TriModeSwerveCommand extends CommandBase {
      */
     private PIDController polarAngleAdjustmentController;
     public ControlMode controlMode;
+
+    public boolean lockRotation = false;
 
 
     public TriModeSwerveCommand(Swerve swerve, Joystick joystick, ControllerInfo controllerInfo, Vision vision, Turret turret, DashboardMessageDisplay messageDisplay){
@@ -75,6 +79,8 @@ public class TriModeSwerveCommand extends CommandBase {
         double xSpeed = -withDeadzone(joystick.getX(), info.xDeadzone) * info.xSensitivity;
         double ySpeed = -withDeadzone(joystick.getY(), info.yDeadzone) * info.ySensitivity;
         double zSpeed = -withDeadzone(joystick.getZ(), info.zDeadzone) * info.zSensitivity;
+        if (lockRotation)
+            zSpeed = 0;
         switch (controlMode){
             case FieldCentric:
                 moveFieldCentric(xSpeed, ySpeed, zSpeed);
@@ -129,5 +135,21 @@ public class TriModeSwerveCommand extends CommandBase {
         FieldCentric,
         RobotCentric,
         Polar
+    }
+
+    public void initSendable(SendableBuilder builder){
+        builder.addStringProperty("Drive Mode", () -> {
+            switch (controlMode) {
+                case FieldCentric:
+                    return "Field Centric";
+            
+                case RobotCentric:
+                    return "Robot Centric";
+
+                case Polar:
+                    return "Polar";
+            }
+            return "";
+        }, null);
     }
 }

@@ -12,6 +12,7 @@ import frc.robot.utility.ControllerInfo;
     private Joystick joystick;
     private ControllerInfo info;
     public boolean isRobotCentric;
+    public boolean lockRotation = false;
 
     public SwerveDefaultCommand(Swerve swerve, Joystick joystick, ControllerInfo info){
         this.swerve = swerve;
@@ -24,6 +25,8 @@ import frc.robot.utility.ControllerInfo;
         double xSpeed = -joystick.getX();
         double ySpeed = -joystick.getY();
         double zSpeed = -joystick.getZ();
+        if (lockRotation)
+            zSpeed = 0;
         if (Math.abs(xSpeed) < info.xDeadzone)
             xSpeed = 0;
         if (Math.abs(ySpeed) < info.yDeadzone)
