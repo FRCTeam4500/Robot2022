@@ -7,8 +7,10 @@ public class HardwareTurretFactory {
         TalonSRXComponent motor = new TalonSRXComponent(10);
         motor.configForwardSoftLimitEnable(true);
         motor.configReverseSoftLimitEnable(true);
-        motor.configForwardSoftLimitThreshold(0); //TODO: set these limits
-        motor.configReverseSoftLimitThreshold(0);
+        motor.configForwardSoftLimitThreshold(TurretConstants.MAX_SENSOR); //TODO: set these limits
+        motor.configReverseSoftLimitThreshold(-TurretConstants.MAX_SENSOR);
+        motor.configPeakOutputForward(0.7);
+        motor.configPeakOutputReverse(-0.7);
         return new TurretImpl(motor);
     }
 }

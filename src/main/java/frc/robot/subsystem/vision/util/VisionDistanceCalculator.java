@@ -1,7 +1,6 @@
 package frc.robot.subsystem.vision.util;
 
 import frc.robot.subsystem.vision.Vision;
-import frc.robot.subsystem.vision.VisionConstants;
 
 public class VisionDistanceCalculator {
     static double targetHeight = 2.64;
@@ -13,10 +12,9 @@ public class VisionDistanceCalculator {
      * @return the horizontal distance from the target, in meters
      */
     public static double calculateDistance(Vision vision){
-        double offset = vision.getVerticalOffsetFromCrosshair();
-        double heightDiff = targetHeight - VisionConstants.visionHeight; //opposite side of triangle
-        double distance = heightDiff / Math.tan(VisionConstants.visionAngle + offset);
+        double offset = vision.getVerticalOffsetFromCrosshair(); //angle offset, in radians
+        double heightDiff = targetHeight - vision.getVisionHeight(); //opposite side of triangle
+        double distance = heightDiff / Math.tan(vision.getVisionAngle() + offset);
         return distance;
     }
 }
-

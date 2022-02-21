@@ -11,13 +11,19 @@ import frc.robot.subsystem.loader.LoaderConstants;
 
 public class LoaderRunCommand extends CommandBase {
     private Loader loader;
+    private double speed;
 
     public LoaderRunCommand(Loader loader){
+       this(loader, LoaderConstants.runSpeed);
+    }
+
+    public LoaderRunCommand(Loader loader, double output){
         this.loader = loader;
+        this.speed = output;
         addRequirements(loader);
     }
 
     public void initialize(){
-        loader.setOutput(LoaderConstants.runSpeed);
+        loader.setOutput(speed);
     }
 }

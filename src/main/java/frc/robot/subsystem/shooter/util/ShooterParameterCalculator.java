@@ -1,43 +1,27 @@
 package frc.robot.subsystem.shooter.util;
-
-
-import java.util.HashMap;
-
-/**
- * Class which calculates
- */
-
-public class ShooterParameterCalculator {
-
-
     /**
-     * HashMap containing parameters for different distances for the shooter
-     * The key is the distance
-     * The first item of the pair is the shooter speed for that distance
-     * The second item is the shooter angle for that distance.
+     * Class which calculates
      */
-    private static final HashMap<Double, Double> parameters;
 
-    static {
-        parameters = new HashMap<Double, Double>();
-        parameters.put(0d,0d);
-    }
+    public class ShooterParameterCalculator {
 
-    /**
-     *
-     * @param distance The robot's horizontal distance from the target
-     * @return a Pair containing the reequired speed and angle for the shooter
-     */
-    public static double getSpeed(double distance){
-        Double speed = 0d;
-        Double difference = Double.MAX_VALUE;
-        for (Double key : parameters.keySet()) { //finds the closest key (distance) to the given distance
-            double newDifference = Math.abs(distance - key);
-            if (newDifference < difference) {
-                difference = newDifference;
-                speed = parameters.get(key);
-            }
+
+        /**
+         * The function for getting shooter speed is
+         * f(d) = 6710d + 7430, where d is the distance in meters from the rim of the goal
+         * f(d) = 3399d + 15671 if the shooter does actually max out at 28500
+         */
+
+
+
+        /**
+         *
+         * @param distance The robot's horizontal distance from the target
+         * @return Target speed for the shooter
+         */
+        public static double getSpeed(double distance){
+            double speed = 3399*distance + 15671;
+            return speed;
         }
-        return speed;
     }
-}
+

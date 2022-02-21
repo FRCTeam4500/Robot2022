@@ -164,3 +164,4 @@ bin/
 
 # IntelliJ
 .idea/*
+.gradle/

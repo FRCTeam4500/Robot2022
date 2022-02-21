@@ -7,6 +7,7 @@
 
 package frc.robot.subsystem.swerve;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -46,5 +47,8 @@ public class KinematicWheelModule extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+    }
+    public SwerveModuleState getState(){
+        return new SwerveModuleState(angularVelocityComponent.getAngularVelocity(), new Rotation2d(angleComponent.getAngle()));
     }
 }

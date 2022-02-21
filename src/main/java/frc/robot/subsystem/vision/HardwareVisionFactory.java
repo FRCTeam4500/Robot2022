@@ -4,7 +4,9 @@ import frc.robot.component.hardware.LimelightVisionComponent;
 
 public class HardwareVisionFactory {
     public static Vision makeVision(){
-        Vision vision = new VisionImpl(new LimelightVisionComponent());
+        double height = 0.6096;
+        double angle = Math.toRadians(39);
+        Vision vision = new VisionImpl(new LimelightVisionComponent(), height, angle);
         return vision;
     }
 }

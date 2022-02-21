@@ -1,6 +1,7 @@
 package frc.robot.subsystem.vision;
 
+import frc.robot.subsystem.shooter.ShooterConstants;
+
 public class VisionConstants {
-    public static double visionHeight;
-    public static double visionAngle;
+    public static final double maximumAllowableOffset = ShooterConstants.maximumAllowableOffset;
 }

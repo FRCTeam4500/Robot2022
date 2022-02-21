@@ -80,6 +80,7 @@ public class FollowTrajectoryCommand extends CommandBase {
     }
 
 
+
     public Trajectory getTrajectory() {
         return trajectory;
     }

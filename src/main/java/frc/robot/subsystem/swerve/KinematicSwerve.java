@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.component.GyroComponent;
@@ -24,6 +25,7 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
     protected double currentGyroZero = 0.0;
     protected GyroComponent gyro;
     private int resetCounter;
+    private ChassisSpeeds currentSpeeds = new ChassisSpeeds();
     /**
      * Creates a new KinematicSwerve.
      */
@@ -67,6 +69,7 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
         moveRobotCentric(chassisSpeeds, new Translation2d());
     }
     public void moveRobotCentric(ChassisSpeeds chassisSpeeds, Translation2d centerOfRotation){
+        currentSpeeds = chassisSpeeds;
         var states = kinematics.toSwerveModuleStates(chassisSpeeds, centerOfRotation);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, lowestMaximumWheelSpeed);
 
@@ -118,9 +121,7 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
         }
         return lowestMaxSpeed;
     }
-    public void resetGyro(){
-        gyro.reset();
-    }
+    
 
     public double getGyroAngle(){
         return gyro.getAngle() - currentGyroZero;
@@ -142,6 +143,19 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Gyro Angle", gyro::getAngle, null);
+        builder.addDoubleProperty("Current X", () -> currentSpeeds.vxMetersPerSecond, null);
+        builder.addDoubleProperty("Current X", () -> currentSpeeds.vyMetersPerSecond, null);
+        builder.addDoubleProperty("Current X", () -> currentSpeeds.omegaRadiansPerSecond, null);
+    }
+
+    public ChassisSpeeds getSpeeds(){
+        SwerveModuleState[] states = {
+            wheelModules[0].getState(),
+            wheelModules[1].getState(),
+            wheelModules[2].getState(),
+            wheelModules[3].getState()
+        };
+        return kinematics.toChassisSpeeds(states);
     }
 }
 
