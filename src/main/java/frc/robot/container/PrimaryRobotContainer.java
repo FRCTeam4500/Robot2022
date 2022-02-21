@@ -127,17 +127,16 @@ public class PrimaryRobotContainer implements RobotContainer{
 
     void configureShooting() {
         turret.setDefaultCommand(new TurretDefaultCommand(turret, vision));
-        shooter.setDefaultCommand(new ShooterContinuousRunCommand(shooter, () -> 0));
-        loader.setDefaultCommand(new LoaderRunCommand(loader, 0));
+        //shooter.setDefaultCommand(new ShooterContinuousRunCommand(shooter, () -> 0));
+        //loader.setDefaultCommand(new LoaderRunCommand(loader, 0));
 
         //manual shooting
         //ShooterControl control = new ShooterControl(10000, 50);
         //Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
 
         //Automated shooting
-        Command shootCommand = new AutomatedShootingCommand(shooter, vision, loader);
-        shootButton.whenPressed(shootCommand);
-        shootButton.whenReleased(() -> {shootCommand.cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader));
+        shootButton.whenReleased(() -> {shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
 
         //Run shooter and loader in reverse
         Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(10000,50)),

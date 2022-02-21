@@ -9,7 +9,7 @@ public class ShooterImpl implements Shooter{
     private double targetSpeed;
     private double threshold;
     public ShooterImpl(AngularVelocityComponent motor) {
-        this(motor, 50);
+        this(motor, 1000);
     }
 
     public ShooterImpl(AngularVelocityComponent motor, double threshold){
@@ -29,11 +29,11 @@ public class ShooterImpl implements Shooter{
     }
 
     public double getSpeed() {
-        return Units.radiansPerSecondToRotationsPerMinute(shooterMotor.getAngularVelocity() * 2);
+        return Math.PI * Units.radiansPerSecondToRotationsPerMinute(shooterMotor.getAngularVelocity() * 2);
     }
 
     public boolean atSpeed(){
-        return (Math.abs(getSpeed() - targetSpeed) <= threshold) && targetSpeed != 0;
+        return ((Math.abs(getSpeed() - targetSpeed) <= threshold) && targetSpeed != 0) || getSpeed() > 28500;
     }
 
     @Override

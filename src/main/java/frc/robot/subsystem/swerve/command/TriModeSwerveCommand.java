@@ -151,5 +151,8 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
             }
             return "";
         }, null);
+        builder.addDoubleProperty("controller x", joystick::getX, null);
+        builder.addDoubleProperty("controller y", joystick::getY, null);
+        builder.addDoubleProperty("controller z", joystick::getZ, null);
     }
 }

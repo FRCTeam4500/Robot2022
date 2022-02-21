@@ -143,11 +143,9 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Gyro Angle", gyro::getAngle, null);
-        builder.addDoubleArrayProperty("Swerve Speeds", () -> {return new double[]{
-                currentSpeeds.vxMetersPerSecond,
-                currentSpeeds.vyMetersPerSecond,
-                currentSpeeds.omegaRadiansPerSecond
-        };}, null );
+        builder.addDoubleProperty("Current X", () -> currentSpeeds.vxMetersPerSecond, null);
+        builder.addDoubleProperty("Current X", () -> currentSpeeds.vyMetersPerSecond, null);
+        builder.addDoubleProperty("Current X", () -> currentSpeeds.omegaRadiansPerSecond, null);
     }
 
     public ChassisSpeeds getSpeeds(){

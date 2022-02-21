@@ -14,11 +14,11 @@ public class ShooterContinuousRunCommand extends CommandBase {
         addRequirements(shooter);
         this.shooter = shooter;
         this.speed = speed;
-        shooter.setSpeed(speed.getAsDouble());
+        
     }
 
     public void execute(){
-        
+        shooter.setSpeed(speed.getAsDouble());
     }
 
     public void end(){

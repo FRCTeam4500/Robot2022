@@ -25,7 +25,7 @@ public class LoaderRunConditionalCommand extends CommandBase {
     }
 
     public void initialize(){
-        loader.setOutput(1);
+        loader.setOutput(0); // Change to 1
     }
 
     public void execute(){
@@ -33,7 +33,7 @@ public class LoaderRunConditionalCommand extends CommandBase {
             loader.setOutput(LoaderConstants.runSpeed);
         } 
         else{
-            loader.setOutput(0);
+            loader.setOutput(0); // Change to 0
         }
     }
 }
