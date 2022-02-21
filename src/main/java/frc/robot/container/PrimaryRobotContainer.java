@@ -4,10 +4,14 @@ package frc.robot.container;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.autonomous.routines.FirstBallAuto;
+import frc.robot.autonomous.routines.TriangleAuto;
+import frc.robot.autonomous.routines.WAuto;
 import frc.robot.command.AlignWithTargetCommand;
 import frc.robot.dashboard.DashboardMessageDisplay;
 import frc.robot.dashboard.DashboardNumberDisplay;
@@ -48,17 +52,19 @@ public class PrimaryRobotContainer implements RobotContainer{
     private Vision vision = HardwareVisionFactory.makeVision();
 
     //Initialize Joysticks and Buttons
-    private Joystick driveStick = new Joystick(1);
+    private Joystick driveStick = new Joystick(0);
     private ControllerInfo info = new ControllerInfo();
 
     private JoystickButton switchDriveMode = new JoystickButton(driveStick, 1);
 
-    private Joystick controlStick = new Joystick(2);
+    private Joystick controlStick = new Joystick(1);
 
     private JoystickButton intakeButton = new JoystickButton(controlStick, 1);
     private JoystickButton shootButton = new JoystickButton(controlStick, 2);
 
     private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
+
+    private SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
 
 
@@ -67,6 +73,7 @@ public class PrimaryRobotContainer implements RobotContainer{
         configureSwerve();
         configureIntakeAndArm();
         configureShooting();
+        configureAutonomous();
     }
 
     void configureControls() {
@@ -76,7 +83,7 @@ public class PrimaryRobotContainer implements RobotContainer{
         info.xDeadzone = 0.1;
         info.yDeadzone = 0.1;
         info.zDeadzone = 0.1;
-        Shuffleboard.getTab("Driver Controls").add(info);
+        Shuffleboard.getTab("Driver Controls").add("Controller Info", info);
     }
 
     void configureSwerve(){
@@ -106,5 +113,16 @@ public class PrimaryRobotContainer implements RobotContainer{
         tab.add("Turret", turret);
         tab.add("Loader", loader);
         tab.add("Distance", new DashboardNumberDisplay("Distance", () -> VisionDistanceCalculator.calculateDistance(vision)));
+    }
+
+    void configureAutonomous(){
+        autonChooser.addOption("First Ball", new FirstBallAuto(swerve, arm, shooter, intake, vision, loader));
+        autonChooser.addOption("Triangle Auto", new TriangleAuto(swerve, arm, intake, shooter, vision, loader));
+        autonChooser.addOption("W Auto", new WAuto(swerve, arm, intake, shooter, vision, loader));
+        Shuffleboard.getTab("Driver Controls").add("Autonomous Route", autonChooser);
+    }
+
+    public Command getAutonomousCommand(){
+        return autonChooser.getSelected();
     }
 }

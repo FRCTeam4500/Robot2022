@@ -5,10 +5,10 @@ import frc.robot.component.AngleComponent;
 
 public class ArmImpl implements Arm{
     private AngleComponent angleComponent;
-    private double targetAngle;
+    private double targetAngle = ArmConstants.ARM_UP_ANGLE;
 
     public ArmImpl(AngleComponent motor){
-        angleComponent = motor;
+        this.angleComponent = motor;
     }
 
     @Override
@@ -19,7 +19,7 @@ public class ArmImpl implements Arm{
 
     @Override
     public void initSendable(SendableBuilder builder){
-        builder.addBooleanProperty("Active", () -> !(targetAngle == ArmConstants.armUpAngle), null);
+        builder.addBooleanProperty("Active", () -> !(targetAngle == ArmConstants.ARM_UP_ANGLE), null);
         builder.addDoubleProperty("Target angle", () -> targetAngle, null);
         builder.addDoubleProperty("currentAngle", () -> angleComponent.getAngle(), null);
     }

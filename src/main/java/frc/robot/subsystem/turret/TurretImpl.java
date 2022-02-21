@@ -20,7 +20,7 @@ public class TurretImpl implements Turret{
     }
 
     public void setOutput(double outout){
-        motor.setOutput(outout);
+        //motor.setOutput(outout);
     }
 
     public void initSendable(SendableBuilder builder){

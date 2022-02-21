@@ -16,6 +16,8 @@ import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajectoryCommand;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.utility.ExtendedTrajectoryUtilities;
+import frc.robot.subsystem.shooter.command.ManualShootingCommand;
+import frc.robot.subsystem.shooter.util.ShooterControl;
 
 public class FirstBall extends SequentialCommandGroup {
 
@@ -29,12 +31,12 @@ public class FirstBall extends SequentialCommandGroup {
         addCommands(
                 new InstantCommand(() -> swerve.resetPose(path.getInitialPose())),
                 new ParallelCommandGroup(
-                        new ArmSetAngleCommand(arm, ArmConstants.armDownAngle),
+                        new ArmSetAngleCommand(arm, ArmConstants.ARM_DOWN_ANGLE),
                         new IntakeRunCommand(intake),
                         swerveCmd
                 ),
                 new ParallelCommandGroup(
-                        new AutomatedShootingCommand(shooter, vision, loader).withTimeout(2)
+                        new ManualShootingCommand(shooter, vision, loader, new ShooterControl(23000, 2000)).withTimeout(2)
                 )
         );
     }

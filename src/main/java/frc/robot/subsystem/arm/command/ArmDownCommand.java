@@ -14,7 +14,7 @@ public class ArmDownCommand extends CommandBase {
         this.angle = angle;
     }
     public ArmDownCommand(Arm arm){
-        this(arm, ArmConstants.armDownAngle);
+        this(arm, ArmConstants.ARM_UP_ANGLE);
     }
 
     public void initialize(){
@@ -22,6 +22,6 @@ public class ArmDownCommand extends CommandBase {
     }
 
     public void end(){
-        arm.setAngle(ArmConstants.armUpAngle);
+        arm.setAngle(ArmConstants.ARM_UP_ANGLE);
     }
 }

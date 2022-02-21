@@ -41,7 +41,7 @@ import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowTrajectoryCo
 public class ExtendedTrajectoryUtilities {
     private static Trajectory getDeployedTrajectoryExcept(String trajectoryName) throws IOException {
 
-        var trajectoryJSON = "paths/output/"+trajectoryName+".wpilib.json";
+        var trajectoryJSON = "paths/"+trajectoryName+".wpilib.json";
         //Stolen pretty much from the example code
         Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
         Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
