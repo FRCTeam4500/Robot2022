@@ -88,5 +88,13 @@ public class FollowDottedTrajectoryCommand extends FollowTrajectoryCommand {
         builder.addDoubleProperty("Timestep", this::getTimeStep, this::setTimeStep);
         builder.addDoubleProperty("Threshold", this::getThreshold, this::setThreshold);
     }
+
+    public void end(){
+        swerve.moveRobotCentric(0,0,0);
+    }
+
+    public void interrupted(){
+        end();
+    }
 }
 

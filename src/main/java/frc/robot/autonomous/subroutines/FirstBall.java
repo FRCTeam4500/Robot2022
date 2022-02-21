@@ -4,6 +4,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystem.arm.Arm;
 import frc.robot.subsystem.arm.ArmConstants;
 import frc.robot.subsystem.arm.command.ArmSetAngleCommand;
@@ -17,6 +18,7 @@ import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajec
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.utility.ExtendedTrajectoryUtilities;
 import frc.robot.subsystem.shooter.command.ManualShootingCommand;
+import frc.robot.subsystem.shooter.command.ShooterSpinDownCommand;
 import frc.robot.subsystem.shooter.util.ShooterControl;
 
 public class FirstBall extends SequentialCommandGroup {
@@ -29,15 +31,23 @@ public class FirstBall extends SequentialCommandGroup {
                 ExtendedTrajectoryUtilities.createBasicController(1,1,1, 4, 1));
         swerveCmd.setRotation(true);
         addCommands(
-                new InstantCommand(() -> swerve.resetPose(path.getInitialPose())),
+                //sets robot translation to the first of the path, then resets the robot angle to 0
+                new InstantCommand(() -> {swerve.resetPose(path.getInitialPose()); swerve.resetRobotAngle();}),
                 new ParallelCommandGroup(
                         new ArmSetAngleCommand(arm, ArmConstants.ARM_DOWN_ANGLE),
                         new IntakeRunCommand(intake),
-                        swerveCmd
-                ),
+                        new SequentialCommandGroup(
+                                new WaitCommand(0.25),
+                                swerveCmd
+                        )
+                ).withTimeout(1),
+                new InstantCommand(() -> swerve.moveFieldCentric(0, 0, 0)),
+                new WaitCommand(0.5),
                 new ParallelCommandGroup(
-                        new ManualShootingCommand(shooter, vision, loader, new ShooterControl(23000, 2000)).withTimeout(2)
-                )
+                        new IntakeRunCommand(intake, 0),
+                        new ManualShootingCommand(shooter, vision, loader, new ShooterControl(23000, 1000))
+                ).withTimeout(2),
+                new ShooterSpinDownCommand(shooter)
         );
     }
 }

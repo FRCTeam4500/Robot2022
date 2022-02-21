@@ -109,6 +109,13 @@ public class FollowTrajectoryCommand extends CommandBase {
     public void setDesiredRotationOffset(double offset){
         desiredRotationOffset = new Rotation2d(offset);
     }
+    public void end(){
+        swerve.moveRobotCentric(0,0,0);
+    }
+
+    public void interrupted(){
+        end();
+    }
 }
 
 

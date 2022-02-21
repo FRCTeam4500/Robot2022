@@ -95,8 +95,8 @@ public class PrimaryRobotContainer implements RobotContainer{
         info.xSensitivity = 4;
         info.ySensitivity = 4;
         info.zSensitivity = 3.5;
-        info.xDeadzone = 0.1;
-        info.yDeadzone = 0.1;
+        info.xDeadzone = 0.2;
+        info.yDeadzone = 0.2;
         info.zDeadzone = 0.2;
         Shuffleboard.getTab("Driver Controls").add("Driver Controls", info);
         Shuffleboard.getTab("Driver Controls").add("Messages", messages);
@@ -161,7 +161,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     }
 
     void configureAutonomous(){
-        autonChooser.addOption("First Ball", new FirstBallAuto(swerve, arm, shooter, intake, vision, loader));
+        autonChooser.setDefaultOption("First Ball", new FirstBallAuto(swerve, arm, shooter, intake, vision, loader));
         autonChooser.addOption("Triangle Auto", new TriangleAuto(swerve, arm, intake, shooter, vision, loader));
         autonChooser.addOption("W Auto", new WAuto(swerve, arm, intake, shooter, vision, loader));
         Shuffleboard.getTab("Driver Controls").add("Autonomous Route", autonChooser);

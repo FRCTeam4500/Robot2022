@@ -41,4 +41,11 @@ public class FollowStatesCommand extends FollowTrajectoryCommand {
     public boolean isFinished() {
         return internalTime >= trajectory.getTotalTimeSeconds() && controller.atReference();
     }
+    public void end(){
+        swerve.moveRobotCentric(0,0,0);
+    }
+
+    public void interrupted(){
+        end();
+    }
 }

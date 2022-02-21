@@ -69,6 +69,10 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
         moveRobotCentric(chassisSpeeds, new Translation2d());
     }
     public void moveRobotCentric(ChassisSpeeds chassisSpeeds, Translation2d centerOfRotation){
+        ChassisSpeeds negChassisSpeeds = new ChassisSpeeds(
+            -chassisSpeeds.vxMetersPerSecond, 
+            -chassisSpeeds.vyMetersPerSecond, 
+            -chassisSpeeds.omegaRadiansPerSecond);
         currentSpeeds = chassisSpeeds;
         var states = kinematics.toSwerveModuleStates(chassisSpeeds, centerOfRotation);
         SwerveDriveKinematics.desaturateWheelSpeeds(states, lowestMaximumWheelSpeed);

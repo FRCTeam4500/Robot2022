@@ -20,7 +20,7 @@ public class LoaderRunConditionalCommand extends CommandBase {
     public LoaderRunConditionalCommand(Loader loader, BooleanSupplier condition){
         this.loader = loader;
         this.condition = condition;
-        Shuffleboard.getTab("Shooting").add("Loader condition", new DashboardBooleanDisplay("loader condition met", condition));
+        //Shuffleboard.getTab("Shooting").add("Loader condition", new DashboardBooleanDisplay("loader condition met", condition));
         addRequirements(loader);
     }
 
