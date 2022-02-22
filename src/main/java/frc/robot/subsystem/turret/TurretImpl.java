@@ -34,7 +34,7 @@ public class TurretImpl implements Turret{
      * @param output Percent output of the motor
      */
     public void setOutput(double output){
-        //motor.setOutput(output);
+        motor.setOutput(output);
     }
 
     public void initSendable(SendableBuilder builder){

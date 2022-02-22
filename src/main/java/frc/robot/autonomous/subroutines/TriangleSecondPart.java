@@ -33,7 +33,7 @@ public class TriangleSecondPart extends SequentialCommandGroup {
 
     public TriangleSecondPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader) {
         Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("TriangleSecondPart");
-        FollowDottedTrajectoryCommand swerveCommand = new FollowDottedTrajectoryCommand(swerve, path, ExtendedTrajectoryUtilities.createBasicController(1,1,1,4,1));
+        FollowDottedTrajectoryCommand swerveCommand = new FollowDottedTrajectoryCommand(swerve, path, ExtendedTrajectoryUtilities.createBasicController(1,1,3,4,1));
         swerveCommand.setRotation(true);
         addCommands(
                 new ParallelCommandGroup(

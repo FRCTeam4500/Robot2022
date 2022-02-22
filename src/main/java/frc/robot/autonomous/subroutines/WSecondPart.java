@@ -16,6 +16,7 @@ import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajectoryCommand;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.utility.ExtendedTrajectoryUtilities;
+import frc.robot.subsystem.arm.ArmConstants;
 
 public class WSecondPart extends SequentialCommandGroup {
     public WSecondPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader) {
@@ -36,7 +37,7 @@ public class WSecondPart extends SequentialCommandGroup {
                         )
                 ),
                 new ParallelCommandGroup(
-                        new ArmSetAngleCommand(arm, 0),
+                        new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE),
                         new AutomatedShootingCommand(shooter, vision, loader).withTimeout(2)
                 )
         );
