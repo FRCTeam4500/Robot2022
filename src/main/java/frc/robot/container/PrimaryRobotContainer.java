@@ -18,6 +18,8 @@ import frc.robot.subsystem.arm.ArmConstants;
 import frc.robot.subsystem.arm.HardwareArmFactory;
 import frc.robot.subsystem.arm.command.ArmDownCommand;
 import frc.robot.subsystem.arm.command.ArmSetAngleCommand;
+import frc.robot.subsystem.camera.CameraInstance;
+import frc.robot.subsystem.camera.HardwareCameraFactory;
 import frc.robot.subsystem.intake.HardwareIntakeFactory;
 import frc.robot.subsystem.intake.Intake;
 import frc.robot.subsystem.intake.IntakeConstants;
@@ -51,6 +53,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     private PathFollowingSwerve swerve = HardwareSwerveFactory.makeSwerve();
     private Turret turret = HardwareTurretFactory.makeTurret();
     private Vision vision = HardwareVisionFactory.makeVision();
+    private CameraInstance camOne = HardwareCameraFactory.makeCameraInstance();
 
     //Initialize Joysticks and Buttons
     private Joystick driveStick = new Joystick(0);
@@ -104,6 +107,10 @@ public class PrimaryRobotContainer implements RobotContainer{
             new IntakeRunCommand(intake, 0))
                         
         );
+
+        // configure camera
+        camOne.start();
+        
         Shuffleboard.getTab("Intake").add("Intake", intake);
         Shuffleboard.getTab("Intake").add("Arm", arm);
     }
