@@ -35,6 +35,7 @@ import frc.robot.subsystem.loader.command.LoaderRunConditionalCommand;
 import frc.robot.subsystem.shooter.HardwareShooterFactory;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.command.AutomatedShootingCommand;
+import frc.robot.subsystem.shooter.command.DumpBallCommand;
 import frc.robot.subsystem.shooter.command.ManualShootingCommand;
 import frc.robot.subsystem.shooter.command.ShooterContinuousRunCommand;
 import frc.robot.subsystem.shooter.command.ShooterSpinUpCommand;
@@ -79,6 +80,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     private JoystickButton intakeButton = new JoystickButton(controlStick, 1);
     private JoystickButton shootButton = new JoystickButton(controlStick, 3);
     private JoystickButton reverseLoadButton = new JoystickButton(controlStick, 4);
+    private JoystickButton dumpButton = new JoystickButton(controlStick, 5);
     
     private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
 
@@ -157,6 +159,10 @@ public class PrimaryRobotContainer implements RobotContainer{
                 new LoaderRunCommand(loader, -1));
         reverseLoadButton.whenPressed(reverseLoadCommand);
         reverseLoadButton.whenReleased(() -> {shooter.setSpeed(0); loader.setOutput(0);});
+
+        Command dumpCommand = new DumpBallCommand(turret, shooter, vision, loader);
+        dumpButton.whenPressed(dumpCommand);
+        dumpButton.whenReleased(() -> dumpCommand.cancel());
 
         //Shuffleboard
         ShuffleboardTab tab = Shuffleboard.getTab("Shooting");
