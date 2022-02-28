@@ -137,6 +137,7 @@ public class PrimaryRobotContainer implements RobotContainer{
         // configure camera
         camOne.start();
         
+        
         Shuffleboard.getTab("Intake").add("Intake", intake);
         Shuffleboard.getTab("Intake").add("Arm", arm);
     }
@@ -162,7 +163,7 @@ public class PrimaryRobotContainer implements RobotContainer{
 
         Command dumpCommand = new DumpBallCommand(turret, shooter, vision, loader);
         dumpButton.whenPressed(dumpCommand);
-        dumpButton.whenReleased(() -> dumpCommand.cancel());
+        dumpButton.whenReleased(() -> {dumpCommand.cancel(); shooter.setSpeed(0); loader.setOutput(0);});
 
         //Shuffleboard
         ShuffleboardTab tab = Shuffleboard.getTab("Shooting");

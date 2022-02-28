@@ -24,7 +24,7 @@ public class TurretDefaultCommand extends CommandBase {
 
     public void execute(){
         if (vision.hasValidTargets()){
-            turret.setOutput(controller.calculate(vision.getHorizontalOffsetFromCrosshair()+.075, 0)); // TODO: change .174
+            turret.setOutput(controller.calculate(vision.getHorizontalOffsetFromCrosshair(), 0));
         }
         else{
             turret.setAngle(0);

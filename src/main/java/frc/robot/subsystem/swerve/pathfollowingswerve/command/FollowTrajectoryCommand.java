@@ -55,7 +55,7 @@ public class FollowTrajectoryCommand extends CommandBase {
         }
 
         ChassisSpeeds output = controller.calculate(swerve.getCurrentPose(), state, rotationOutput);
-        swerve.moveFieldCentric(output.vxMetersPerSecond, output.vyMetersPerSecond, output.omegaRadiansPerSecond);
+        swerve.moveFieldCentric(output.vxMetersPerSecond, output.vyMetersPerSecond, -output.omegaRadiansPerSecond);
     }
 
     // Called once the command ends or is interrupted.
