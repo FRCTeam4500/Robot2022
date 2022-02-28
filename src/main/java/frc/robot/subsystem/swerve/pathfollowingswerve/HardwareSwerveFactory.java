@@ -15,8 +15,8 @@ public class HardwareSwerveFactory {
 
     private static final int DBRPORT = 2; //drive back right port
     private static final int ABRPORT = 3; //angle back right port
-    private static final int DBLPORT = 12; //drive back right port
-    private static final int ABLPORT = 11; //angle back right port
+    private static final int DBLPORT = 12; //drive back left port
+    private static final int ABLPORT = 11; //angle back left port
     private static final int DFRPORT = 4; //drive front right port
     private static final int AFRPORT = 5; //angle front right port
     private static final int DFLPORT = 7; //drive front left port

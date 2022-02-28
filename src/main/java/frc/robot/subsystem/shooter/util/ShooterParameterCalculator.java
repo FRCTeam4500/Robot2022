@@ -21,6 +21,7 @@ package frc.robot.subsystem.shooter.util;
          */
         public static double getSpeed(double distance){
             double speed = 3399*distance + 15671;
+            //double speed = 3399*distance + 15671;
             return speed;
         }
     }

@@ -58,7 +58,9 @@ public class FollowDottedTrajectoryCommand extends FollowTrajectoryCommand {
         this.threshold = threshold;
     }
     public FollowDottedTrajectoryCommand(PathFollowingSwerve swerve, Trajectory trajectory,
-                                                         HolonomicDriveController controller, double threshold, double timeStep, boolean rotation, double rotationOffset) {
+                                                         HolonomicDriveController controller, 
+                                                         double threshold, double timeStep, 
+                                                         boolean rotation, double rotationOffset) {
         super(swerve, trajectory, controller);
         this.timeStep = timeStep;
         this.threshold = threshold;
