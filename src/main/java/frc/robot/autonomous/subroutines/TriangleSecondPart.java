@@ -19,6 +19,7 @@ import frc.robot.subsystem.shooter.command.ShooterSpinDownCommand;
 import frc.robot.subsystem.shooter.util.ShooterControl;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajectoryCommand;
+import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajectoryWithEndRotationOffsetCommand;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.utility.ExtendedTrajectoryUtilities;
 import frc.robot.subsystem.shooter.command.ManualShootingCommand;
@@ -31,7 +32,8 @@ public class TriangleSecondPart extends SequentialCommandGroup {
 
     public TriangleSecondPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader) {
         Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("TriangleSecondPart");
-        FollowDottedTrajectoryCommand swerveCommand = new FollowDottedTrajectoryCommand(swerve, path, ExtendedTrajectoryUtilities.createBasicController(1,1,1,4,3));
+        FollowDottedTrajectoryWithEndRotationOffsetCommand swerveCommand = new FollowDottedTrajectoryWithEndRotationOffsetCommand(swerve, path, ExtendedTrajectoryUtilities.createBasicController(1,1,1,4,3),
+                path.getStates().get(path.getStates().size()-1).poseMeters.getRotation().minus(swerve.getRotation()));
         swerveCommand.setRotation(true);
         addCommands(
                 new ParallelCommandGroup(
