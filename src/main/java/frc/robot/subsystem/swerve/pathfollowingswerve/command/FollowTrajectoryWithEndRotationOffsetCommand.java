@@ -32,8 +32,8 @@ public class FollowTrajectoryWithEndRotationOffsetCommand extends CommandBase {
     protected Rotation2d desiredRotationOffset;
 
     private Rotation2d targetOffset;
-    private Rotation2d swerveReferenceAngle;
-    private PIDController rotationController;
+    private Rotation2d swerveReferenceAngle = new Rotation2d();
+    private PIDController rotationController = new PIDController(-0.7,0,0);;
 
     // Called when the command is initially scheduled.
     @Override
@@ -41,7 +41,7 @@ public class FollowTrajectoryWithEndRotationOffsetCommand extends CommandBase {
         timer.reset();
         timer.start();
         currentTranslation = trajectory.getInitialPose().getTranslation();
-        swerveReferenceAngle = swerve.getCurrentPose().getRotation();
+        swerveReferenceAngle = new Rotation2d(swerve.getRobotAngle());
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -55,10 +55,13 @@ public class FollowTrajectoryWithEndRotationOffsetCommand extends CommandBase {
         currentTranslation = state.poseMeters.getTranslation();
         currentState[0] = state.poseMeters.getX();
         currentState[1] = state.poseMeters.getY();
-        Rotation2d rotationOutput = new Rotation2d(rotationController.calculate(swerve.getCurrentPose().getRotation().getRadians(), swerveReferenceAngle.plus(swerveReferenceAngle).getRadians())); //Calculates target rotational speed by trying to match the current rotation to the target offset plus initial rotation
+        System.out.println(swerveReferenceAngle);
+        Rotation2d rotationOutput = new Rotation2d(rotationController.calculate(swerve.getCurrentPose().getRotation().getRadians(),
+         swerveReferenceAngle.plus(
+             targetOffset).getRadians())); //Calculates target rotational speed by trying to match the current rotation to the target offset plus initial rotation
 
         ChassisSpeeds output = controller.calculate(swerve.getCurrentPose(), state, rotationOutput);
-        swerve.moveFieldCentric(output.vxMetersPerSecond, output.vyMetersPerSecond, output.omegaRadiansPerSecond);
+        swerve.moveFieldCentric(output.vxMetersPerSecond, output.vyMetersPerSecond, -output.omegaRadiansPerSecond);
     }
 
     // Called once the command ends or is interrupted.
@@ -79,7 +82,6 @@ public class FollowTrajectoryWithEndRotationOffsetCommand extends CommandBase {
         this.trajectory = trajectory;
         this.controller = controller;
         this.targetOffset = targetOffset;
-        rotationController = new PIDController(-1,0,0);
         addRequirements(swerve);
     }
 

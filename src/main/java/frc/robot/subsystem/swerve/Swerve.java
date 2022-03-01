@@ -16,5 +16,6 @@ public interface Swerve extends Subsystem, Sendable {
     public void moveFieldCentric(double xSpeed, double ySpeed, double wSpeed, Translation2d centerOfRotation);
     public ChassisSpeeds getSpeeds();
     void resetRobotAngle();
+    double getRobotAngle();
 
 }

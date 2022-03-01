@@ -45,7 +45,7 @@ public class FirstBall extends SequentialCommandGroup {
                 new WaitCommand(0.5),
                 new ParallelCommandGroup(
                         new IntakeRunCommand(intake, 0),
-                        new ManualShootingCommand(shooter, vision, loader, new ShooterControl(23000, 1000))
+                        new ManualShootingCommand(shooter, vision, loader, new ShooterControl(24000, 1000))
                 ).withTimeout(2),
                 new ShooterSpinDownCommand(shooter)
         );

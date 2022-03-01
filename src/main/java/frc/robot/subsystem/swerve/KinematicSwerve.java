@@ -161,5 +161,8 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
         };
         return kinematics.toChassisSpeeds(states);
     }
+    public double getRobotAngle(){
+        return gyro.getAngle();
+    }
 }
 

@@ -148,26 +148,28 @@ public class PrimaryRobotContainer implements RobotContainer{
         //loader.setDefaultCommand(new LoaderRunCommand(loader, 0));
 
         //manual shooting
-        //ShooterControl control = new ShooterControl(10000, 50);
-        //Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
-
+        ShooterControl control = new ShooterControl(10000, 50);
+        Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
+        shootButton.whenPressed(shootCommand);
+        shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        //TODO: swap all command cancels with null checked ones
         //Automated shooting
-        shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader));
-        shootButton.whenReleased(() -> {shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        //shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader));
+        //shootButton.whenReleased(() -> {shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
 
         //Run shooter and loader in reverse
         Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(10000,50)),
                 new LoaderRunCommand(loader, -1));
         reverseLoadButton.whenPressed(reverseLoadCommand);
-        reverseLoadButton.whenReleased(() -> {shooter.setSpeed(0); loader.setOutput(0);});
+        reverseLoadButton.whenReleased(() -> {loader.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
 
         Command dumpCommand = new DumpBallCommand(turret, shooter, vision, loader);
         dumpButton.whenPressed(dumpCommand);
-        dumpButton.whenReleased(() -> {dumpCommand.cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        dumpButton.whenReleased(() -> {shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
 
         //Shuffleboard
         ShuffleboardTab tab = Shuffleboard.getTab("Shooting");
-        //tab.add("Shooter control", control);
+        tab.add("Shooter control", control);
         tab.add("Shooter", shooter);
         tab.add("Turret", turret);
         tab.add("Loader", loader);
