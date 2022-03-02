@@ -32,8 +32,8 @@ public class ShooterImpl implements Shooter{
         return Math.PI * Units.radiansPerSecondToRotationsPerMinute(shooterMotor.getAngularVelocity() * 2);
     }
 
-    public boolean atSpeed(){
-        return ((Math.abs(getSpeed() - targetSpeed) <= threshold) && targetSpeed != 0) || getSpeed() > 28500;
+    public boolean atSpeed(){ //returns true when the shooter is within threshold from the speed and is not 0, or when the shooter is at maximum speed
+        return ((Math.abs(getSpeed() - targetSpeed) <= threshold) && targetSpeed != 0) || getSpeed() > 28000;
     }
 
     @Override
