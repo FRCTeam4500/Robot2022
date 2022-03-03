@@ -55,11 +55,10 @@ public class FollowTrajectoryWithEndRotationOffsetCommand extends CommandBase {
         currentTranslation = state.poseMeters.getTranslation();
         currentState[0] = state.poseMeters.getX();
         currentState[1] = state.poseMeters.getY();
-        System.out.println(swerveReferenceAngle);
         Rotation2d rotationOutput = new Rotation2d(rotationController.calculate(swerve.getCurrentPose().getRotation().getRadians(),
          swerveReferenceAngle.plus(
              targetOffset).getRadians())); //Calculates target rotational speed by trying to match the current rotation to the target offset plus initial rotation
-
+        System.out.println(rotationOutput);
         ChassisSpeeds output = controller.calculate(swerve.getCurrentPose(), state, rotationOutput);
         swerve.moveFieldCentric(output.vxMetersPerSecond, output.vyMetersPerSecond, -output.omegaRadiansPerSecond);
     }

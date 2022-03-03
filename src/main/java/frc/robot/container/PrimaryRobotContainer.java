@@ -150,12 +150,12 @@ public class PrimaryRobotContainer implements RobotContainer{
         //manual shooting
         ShooterControl control = new ShooterControl(10000, 50);
         Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
-        shootButton.whenPressed(shootCommand);
-        shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        //shootButton.whenPressed(shootCommand);
+        //shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
         //TODO: swap all command cancels with null checked ones
         //Automated shooting
-        //shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader));
-        //shootButton.whenReleased(() -> {shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader));
+        shootButton.whenReleased(() -> {shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
 
         //Run shooter and loader in reverse
         Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(10000,50)),
@@ -169,7 +169,7 @@ public class PrimaryRobotContainer implements RobotContainer{
 
         //Shuffleboard
         ShuffleboardTab tab = Shuffleboard.getTab("Shooting");
-        tab.add("Shooter control", control);
+        //tab.add("Shooter control", control);
         tab.add("Shooter", shooter);
         tab.add("Turret", turret);
         tab.add("Loader", loader);
