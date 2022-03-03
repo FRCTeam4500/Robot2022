@@ -1,5 +1,6 @@
 package frc.robot.autonomous.subroutines;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -15,6 +16,7 @@ import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.command.AutomatedShootingCommand;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajectoryCommand;
+import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajectoryWithEndRotationOffsetCommand;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.utility.ExtendedTrajectoryUtilities;
 import frc.robot.subsystem.shooter.command.ManualShootingCommand;
@@ -26,9 +28,10 @@ public class FirstBall extends SequentialCommandGroup {
     public FirstBall(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader){
         addRequirements(swerve, arm, intake, shooter);
         Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("FirstBall");
-        FollowDottedTrajectoryCommand swerveCmd = new FollowDottedTrajectoryCommand(
+        FollowDottedTrajectoryWithEndRotationOffsetCommand swerveCmd = new FollowDottedTrajectoryWithEndRotationOffsetCommand(
                 swerve, path,
-                ExtendedTrajectoryUtilities.createBasicController(1,1,1, 4, 1));
+                ExtendedTrajectoryUtilities.createBasicController(1,1,1, 4, 1),
+                path.getStates().get(path.getStates().size()).poseMeters.getRotation().minus(new Rotation2d(swerve.getRobotAngle())));
         swerveCmd.setRotation(true);
         addCommands(
                 //sets robot translation to the first of the path, then resets the robot angle to 0

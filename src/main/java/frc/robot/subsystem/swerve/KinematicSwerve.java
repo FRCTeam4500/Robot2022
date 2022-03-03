@@ -12,12 +12,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.component.GyroComponent;
 import frc.robot.subsystem.swerve.Swerve;
 
-public class KinematicSwerve extends SubsystemBase implements Swerve {
+public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
 
     protected SwerveDriveKinematics kinematics;
     protected KinematicWheelModule[] wheelModules;
@@ -127,7 +128,7 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
     }
     
 
-    public double getGyroAngle(){
+    public double getRobotAngle(){
         return gyro.getAngle() - currentGyroZero;
     }
 
@@ -161,8 +162,6 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
         };
         return kinematics.toChassisSpeeds(states);
     }
-    public double getRobotAngle(){
-        return gyro.getAngle();
-    }
+
 }
 
