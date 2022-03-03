@@ -11,6 +11,7 @@ public class ClimberUpCommand extends CommandBase {
     public ClimberUpCommand(Climber climber, double angle) { //TODO: If this needs output instead just change this lol
         this.climber = climber;
         this.angle = angle;
+        addRequirements(climber);
     }
 
     public ClimberUpCommand(Climber climber) {

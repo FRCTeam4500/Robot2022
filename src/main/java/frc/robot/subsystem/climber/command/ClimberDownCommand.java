@@ -11,11 +11,13 @@ public class ClimberDownCommand extends CommandBase {
     public ClimberDownCommand(Climber climber, double angle) { //TODO: if we are using output
         this.climber = climber;
         this.angle = angle;
+        addRequirements(climber);
     }
 
     public ClimberDownCommand(Climber climber) {
         this.climber = climber;
         this.angle = ClimberConstants.CLIMBER_DOWN_ANGLE;
+
     }
 
     public void initialize() {
