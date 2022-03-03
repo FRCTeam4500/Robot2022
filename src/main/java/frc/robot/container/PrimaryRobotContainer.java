@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.autonomous.routines.ConsoleAuto;
 import frc.robot.autonomous.routines.FirstBallAuto;
 import frc.robot.autonomous.routines.TriangleAuto;
 import frc.robot.autonomous.routines.WAuto;
@@ -179,7 +180,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     void configureAutonomous(){
         autonChooser.setDefaultOption("First Ball", new FirstBallAuto(swerve, arm, shooter, intake, vision, loader));
         autonChooser.addOption("Triangle Auto", new TriangleAuto(swerve, arm, intake, shooter, vision, loader));
-        autonChooser.addOption("W Auto", new WAuto(swerve, arm, intake, shooter, vision, loader));
+        autonChooser.addOption("Console Auto", new ConsoleAuto(swerve, arm, shooter, intake, vision,loader));
         Shuffleboard.getTab("Driver Controls").add("Autonomous Route", autonChooser);
     }
 

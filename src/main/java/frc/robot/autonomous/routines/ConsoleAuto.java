@@ -2,6 +2,7 @@ package frc.robot.autonomous.routines;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
+import frc.robot.autonomous.subroutines.ConsoleThirdPart;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.autonomous.subroutines.FirstBall;
 import frc.robot.autonomous.subroutines.ResetRobot;
@@ -17,7 +18,7 @@ public class ConsoleAuto extends SequentialCommandGroup{
         addCommands(
             new FirstBall(swerve, arm, intake, shooter, vision, loader),
             new TriangleSecondPart(swerve, arm, intake, shooter, vision, loader),
-            new ConsoleAuto(swerve, arm, shooter, intake, vision, loader),
+            new ConsoleThirdPart(swerve, arm, intake, shooter, vision, loader),
             new ResetRobot(arm, shooter, loader, intake)
         );
     }
