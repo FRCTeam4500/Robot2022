@@ -28,7 +28,7 @@ public class FollowTrajectoryWithEndRotationOffsetCommand extends CommandBase {
     protected HolonomicDriveController controller;
     protected double[] currentState = new double[]{0,0};
     protected Translation2d currentTranslation;
-    protected boolean rotation = false;
+    protected boolean rotation = true;
     protected Rotation2d desiredRotationOffset;
 
     private Rotation2d targetOffset;
