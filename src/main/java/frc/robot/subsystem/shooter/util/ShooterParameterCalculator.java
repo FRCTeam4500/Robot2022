@@ -24,6 +24,8 @@ import frc.robot.utility.PolarVelocityCalculator;
          */
         public static double getSpeed(double distance){
             double speed = 781*Math.pow(distance, 2) - (1151 * distance) + 22502;
+            if (distance < 1) //lower port
+                speed = 10000;
             return speed;
         }
 
