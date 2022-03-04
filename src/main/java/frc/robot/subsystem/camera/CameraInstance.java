@@ -29,8 +29,8 @@ public class CameraInstance {
 
     /** starts a camera server automaically without changing any default values */
     private void createSimpleStream() {
-        /**UsbCamera camera = */CameraServer.startAutomaticCapture(id);
-        /**  camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, CameraConstants.width, CameraConstants.height, 32);
+        UsbCamera camera = CameraServer.startAutomaticCapture(id);
+        camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, CameraConstants.width, CameraConstants.height, 32);
         new Thread(() -> {
             CvSink cvSink = CameraServer.getVideo();
             CvSource outputStream = CameraServer.putVideo("Camera Stream", CameraConstants.width, CameraConstants.height);
@@ -39,7 +39,7 @@ public class CameraInstance {
                 cvSink.grabFrame(source);
                 outputStream.putFrame(source);
             }
-        }).start(); */
+        }).start();
     }
 
     /** see robot2019/src/main/java/frc/robot/utility/CameraInstance.java
