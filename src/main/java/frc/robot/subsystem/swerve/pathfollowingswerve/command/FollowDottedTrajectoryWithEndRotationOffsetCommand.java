@@ -27,8 +27,8 @@ public class FollowDottedTrajectoryWithEndRotationOffsetCommand extends FollowTr
     private PIDController anglePID;
 
     public FollowDottedTrajectoryWithEndRotationOffsetCommand(PathFollowingSwerve swerve, Trajectory trajectory,
-                                                              HolonomicDriveController controller, Rotation2d angleOffset) {
-        super(swerve, trajectory, controller, angleOffset);
+                                                              HolonomicDriveController controller, Rotation2d angleOffset, double kPw) {
+        super(swerve, trajectory, controller, angleOffset, kPw);
     }
 
     @Override
@@ -55,22 +55,22 @@ public class FollowDottedTrajectoryWithEndRotationOffsetCommand extends FollowTr
         return internalTime >= trajectory.getTotalTimeSeconds() && currentTranslation.getDistance(swerve.getCurrentPose().getTranslation()) <= threshold;
     }
     public FollowDottedTrajectoryWithEndRotationOffsetCommand(PathFollowingSwerve swerve, Trajectory trajectory,
-                                                              HolonomicDriveController controller, double threshold, double timeStep, Rotation2d targetOffset) {
-        super(swerve, trajectory, controller, targetOffset);
+                                                              HolonomicDriveController controller, double threshold, double timeStep, Rotation2d targetOffset, double kPw) {
+        super(swerve, trajectory, controller, targetOffset, kPw);
         this.timeStep = timeStep;
         this.threshold = threshold;
     }
     public FollowDottedTrajectoryWithEndRotationOffsetCommand(PathFollowingSwerve swerve, Trajectory trajectory,
-                                                              HolonomicDriveController controller, double threshold, double timeStep, boolean rotation, double rotationOffset, Rotation2d targetOffset) {
-        super(swerve, trajectory, controller, targetOffset);
+                                                              HolonomicDriveController controller, double threshold, double timeStep, boolean rotation, double rotationOffset, Rotation2d targetOffset, double kPw) {
+        super(swerve, trajectory, controller, targetOffset, kPw);
         this.timeStep = timeStep;
         this.threshold = threshold;
         setRotation(rotation);
         setDesiredRotationOffset(rotationOffset);
     }
     public FollowDottedTrajectoryWithEndRotationOffsetCommand(PathFollowingSwerve swerve, Trajectory trajectory,
-                                                              HolonomicDriveController controller, double threshold, Rotation2d targetOffset) {
-        super(swerve, trajectory, controller, targetOffset);
+                                                              HolonomicDriveController controller, double threshold, Rotation2d targetOffset, double kPw) {
+        super(swerve, trajectory, controller, targetOffset, kPw);
         this.threshold = threshold;
     }
     public double getTimeStep() {

@@ -31,7 +31,7 @@ public class ConsoleThirdPart extends SequentialCommandGroup{
     addCommands(
             new ParallelCommandGroup(
       new FollowDottedTrajectoryWithEndRotationOffsetCommand(swerve, path1, ExtendedTrajectoryUtilities.createBasicController(1, 1, 1, 4, 3),
-              new Rotation2d(swerve.getRobotAngle() - path1.getStates().get(path1.getStates().size() - 1).poseMeters.getRotation().getRadians())),
+              new Rotation2d(swerve.getRobotAngle() - path1.getStates().get(path1.getStates().size() - 1).poseMeters.getRotation().getRadians()), -0.5),
                     new IntakeRunCommand(intake)
                     ).withTimeout(2),
       new WaitCommand(1),

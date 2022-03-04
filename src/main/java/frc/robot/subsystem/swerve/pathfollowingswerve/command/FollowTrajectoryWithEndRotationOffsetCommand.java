@@ -33,7 +33,7 @@ public class FollowTrajectoryWithEndRotationOffsetCommand extends CommandBase {
 
     private Rotation2d targetOffset;
     private Rotation2d swerveReferenceAngle = new Rotation2d();
-    private PIDController rotationController = new PIDController(-0.7,0,0);;
+    private PIDController rotationController;
 
     // Called when the command is initially scheduled.
     @Override
@@ -53,14 +53,15 @@ public class FollowTrajectoryWithEndRotationOffsetCommand extends CommandBase {
 
     protected void applyState(Trajectory.State state) {
         currentTranslation = state.poseMeters.getTranslation();
-        currentState[0] = state.poseMeters.getX();
-        currentState[1] = state.poseMeters.getY();
-        Rotation2d rotationOutput = new Rotation2d(rotationController.calculate(swerve.getCurrentPose().getRotation().getRadians(),
+        //currentState[0] = state.poseMeters.getX();
+        //currentState[1] = state.poseMeters.getY();
+        //Rotation2d rotationOutput = new Rotation2d();
+        double rotationOutput = rotationController.calculate(swerve.getCurrentPose().getRotation().getRadians(),
          swerveReferenceAngle.plus(
-             targetOffset).getRadians())); //Calculates target rotational speed by trying to match the current rotation to the target offset plus initial rotation
+             targetOffset).getRadians()); //Calculates target rotational speed by trying to match the current rotation to the target offset plus initial rotation
         System.out.println(rotationOutput);
-        ChassisSpeeds output = controller.calculate(swerve.getCurrentPose(), state, rotationOutput);
-        swerve.moveFieldCentric(output.vxMetersPerSecond, output.vyMetersPerSecond, -output.omegaRadiansPerSecond);
+        ChassisSpeeds output = controller.calculate(swerve.getCurrentPose(), state, new Rotation2d());
+        swerve.moveFieldCentric(output.vxMetersPerSecond, output.vyMetersPerSecond, -rotationOutput);
     }
 
     // Called once the command ends or is interrupted.
@@ -76,11 +77,12 @@ public class FollowTrajectoryWithEndRotationOffsetCommand extends CommandBase {
     }
 
     public FollowTrajectoryWithEndRotationOffsetCommand(PathFollowingSwerve swerve, Trajectory trajectory,
-                                                        HolonomicDriveController controller, Rotation2d targetOffset) {
+                                                        HolonomicDriveController controller, Rotation2d targetOffset, double kPw) {
         this.swerve = swerve;
         this.trajectory = trajectory;
         this.controller = controller;
         this.targetOffset = targetOffset;
+        rotationController = new PIDController(kPw, 0, 0);
         addRequirements(swerve);
     }
 

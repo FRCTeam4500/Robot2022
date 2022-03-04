@@ -14,7 +14,6 @@ import frc.robot.autonomous.routines.ConsoleAuto;
 import frc.robot.autonomous.routines.FirstBallAuto;
 import frc.robot.autonomous.routines.TriangleAuto;
 import frc.robot.autonomous.routines.WAuto;
-import frc.robot.command.AlignWithTargetCommand;
 import frc.robot.dashboard.DashboardBooleanDisplay;
 import frc.robot.dashboard.DashboardMessageDisplay;
 import frc.robot.dashboard.DashboardNumberDisplay;

@@ -20,6 +20,7 @@ import frc.robot.subsystem.shooter.util.ShooterControl;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajectoryCommand;
 import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajectoryWithEndRotationOffsetCommand;
+import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowTrajectoryCommand;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.utility.ExtendedTrajectoryUtilities;
 import frc.robot.subsystem.shooter.command.ManualShootingCommand;
@@ -32,17 +33,20 @@ public class TriangleSecondPart extends SequentialCommandGroup {
 
     public TriangleSecondPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader) {
         Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("TriangleSecondPart");
-
+        FollowTrajectoryCommand swerveCmd = new FollowTrajectoryCommand(swerve, path, ExtendedTrajectoryUtilities.createBasicController(1,1,1,10,10));
+        swerveCmd.setRotation(true);
         //FollowDottedTrajectoryCommand swerveCommand = new FollowDottedTrajectoryCommand(swerve, path, ExtendedTrajectoryUtilities.createBasicController(1,1,1,4,3));
         addCommands(
                 new ParallelCommandGroup(
-                        new FollowDottedTrajectoryWithEndRotationOffsetCommand(swerve, path, ExtendedTrajectoryUtilities.createBasicController(1,1,1,4,3),
-                                path.getStates().get(path.getStates().size()-1).poseMeters.getRotation().minus(swerve.getCurrentPose().getRotation())),
-                        new IntakeRunCommand(intake)
+                        new FollowDottedTrajectoryWithEndRotationOffsetCommand(swerve, path, ExtendedTrajectoryUtilities.createBasicController(1,1,1,10,10),
+                                path.getStates().get(path.getStates().size()-1).poseMeters.getRotation().minus(swerve.getCurrentPose().getRotation()), -0),
+                        //swerveCmd,
+                                new IntakeRunCommand(intake)
                 ).withTimeout(2),
                 new InstantCommand(() -> swerve.moveRobotCentric(0,0,0)),
                 new ParallelCommandGroup(
-                        new ManualShootingCommand(shooter, vision, loader, new ShooterControl(25000, 1000)),
+                        new AutomatedShootingCommand(shooter, vision, loader),
+
                         new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE)
                 ).withTimeout(2),
                 new ShooterSpinDownCommand(shooter)
