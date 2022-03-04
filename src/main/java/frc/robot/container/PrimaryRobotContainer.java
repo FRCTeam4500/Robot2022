@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -13,14 +12,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autonomous.routines.ConsoleAuto;
 import frc.robot.autonomous.routines.FirstBallAuto;
 import frc.robot.autonomous.routines.TriangleAuto;
-import frc.robot.autonomous.routines.WAuto;
-import frc.robot.dashboard.DashboardBooleanDisplay;
 import frc.robot.dashboard.DashboardMessageDisplay;
 import frc.robot.dashboard.DashboardNumberDisplay;
 import frc.robot.subsystem.arm.Arm;
 import frc.robot.subsystem.arm.ArmConstants;
 import frc.robot.subsystem.arm.HardwareArmFactory;
-import frc.robot.subsystem.arm.command.ArmDownCommand;
 import frc.robot.subsystem.arm.command.ArmSetAngleCommand;
 import frc.robot.subsystem.camera.CameraInstance;
 import frc.robot.subsystem.camera.HardwareCameraFactory;
@@ -30,17 +26,14 @@ import frc.robot.subsystem.intake.IntakeConstants;
 import frc.robot.subsystem.intake.command.IntakeRunCommand;
 import frc.robot.subsystem.loader.HardwareLoaderFactory;
 import frc.robot.subsystem.loader.Loader;
-import frc.robot.subsystem.loader.command.LoaderRunCommand;
-import frc.robot.subsystem.loader.command.LoaderRunConditionalCommand;
+import frc.robot.subsystem.loader.command.LoaderSetOutputCommand;
 import frc.robot.subsystem.shooter.HardwareShooterFactory;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.command.AutomatedShootingCommand;
 import frc.robot.subsystem.shooter.command.DumpBallCommand;
 import frc.robot.subsystem.shooter.command.ManualShootingCommand;
-import frc.robot.subsystem.shooter.command.ShooterContinuousRunCommand;
 import frc.robot.subsystem.shooter.command.ShooterSpinUpCommand;
 import frc.robot.subsystem.shooter.util.ShooterControl;
-import frc.robot.subsystem.swerve.command.SwerveDefaultCommand;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand;
 import frc.robot.subsystem.swerve.command.TriModeSwerveCommand.ControlMode;
 import frc.robot.subsystem.swerve.pathfollowingswerve.HardwareSwerveFactory;
@@ -159,7 +152,7 @@ public class PrimaryRobotContainer implements RobotContainer{
 
         //Run shooter and loader in reverse
         Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(10000,50)),
-                new LoaderRunCommand(loader, -1));
+                new LoaderSetOutputCommand(loader, -1));
         reverseLoadButton.whenPressed(reverseLoadCommand);
         reverseLoadButton.whenReleased(() -> {loader.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
 

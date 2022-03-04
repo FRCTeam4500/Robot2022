@@ -2,14 +2,14 @@ package frc.robot.subsystem.arm.command;
 
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystem.arm.Arm;
 
 /**
  * Command for manually controlling an Arm,
- * takes over control of the Arm from the defaultcommand, so you don't have to pass an ArnControl to a CommandGroup
  */
 
-public class ArmSetAngleCommand extends CommandBase {
+public class ArmSetAngleCommand extends InstantCommand {
     private Arm arm;
     private double angle;
 

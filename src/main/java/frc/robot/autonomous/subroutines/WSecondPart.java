@@ -1,9 +1,11 @@
 package frc.robot.autonomous.subroutines;
 
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.autonomous.NewTrajectoryUtilities;
 import frc.robot.subsystem.arm.Arm;
 import frc.robot.subsystem.arm.command.ArmSetAngleCommand;
 import frc.robot.subsystem.intake.Intake;
@@ -21,15 +23,11 @@ import frc.robot.subsystem.arm.ArmConstants;
 public class WSecondPart extends SequentialCommandGroup {
     public WSecondPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader) {
         Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("WSecondPart");
-        FollowDottedTrajectoryCommand swervePathCommand = new FollowDottedTrajectoryCommand(
-                swerve,
-                path,
-                ExtendedTrajectoryUtilities.createBasicController(1,1,1,4,1));
-        swervePathCommand.setRotation(true);
+        Command swerveCmd = NewTrajectoryUtilities.generateSwerveControllerCommand(swerve, path);
         addCommands( //whether or not we need to add a command to turn the robot depends on how fast it can turn
                 new ParallelCommandGroup( //runs the path and runs the intake
-                        swervePathCommand,
                         new SequentialCommandGroup(
+                                swerveCmd,
                                 new WaitCommand(0.25),
                                 new IntakeRunCommand(intake).withTimeout(1), //Run intake for 1 second
                                 new WaitCommand(1),

@@ -2,7 +2,6 @@ package frc.robot.subsystem.shooter.command;
 
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.subsystem.loader.Loader;
-import frc.robot.subsystem.loader.command.LoaderRunCommand;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.util.ShooterParameterCalculator;
 import frc.robot.subsystem.vision.Vision;

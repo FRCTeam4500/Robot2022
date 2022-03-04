@@ -1,6 +1,7 @@
 package frc.robot.subsystem.loader.command;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystem.loader.Loader;
 import frc.robot.subsystem.loader.LoaderConstants;
 
@@ -9,19 +10,20 @@ import frc.robot.subsystem.loader.LoaderConstants;
  * We don't need to provide commands for setting the speed because the loader will never be left on, unlike the arm
  */
 
-public class LoaderRunCommand extends CommandBase {
+public class LoaderSetOutputCommand extends InstantCommand {
     private Loader loader;
     private double speed;
 
-    public LoaderRunCommand(Loader loader){
+    public LoaderSetOutputCommand(Loader loader){
        this(loader, LoaderConstants.runSpeed);
     }
 
-    public LoaderRunCommand(Loader loader, double output){
+    public LoaderSetOutputCommand(Loader loader, double output){
         this.loader = loader;
         this.speed = output;
         addRequirements(loader);
     }
+
 
     public void initialize(){
         loader.setOutput(speed);

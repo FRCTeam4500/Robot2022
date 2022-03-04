@@ -5,9 +5,12 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.autonomous.NewTrajectoryUtilities;
 import frc.robot.subsystem.arm.ArmConstants;
 import frc.robot.subsystem.arm.command.ArmSetAngleCommand;
 import frc.robot.subsystem.intake.command.IntakeRunCommand;
+import frc.robot.subsystem.intake.command.IntakeSetOutputCommand;
+import frc.robot.subsystem.shooter.command.AutomatedShootingCommand;
 import frc.robot.subsystem.shooter.command.ManualShootingCommand;
 import frc.robot.subsystem.shooter.util.ShooterControl;
 import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajectoryCommand;
@@ -30,18 +33,16 @@ public class ConsoleThirdPart extends SequentialCommandGroup{
 
     addCommands(
             new ParallelCommandGroup(
-      new FollowDottedTrajectoryWithEndRotationOffsetCommand(swerve, path1, ExtendedTrajectoryUtilities.createBasicController(1, 1, 1, 4, 3),
-              new Rotation2d(swerve.getRobotAngle() - path1.getStates().get(path1.getStates().size() - 1).poseMeters.getRotation().getRadians()), -0.5),
-                    new IntakeRunCommand(intake)
-                    ).withTimeout(2),
+                    NewTrajectoryUtilities.generateSwerveControllerCommand(swerve,path1),
+                    new IntakeSetOutputCommand(intake)
+                    ).withTimeout(3),
       new WaitCommand(1),
-
       new ParallelCommandGroup(
-      new FollowDottedTrajectoryCommand(swerve, path2, ExtendedTrajectoryUtilities.createBasicController(1, 1, 1, 4, 3)),
-              new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE)
-      ).withTimeout(5),
-            new ManualShootingCommand(shooter, vision, loader, new ShooterControl(25000, 1000))
-
+              NewTrajectoryUtilities.generateSwerveControllerCommand(swerve, path2, true),
+              new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE),
+              new IntakeSetOutputCommand(intake, 0)
+      ).withTimeout(3),
+            new AutomatedShootingCommand(shooter, vision, loader)
     );
     }
     

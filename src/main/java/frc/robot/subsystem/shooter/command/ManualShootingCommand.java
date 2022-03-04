@@ -3,16 +3,12 @@ package frc.robot.subsystem.shooter.command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystem.loader.Loader;
-import frc.robot.subsystem.loader.command.LoaderRunCommand;
+import frc.robot.subsystem.loader.command.LoaderSetOutputCommand;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.ShooterConstants;
-import frc.robot.subsystem.shooter.command.ShooterSpinDownCommand;
-import frc.robot.subsystem.shooter.command.ShooterSpinUpCommand;
 import frc.robot.subsystem.shooter.util.ShooterControl;
-import frc.robot.subsystem.shooter.util.ShooterParameterCalculator;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.vision.command.WaitForTargetCommand;
-import frc.robot.subsystem.vision.util.VisionDistanceCalculator;
 
 public class ManualShootingCommand extends SequentialCommandGroup {
     private Shooter shooter;
@@ -28,7 +24,7 @@ public class ManualShootingCommand extends SequentialCommandGroup {
                     new ShooterSpinUpCommand(shooter, control).withTimeout(0.80),
                     new WaitForTargetCommand(vision, ShooterConstants.maximumAllowableOffset).withTimeout(0.40)
                 ),
-                new LoaderRunCommand(loader).withTimeout(1) //shoots
+                new LoaderSetOutputCommand(loader).withTimeout(1) //shoots
         );;
     }
     

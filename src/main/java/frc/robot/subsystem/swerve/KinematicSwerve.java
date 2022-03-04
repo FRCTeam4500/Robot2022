@@ -70,15 +70,21 @@ public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
         moveRobotCentric(chassisSpeeds, new Translation2d());
     }
     public void moveRobotCentric(ChassisSpeeds chassisSpeeds, Translation2d centerOfRotation){
-        ChassisSpeeds negChassisSpeeds = new ChassisSpeeds(
-            -chassisSpeeds.vxMetersPerSecond, 
-            -chassisSpeeds.vyMetersPerSecond, 
-            -chassisSpeeds.omegaRadiansPerSecond);
         currentSpeeds = chassisSpeeds;
         var states = kinematics.toSwerveModuleStates(chassisSpeeds, centerOfRotation);
+        driveByStates(states);
+
+    }
+
+    /**
+     * Drives the robots using the raw module states rather than by chassis speeds
+     * For use with autonomous commands
+     * @param states
+     */
+    public void driveByStates(SwerveModuleState[] states) {
         SwerveDriveKinematics.desaturateWheelSpeeds(states, lowestMaximumWheelSpeed);
 
-        for(int i = 0;i<wheelModules.length;i++){
+        for (int i = 0; i < wheelModules.length; i++) {
             wheelModules[i].drive(states[i]);
         }
     }
@@ -161,6 +167,10 @@ public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
             wheelModules[3].getState()
         };
         return kinematics.toChassisSpeeds(states);
+    }
+
+    public SwerveDriveKinematics getKinematics(){
+        return kinematics;
     }
 
 }
