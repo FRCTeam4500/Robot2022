@@ -30,8 +30,8 @@ public class FirstBall extends SequentialCommandGroup {
         Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("FirstBall");
         FollowDottedTrajectoryWithEndRotationOffsetCommand swerveCmd = new FollowDottedTrajectoryWithEndRotationOffsetCommand(
                 swerve, path,
-                ExtendedTrajectoryUtilities.createBasicController(1,1,1, 4, 1),
-                path.getStates().get(path.getStates().size()).poseMeters.getRotation().minus(new Rotation2d(swerve.getRobotAngle())));
+                ExtendedTrajectoryUtilities.createBasicController(1,1,0, 4, 3),
+                path.getStates().get(path.getStates().size()).poseMeters.getRotation().minus(new Rotation2d(swerve.getRobotAngle())), -0.0);
         swerveCmd.setRotation(true);
         addCommands(
                 //sets robot translation to the first of the path, then resets the robot angle to 0
