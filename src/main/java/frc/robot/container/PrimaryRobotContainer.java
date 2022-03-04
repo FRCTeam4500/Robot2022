@@ -53,8 +53,9 @@ import frc.robot.subsystem.vision.HardwareVisionFactory;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.vision.util.VisionDistanceCalculator;
 import frc.robot.utility.ControllerInfo;
-
-
+import frc.robot.subsystem.climber.Climber;
+import frc.robot.subsystem.climber.HardwareClimberFactory;
+import frc.robot.subsystem.climber.command.ClimberSetAngleCommand;
 public class PrimaryRobotContainer implements RobotContainer{
 
     //Initialize subsystems
@@ -66,6 +67,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     private Turret turret = HardwareTurretFactory.makeTurret();
     private Vision vision = HardwareVisionFactory.makeVision();
     private CameraInstance camOne = HardwareCameraFactory.makeCameraInstance();
+    private Climber climber = HardwareClimberFactory.makeClimber();
 
     //Initialize Joysticks and Buttons
     private Joystick driveStick = new Joystick(0);
@@ -176,6 +178,7 @@ public class PrimaryRobotContainer implements RobotContainer{
         tab.add("Loader", loader);
         tab.add("Distance", new DashboardNumberDisplay("Distance", () -> VisionDistanceCalculator.calculateDistance(vision)));
     }
+
 
     void configureAutonomous(){
         autonChooser.setDefaultOption("First Ball", new FirstBallAuto(swerve, arm, shooter, intake, vision, loader));
