@@ -55,7 +55,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
     public boolean lockRotation = false;
     public boolean limitSpeed = false;
 
-    private double limitedSpeed = 0.2;
+    private double limitedSpeed = .75;
 
     public TriModeSwerveCommand(Swerve swerve, Joystick joystick, ControllerInfo controllerInfo, Vision vision, Turret turret, DashboardMessageDisplay messageDisplay){
         this.swerve = swerve;
@@ -82,9 +82,9 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
         double ySpeed = -withDeadzone(joystick.getY(), info.yDeadzone) * info.ySensitivity;
         double zSpeed = -withDeadzone(joystick.getZ(), info.zDeadzone) * info.zSensitivity;
         if (limitSpeed){
-            ceiling(xSpeed, limitedSpeed);
-            ceiling(ySpeed, limitedSpeed);
-            ceiling(zSpeed, limitedSpeed);
+            xSpeed = ceiling(xSpeed, limitedSpeed);
+            ySpeed = ceiling(ySpeed, limitedSpeed);
+            zSpeed = ceiling(zSpeed, limitedSpeed);
         }
         if (lockRotation)
             zSpeed = 0;
@@ -168,5 +168,6 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
         builder.addDoubleProperty("controller x", joystick::getX, null);
         builder.addDoubleProperty("controller y", joystick::getY, null);
         builder.addDoubleProperty("controller z", joystick::getZ, null);
+        builder.addBooleanProperty("Limit Speed", () -> {return limitSpeed;}, null);
     }
 }
