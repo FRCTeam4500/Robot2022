@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.autonomous.NewTrajectoryUtilities;
 import frc.robot.subsystem.arm.Arm;
 import frc.robot.subsystem.arm.ArmConstants;
 import frc.robot.subsystem.arm.command.ArmSetAngleCommand;
@@ -24,6 +25,7 @@ import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowTrajectoryCo
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.utility.ExtendedTrajectoryUtilities;
 import frc.robot.subsystem.shooter.command.ManualShootingCommand;
+import frc.robot.utility.PolarVelocityCalculator;
 
 /**
  * Second Part of the triangular autonomous route, to be run after FirstBall
@@ -31,21 +33,16 @@ import frc.robot.subsystem.shooter.command.ManualShootingCommand;
 
 public class TriangleSecondPart extends SequentialCommandGroup {
 
-    public TriangleSecondPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader) {
+    public TriangleSecondPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader, PolarVelocityCalculator calculator) {
         Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("TriangleSecondPart");
-        FollowTrajectoryCommand swerveCmd = new FollowTrajectoryCommand(swerve, path, ExtendedTrajectoryUtilities.createBasicController(1,1,1,10,10));
-        swerveCmd.setRotation(true);
-        //FollowDottedTrajectoryCommand swerveCommand = new FollowDottedTrajectoryCommand(swerve, path, ExtendedTrajectoryUtilities.createBasicController(1,1,1,4,3));
         addCommands(
                 new ParallelCommandGroup(
-                        new FollowDottedTrajectoryWithEndRotationOffsetCommand(swerve, path, ExtendedTrajectoryUtilities.createBasicController(1,1,1,10,10),
-                                path.getStates().get(path.getStates().size()-1).poseMeters.getRotation().minus(swerve.getCurrentPose().getRotation()), -0),
-                        //swerveCmd,
-                                new IntakeRunCommand(intake)
+                        NewTrajectoryUtilities.generateSwerveControllerCommand(swerve, path),
+                                new IntakeRunCommand(intake).withTimeout(0.1)
                 ).withTimeout(2),
                 new InstantCommand(() -> swerve.moveRobotCentric(0,0,0)),
                 new ParallelCommandGroup(
-                        new AutomatedShootingCommand(shooter, vision, loader),
+                        new AutomatedShootingCommand(shooter, vision, loader, calculator),
 
                         new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE)
                 ).withTimeout(2),

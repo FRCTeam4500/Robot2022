@@ -12,12 +12,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.component.GyroComponent;
 import frc.robot.subsystem.swerve.Swerve;
 
-public class KinematicSwerve extends SubsystemBase implements Swerve {
+public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
 
     protected SwerveDriveKinematics kinematics;
     protected KinematicWheelModule[] wheelModules;
@@ -69,15 +70,21 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
         moveRobotCentric(chassisSpeeds, new Translation2d());
     }
     public void moveRobotCentric(ChassisSpeeds chassisSpeeds, Translation2d centerOfRotation){
-        ChassisSpeeds negChassisSpeeds = new ChassisSpeeds(
-            -chassisSpeeds.vxMetersPerSecond, 
-            -chassisSpeeds.vyMetersPerSecond, 
-            -chassisSpeeds.omegaRadiansPerSecond);
         currentSpeeds = chassisSpeeds;
         var states = kinematics.toSwerveModuleStates(chassisSpeeds, centerOfRotation);
+        driveByStates(states);
+
+    }
+
+    /**
+     * Drives the robots using the raw module states rather than by chassis speeds
+     * For use with autonomous commands
+     * @param states
+     */
+    public void driveByStates(SwerveModuleState[] states) {
         SwerveDriveKinematics.desaturateWheelSpeeds(states, lowestMaximumWheelSpeed);
 
-        for(int i = 0;i<wheelModules.length;i++){
+        for (int i = 0; i < wheelModules.length; i++) {
             wheelModules[i].drive(states[i]);
         }
     }
@@ -127,7 +134,7 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
     }
     
 
-    public double getGyroAngle(){
+    public double getRobotAngle(){
         return gyro.getAngle() - currentGyroZero;
     }
 
@@ -161,8 +168,10 @@ public class KinematicSwerve extends SubsystemBase implements Swerve {
         };
         return kinematics.toChassisSpeeds(states);
     }
-    public double getRobotAngle(){
-        return gyro.getAngle();
+
+    public SwerveDriveKinematics getKinematics(){
+        return kinematics;
     }
+
 }
 

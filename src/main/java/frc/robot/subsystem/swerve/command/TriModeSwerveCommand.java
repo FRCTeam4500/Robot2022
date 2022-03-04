@@ -53,7 +53,9 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
     public ControlMode controlMode;
 
     public boolean lockRotation = false;
+    public boolean limitSpeed = false;
 
+    private double limitedSpeed = 0.2;
 
     public TriModeSwerveCommand(Swerve swerve, Joystick joystick, ControllerInfo controllerInfo, Vision vision, Turret turret, DashboardMessageDisplay messageDisplay){
         this.swerve = swerve;
@@ -79,6 +81,11 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
         double xSpeed = -withDeadzone(joystick.getX(), info.xDeadzone) * info.xSensitivity;
         double ySpeed = -withDeadzone(joystick.getY(), info.yDeadzone) * info.ySensitivity;
         double zSpeed = -withDeadzone(joystick.getZ(), info.zDeadzone) * info.zSensitivity;
+        if (limitSpeed){
+            ceiling(xSpeed, limitedSpeed);
+            ceiling(ySpeed, limitedSpeed);
+            ceiling(zSpeed, limitedSpeed);
+        }
         if (lockRotation)
             zSpeed = 0;
         switch (controlMode){
@@ -103,14 +110,14 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
     private void movePolar(double r, double t, double w){
         if(vision.hasValidTargets()) {
             Pair<Double, Double> speeds = polarCalculator.calculateCartesianSpeeds(r, t);
-            double xSpeed = speeds.getFirst();
-            double ySpeed = speeds.getSecond();
+            double LRSpeed = speeds.getFirst();
+            double FBSpeed = speeds.getSecond();
             /**
              * Attempts to move the robot so that the angle between the turret and robot are 0, at which point the robot is directly facing the target.
              * This assumes that the turret is always seeking out the target, that is, that the angle between turret and target is zero.
              */
             double wSpeed = polarAngleAdjustmentController.calculate(turret.getAngle(), 0);
-            moveRobotCentric(ySpeed, xSpeed, wSpeed);
+            moveRobotCentric(FBSpeed, LRSpeed, wSpeed);
         }
         else{
             /**
@@ -135,6 +142,13 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
         FieldCentric,
         RobotCentric,
         Polar
+    }
+
+    private double ceiling(double value, double maximum){
+        if (Math.abs(value) > maximum){
+            return maximum * Math.signum(value);
+        }
+        return value;
     }
 
     public void initSendable(SendableBuilder builder){

@@ -43,6 +43,7 @@ public class OdometricSwerve extends KinematicSwerve implements PathFollowingSwe
         }
         return states;
     }
+
     public Pose2d getCurrentPose(){
         return odometry.getPoseMeters();
     }
