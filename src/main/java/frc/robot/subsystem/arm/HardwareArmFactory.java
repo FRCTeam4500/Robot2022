@@ -11,9 +11,9 @@ public class HardwareArmFactory {
         motor.configReverseSoftLimitEnable(true);
         motor.configForwardSoftLimitThreshold(ArmConstants.ARM_DOWN_SENSOR_LIMIT);
         motor.configReverseSoftLimitThreshold(ArmConstants.ARM_UP_SENSOR_LIMIT);
-        motor.configPeakOutputForward(0.7);
-        motor.configPeakOutputReverse(-0.7);
-        motor.config_kP(0, 5.555555);
+        motor.configPeakOutputForward(0.5);
+        motor.configPeakOutputReverse(-0.5);
+        motor.config_kP(0, 5);
         return new ArmImpl(motor);
     }
 }

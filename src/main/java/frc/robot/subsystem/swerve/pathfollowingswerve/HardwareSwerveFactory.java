@@ -6,12 +6,13 @@ import edu.wpi.first.wpilibj.I2C;
 import frc.robot.component.hardware.AHRSAngleGetterComponent;
 import frc.robot.component.hardware.TalonFXComponent;
 import frc.robot.component.hardware.TalonSRXComponent;
+import frc.robot.subsystem.swerve.SwerveConstants;
 
 public class HardwareSwerveFactory {
 
     private static final double DRIVE_RATIO = 1/4.3329; //drive rotations per motor rotation
     private static final double ANGLE_RATIO = 1/12.34567901234; //angle rotations per motor rotation
-    private static final double MAX_SPEED = 4.8; //max surface speed, meters per second
+    private static final double MAX_SPEED = SwerveConstants.MAX_LINEAR_SPEED; //max surface speed, meters per second
 
     private static final int DBRPORT = 2; //drive back right port
     private static final int ABRPORT = 3; //angle back right port
@@ -25,7 +26,7 @@ public class HardwareSwerveFactory {
 
     private static final double WHEEL_DIAMETER = 0.0762; //Wheel diameter, in meters
     private static final double DRIVE_X_TRANSLATION = 0.2921; //x-axis translation of left wheels
-    private static final double DRIVE_Y_TRANSLATION = 0.2794; //x-axis translation of right wheels
+    private static final double DRIVE_Y_TRANSLATION = 0.2794; //y-axis translation of right wheels
 
 
     public static PathFollowingSwerve makeSwerve(){

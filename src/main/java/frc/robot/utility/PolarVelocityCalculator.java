@@ -2,11 +2,13 @@ package frc.robot.utility;
 
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.subsystem.swerve.Swerve;
 import frc.robot.subsystem.turret.Turret;
 import frc.robot.subsystem.vision.Vision;
 
-public class PolarVelocityCalculator {
+public class PolarVelocityCalculator implements Sendable{
     private Vision vision;
     private Swerve swerve;
     private Turret turret;
@@ -73,5 +75,10 @@ public class PolarVelocityCalculator {
         double xVelocity = targetTangentialSpeed * Math.cos(pi/2 - angleFromTarget) + targetRadialSpeed * Math.cos(angleFromTarget);
         double yVelocity = targetTangentialSpeed * Math.cos(angleFromTarget) + targetRadialSpeed * Math.cos(angleFromTarget);
         return new Pair<Double, Double>(xVelocity, yVelocity);
+    }
+
+    public void initSendable(SendableBuilder builder){
+        builder.addDoubleProperty("Radial Speed", ()-> getRadialSpeed(), null);
+        builder.addDoubleProperty("Tangential Speed", ()-> getTangentialSpeed(), null);
     }
 }

@@ -84,6 +84,9 @@ public class OdometricSwerve extends KinematicSwerve implements PathFollowingSwe
     @Override
     public void initSendable(SendableBuilder builder) {
         super.initSendable(builder);
+        builder.addDoubleProperty("Odometric rotation", () -> getCurrentPose().getRotation().getDegrees(), null);
+        builder.addDoubleProperty("Odometric X", () -> getCurrentPose().getX(), null);
+        builder.addDoubleProperty("Odometric Y", () -> getCurrentPose().getY(), null);
     }
 
 }
