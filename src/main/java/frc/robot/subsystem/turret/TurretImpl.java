@@ -7,6 +7,8 @@ import frc.robot.component.SmartMotorComponent;
 public class TurretImpl implements Turret{
     private SmartMotorComponent motor;
     private double targetAngle;
+
+    private double targetOffset;
     public TurretImpl(SmartMotorComponent motor){
         this.motor = motor;
     }
@@ -29,6 +31,8 @@ public class TurretImpl implements Turret{
         return motor.getAngle() * TurretConstants.TURRET_RATIO;
     }
 
+
+
     /**
      * moves the turret
      * @param output Percent output of the motor
@@ -36,6 +40,9 @@ public class TurretImpl implements Turret{
     public void setOutput(double output){
         motor.setOutput(output);
     }
+
+
+
 
     public void initSendable(SendableBuilder builder){
         builder.addDoubleProperty("Target Angle", () -> targetAngle, null);

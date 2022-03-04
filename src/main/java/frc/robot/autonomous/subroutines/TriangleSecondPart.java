@@ -25,6 +25,7 @@ import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowTrajectoryCo
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.utility.ExtendedTrajectoryUtilities;
 import frc.robot.subsystem.shooter.command.ManualShootingCommand;
+import frc.robot.utility.PolarVelocityCalculator;
 
 /**
  * Second Part of the triangular autonomous route, to be run after FirstBall
@@ -32,7 +33,7 @@ import frc.robot.subsystem.shooter.command.ManualShootingCommand;
 
 public class TriangleSecondPart extends SequentialCommandGroup {
 
-    public TriangleSecondPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader) {
+    public TriangleSecondPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader, PolarVelocityCalculator calculator) {
         Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("TriangleSecondPart");
         addCommands(
                 new ParallelCommandGroup(
@@ -41,7 +42,7 @@ public class TriangleSecondPart extends SequentialCommandGroup {
                 ).withTimeout(2),
                 new InstantCommand(() -> swerve.moveRobotCentric(0,0,0)),
                 new ParallelCommandGroup(
-                        new AutomatedShootingCommand(shooter, vision, loader),
+                        new AutomatedShootingCommand(shooter, vision, loader, calculator),
 
                         new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE)
                 ).withTimeout(2),

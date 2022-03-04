@@ -45,6 +45,7 @@ import frc.robot.subsystem.vision.HardwareVisionFactory;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.vision.util.VisionDistanceCalculator;
 import frc.robot.utility.ControllerInfo;
+import frc.robot.utility.PolarVelocityCalculator;
 
 
 public class PrimaryRobotContainer implements RobotContainer{
@@ -79,7 +80,8 @@ public class PrimaryRobotContainer implements RobotContainer{
 
     private SendableChooser<Command> autonChooser = new SendableChooser<Command>();
 
-
+    private PolarVelocityCalculator calculator;
+    private TriModeSwerveCommand swerveCommand;
 
     public PrimaryRobotContainer(){
         configureControls();
@@ -101,7 +103,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     }
 
     void configureSwerve(){
-        TriModeSwerveCommand swerveCommand = new TriModeSwerveCommand(swerve, driveStick, info, vision, turret, messages);
+        swerveCommand = new TriModeSwerveCommand(swerve, driveStick, info, vision, turret, messages);
         swerveCommand.controlMode = ControlMode.FieldCentric;
 
         switchDriveModeRobotCentric.whenPressed(() -> {swerveCommand.controlMode = ControlMode.RobotCentric;});
@@ -115,6 +117,8 @@ public class PrimaryRobotContainer implements RobotContainer{
         swerve.setDefaultCommand(swerveCommand);
         Shuffleboard.getTab("Swerve").add("Swerve", swerve);
         Shuffleboard.getTab("Swerve").add("Swerve Command", swerveCommand);
+
+        calculator = new PolarVelocityCalculator(swerve, vision, turret);
 
     }
 
@@ -136,7 +140,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     }
 
     void configureShooting() {
-        turret.setDefaultCommand(new TurretDefaultCommand(turret, vision));
+        turret.setDefaultCommand(new TurretDefaultCommand(turret, vision, calculator));
         //shooter.setDefaultCommand(new ShooterContinuousRunCommand(shooter, () -> 0));
         //loader.setDefaultCommand(new LoaderRunCommand(loader, 0));
 
@@ -147,18 +151,18 @@ public class PrimaryRobotContainer implements RobotContainer{
         //shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
         //TODO: swap all command cancels with null checked ones
         //Automated shooting
-        shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader));
-        shootButton.whenReleased(() -> {shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader, calculator).alongWith(new InstantCommand(() -> {swerveCommand.limitSpeed = true;})));
+        shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0); swerveCommand.limitSpeed = false;});
 
         //Run shooter and loader in reverse
         Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(10000,50)),
                 new LoaderSetOutputCommand(loader, -1));
         reverseLoadButton.whenPressed(reverseLoadCommand);
-        reverseLoadButton.whenReleased(() -> {loader.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        reverseLoadButton.whenReleased(() -> {if (loader.getCurrentCommand() != null) loader.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
 
         Command dumpCommand = new DumpBallCommand(turret, shooter, vision, loader);
         dumpButton.whenPressed(dumpCommand);
-        dumpButton.whenReleased(() -> {shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        dumpButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
 
         //Shuffleboard
         ShuffleboardTab tab = Shuffleboard.getTab("Shooting");
@@ -171,8 +175,8 @@ public class PrimaryRobotContainer implements RobotContainer{
 
     void configureAutonomous(){
         autonChooser.setDefaultOption("First Ball", new FirstBallAuto(swerve, arm, shooter, intake, vision, loader));
-        autonChooser.addOption("Triangle Auto", new TriangleAuto(swerve, arm, intake, shooter, vision, loader));
-        autonChooser.addOption("Console Auto", new ConsoleAuto(swerve, arm, shooter, intake, vision,loader));
+        autonChooser.addOption("Triangle Auto", new TriangleAuto(swerve, arm, intake, shooter, vision, loader, calculator));
+        autonChooser.addOption("Console Auto", new ConsoleAuto(swerve, arm, shooter, intake, vision,loader, calculator));
         Shuffleboard.getTab("Driver Controls").add("Autonomous Route", autonChooser);
     }
 

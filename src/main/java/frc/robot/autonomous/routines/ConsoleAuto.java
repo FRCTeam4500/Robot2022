@@ -12,13 +12,14 @@ import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.intake.Intake;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.loader.Loader;
+import frc.robot.utility.PolarVelocityCalculator;
 
 public class ConsoleAuto extends SequentialCommandGroup{
-    public ConsoleAuto(PathFollowingSwerve swerve, Arm arm, Shooter shooter, Intake intake, Vision vision, Loader loader){
+    public ConsoleAuto(PathFollowingSwerve swerve, Arm arm, Shooter shooter, Intake intake, Vision vision, Loader loader, PolarVelocityCalculator calculator){
         addCommands(
             new FirstBall(swerve, arm, intake, shooter, vision, loader),
-            new TriangleSecondPart(swerve, arm, intake, shooter, vision, loader),
-            new ConsoleThirdPart(swerve, arm, intake, shooter, vision, loader),
+            new TriangleSecondPart(swerve, arm, intake, shooter, vision, loader, calculator),
+            new ConsoleThirdPart(swerve, arm, intake, shooter, vision, loader, calculator),
             new ResetRobot(arm, shooter, loader, intake)
         );
     }

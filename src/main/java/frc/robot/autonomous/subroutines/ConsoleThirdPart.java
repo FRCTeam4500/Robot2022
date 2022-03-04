@@ -23,10 +23,11 @@ import frc.robot.subsystem.intake.Intake;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.loader.Loader;
+import frc.robot.utility.PolarVelocityCalculator;
 
 public class ConsoleThirdPart extends SequentialCommandGroup{
 
-    public ConsoleThirdPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader){
+    public ConsoleThirdPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader, PolarVelocityCalculator calculator){
         Trajectory path1 = ExtendedTrajectoryUtilities.getDeployedTrajectory("ConsoleFirstPart");
         Trajectory path2 = ExtendedTrajectoryUtilities.getDeployedTrajectory("ConsoleSecondPart");
 
@@ -42,7 +43,7 @@ public class ConsoleThirdPart extends SequentialCommandGroup{
               new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE),
               new IntakeSetOutputCommand(intake, 0)
       ).withTimeout(3),
-            new AutomatedShootingCommand(shooter, vision, loader)
+            new AutomatedShootingCommand(shooter, vision, loader, calculator)
     );
     }
     

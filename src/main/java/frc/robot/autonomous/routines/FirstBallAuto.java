@@ -9,6 +9,7 @@ import frc.robot.subsystem.loader.Loader;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.subsystem.vision.Vision;
+import frc.robot.utility.PolarVelocityCalculator;
 
 public class FirstBallAuto extends SequentialCommandGroup {
     public FirstBallAuto(PathFollowingSwerve swerve, Arm arm, Shooter shooter, Intake intake, Vision vision, Loader loader){
