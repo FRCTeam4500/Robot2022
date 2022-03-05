@@ -25,9 +25,22 @@ public class NewTrajectoryUtilities {
      * It's the first one in the file.
      * @param swerve The swerve
      * @param path the path to follow
+     * @return SequentialCommandGroup consisting of the swerve command and a command to stop the swerve at the end
      */
     public static SequentialCommandGroup generateSwerveControllerCommand(PathFollowingSwerve swerve, Trajectory path){
         return generateSwerveControllerCommand(swerve,path,false);
+    }
+
+    /**
+     * Generates a swerve path following command
+     * @param swerve The swerve
+     * @param path The path to follow
+     * @param disableRotation don't rotate the swerve
+     * @return SequentialCommandGroup consisting of the swerve command and a command to stop the swerve at the end
+     */
+
+    public static SequentialCommandGroup generateSwerveControllerCommand(PathFollowingSwerve swerve, Trajectory path, boolean disableRotation){
+        return generateSwerveControllerCommand(swerve, path, disableRotation, new Rotation2d(0));
     }
 
     /**
@@ -37,8 +50,10 @@ public class NewTrajectoryUtilities {
      * @param swerve The swerve
      * @param path the path to follow
      * @param disableRotation stop the robot from rotating when running the path
+     * @param endRotationOffset target end rotation offset. Might be negative, idk
+     * @return SequentialCommandGroup consisting of the swerve command and a command to stop the swerve at the end
      */
-    public static SequentialCommandGroup generateSwerveControllerCommand(PathFollowingSwerve swerve, Trajectory path, boolean disableRotation){
+    public static SequentialCommandGroup generateSwerveControllerCommand(PathFollowingSwerve swerve, Trajectory path, boolean disableRotation, Rotation2d endRotationOffset){
         double anglekP = 4;
         if (disableRotation)
             anglekP = 0;
@@ -46,7 +61,7 @@ public class NewTrajectoryUtilities {
         ProfiledPIDController angleControl = new ProfiledPIDController(anglekP,0,0, new TrapezoidProfile.Constraints(SwerveConstants.MAX_ROTATIONAL_SPEED, SwerveConstants.MAX_ROTATIONAL_ACCELERATION));
         angleControl.enableContinuousInput(-Math.PI/2, Math.PI/2);
 
-        Supplier<Rotation2d> rotation = () -> {return path.getStates().get(path.getStates().size() - 1).poseMeters.getRotation().times(-1);};
+        Supplier<Rotation2d> rotation = () -> {return path.getStates().get(path.getStates().size() - 1).poseMeters.getRotation().times(-1).plus(endRotationOffset);};
 
     
         return new SwerveControllerCommand(
@@ -61,5 +76,6 @@ public class NewTrajectoryUtilities {
                 swerve
                 ).andThen(() -> swerve.moveRobotCentric(0,0,0)); //stop robot when done
     }
+    
 
 }
