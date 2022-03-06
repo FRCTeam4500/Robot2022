@@ -29,6 +29,7 @@ public class ClimberImpl implements Climber {
 
     @Override
     public void initSendable(SendableBuilder builder){
+        builder.setSmartDashboardType("RobotPreferences");
         builder.addBooleanProperty("Active", () -> !(targetAngle >= 0), null); //TODO: idk how to make it "active" if its either below or above I think this only selects one or the other
         builder.addDoubleProperty("Target angle", () -> targetAngle, null);
         builder.addDoubleProperty("Target output", () -> targetOutput, null);

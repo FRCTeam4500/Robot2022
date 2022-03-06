@@ -9,8 +9,8 @@ public class HardwareClimberFactory {
     public static Climber makeClimber() {
 
         //SmartMotorComponent motor = new SmartMotorComponent(10); //TODO: Actually create this!
-        SparkMaxComponent angleMotor = new SparkMaxComponent(90, CANSparkMaxLowLevel.MotorType.kBrushless);
-        SparkMaxComponent outputMotor = new SparkMaxComponent(80, CANSparkMaxLowLevel.MotorType.kBrushless);
+        SparkMaxComponent angleMotor = new SparkMaxComponent(15, CANSparkMaxLowLevel.MotorType.kBrushless);
+        SparkMaxComponent outputMotor = new SparkMaxComponent(2, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         return new ClimberImpl(angleMotor, outputMotor);
     }
