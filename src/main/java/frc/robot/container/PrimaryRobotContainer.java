@@ -123,11 +123,11 @@ public class PrimaryRobotContainer implements RobotContainer{
         climberTiltDown.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_DOWN_ANGLE));
 
         // When chains run forward
-        climberRunChainsForward.whenPressed(new ClimberChainsRunCommand(climber, ClimberConstants.MAX_OUTPUT));
+        climberRunChainsForward.whenPressed(new ClimberChainsRunCommand(climber, ClimberConstants.CHAINS_RUN_SPEED));
         climberRunChainsForward.whenReleased(new ClimberChainsRunCommand(climber, 0));
 
         // When chains run backwards
-        climberRunChainsBackward.whenPressed(new ClimberChainsRunCommand(climber, -ClimberConstants.MAX_OUTPUT));
+        climberRunChainsBackward.whenPressed(new ClimberChainsRunCommand(climber, -ClimberConstants.CHAINS_RUN_SPEED));
         climberRunChainsBackward.whenReleased(new ClimberChainsRunCommand(climber, 0));
 
         Shuffleboard.getTab("Climber").add("Climber Info", climber);
