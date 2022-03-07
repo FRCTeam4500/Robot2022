@@ -20,8 +20,11 @@ import frc.robot.subsystem.arm.Arm;
 import frc.robot.subsystem.arm.ArmConstants;
 import frc.robot.subsystem.arm.HardwareArmFactory;
 import frc.robot.subsystem.arm.command.ArmSetAngleCommand;
-import frc.robot.subsystem.camera.CameraInstance;
+import frc.robot.subsystem.camera.CameraImpl;
 import frc.robot.subsystem.camera.HardwareCameraFactory;
+import frc.robot.subsystem.climber.ClimberConstants;
+import frc.robot.subsystem.climber.command.ClimberChainsRunCommand;
+import frc.robot.subsystem.climber.command.ClimberSetAngleCommand;
 import frc.robot.subsystem.intake.HardwareIntakeFactory;
 import frc.robot.subsystem.intake.Intake;
 import frc.robot.subsystem.intake.IntakeConstants;
@@ -53,7 +56,6 @@ import frc.robot.utility.PolarVelocityCalculator;
 import frc.robot.subsystem.climber.Climber;
 import frc.robot.subsystem.climber.HardwareClimberFactory;
 import frc.robot.subsystem.climber.command.ClimberSetAngleCommand;
-import frc.robot.subsystem.climber.command.ClimberSetOutputCommand;
 import frc.robot.subsystem.camera.HardwareCameraFactory;
 import frc.robot.subsystem.camera.Camera;
 
@@ -67,9 +69,9 @@ public class PrimaryRobotContainer implements RobotContainer{
     private PathFollowingSwerve swerve = HardwareSwerveFactory.makeSwerve();
     private Turret turret = HardwareTurretFactory.makeTurret();
     private Vision vision = HardwareVisionFactory.makeVision();
-    private CameraInstance camOne = HardwareCameraFactory.makeCameraInstance();
+    private CameraImpl camOne = HardwareCameraFactory.makeCameraInstance();
     private Climber climber = HardwareClimberFactory.makeClimber();
-    private CameraInstance camera = HardwareCameraFactory.makeCameraInstance();
+    //private CameraInstance camera = HardwareCameraFactory.makeCameraInstance();
 
     //Initialize Joysticks and Buttons
     private Joystick driveStick = new Joystick(0);
@@ -88,8 +90,11 @@ public class PrimaryRobotContainer implements RobotContainer{
     //private JoystickButton reverseLoadButton = new JoystickButton(controlStick, 4);
     private JoystickButton dumpButton = new JoystickButton(controlStick, 5);
 
-    private JoystickButton chainForward = new JoystickButton(controlStick, 4);
-    private JoystickButton chainBackward = new JoystickButton(controlStick, 6);
+
+    private JoystickButton climberTiltUp = new JoystickButton(controlStick, 12);
+    private JoystickButton climberTiltDown = new JoystickButton(controlStick, 11);
+    private JoystickButton climberRunChainsForward = new JoystickButton(controlStick, 6);
+    private JoystickButton climberRunChainsBackward = new JoystickButton(controlStick, 4);
     
     private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
 
@@ -102,9 +107,10 @@ public class PrimaryRobotContainer implements RobotContainer{
         configureControls();
         configureClimber();
         configureSwerve();
-        configureIntakeAndArm();
+        configureIntakeAndCameraAndArm();
         configureShooting();
         configureAutonomous();
+        configureClimber();
     }
 
     void configureControls(){
@@ -119,15 +125,28 @@ public class PrimaryRobotContainer implements RobotContainer{
         //Shuffleboard.getTab("Driver Controls").add("Intake Camera", camera);
     }
 
-    void configureClimber(){
-        Shuffleboard.getTab("Climber").add("Climber Info", climber);
-        chainBackward.whenPressed(new ClimberSetOutputCommand(climber, -1));
-        chainBackward.whenReleased(new ClimberSetOutputCommand(climber, 0));
-        chainForward.whenPressed(new ClimberSetOutputCommand(climber, 1));
-        chainForward.whenReleased(new ClimberSetOutputCommand(climber, 0));
+    
+    
+
+    void configureClimber() {
+
+        Shuffleboard.getTab("Climber").add("climber", climber);
+        // When tilt up
+        climberTiltUp.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_UP_ANGLE));
+
+        // When tilt down
+        climberTiltDown.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_DOWN_ANGLE));
+
+        // When chains run forward
+        climberRunChainsForward.whenPressed(new ClimberChainsRunCommand(climber, ClimberConstants.CHAINS_RUN_SPEED));
+        climberRunChainsForward.whenReleased(new ClimberChainsRunCommand(climber, 0));
+
+        // When chains run backwards
+        climberRunChainsBackward.whenPressed(new ClimberChainsRunCommand(climber, -ClimberConstants.CHAINS_RUN_SPEED));
+        climberRunChainsBackward.whenReleased(new ClimberChainsRunCommand(climber, 0));
     }
 
-    void configureSwerve(){
+    void configureSwerve() {
         swerveCommand = new TriModeSwerveCommand(swerve, driveStick, info, vision, turret, messages);
         swerveCommand.controlMode = ControlMode.FieldCentric;
 
@@ -151,7 +170,7 @@ public class PrimaryRobotContainer implements RobotContainer{
 
     }
 
-    void configureIntakeAndArm(){
+    void configureIntakeAndCameraAndArm() {
         intakeButton.whenPressed(new ArmSetAngleCommand(arm, ArmConstants.ARM_DOWN_ANGLE)
                 .alongWith(new IntakeRunCommand(intake, IntakeConstants.intakeRunSpeed)));
         intakeButton.whenReleased(
@@ -166,6 +185,7 @@ public class PrimaryRobotContainer implements RobotContainer{
         
         Shuffleboard.getTab("Intake").add("Intake", intake);
         Shuffleboard.getTab("Intake").add("Arm", arm);
+        Shuffleboard.getTab("Intake").add("Intake Camera", camOne);
     }
 
     void configureShooting() {
@@ -185,7 +205,7 @@ public class PrimaryRobotContainer implements RobotContainer{
 
         //Run shooter and loader in reverse
         Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(10000,50)),
-                new LoaderRunCommand(loader, -1));
+                new LoaderSetOutputCommand(loader, -1));
         //reverseLoadButton.whenPressed(reverseLoadCommand);
         //reverseLoadButton.whenReleased(() -> {loader.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
 
