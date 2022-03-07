@@ -5,35 +5,36 @@ import frc.robot.component.SmartMotorComponent;
 import frc.robot.subsystem.arm.ArmConstants;
 
 public class ClimberImpl implements Climber {
-    private SmartMotorComponent smartMotor;
-    private SmartMotorComponent smartMotor2;
-    private double targetAngle = 0; //TODO: Find what angle this is
-    private double targetOutput = 0; //TODO: LOL
+    private SmartMotorComponent tiltMotor;
+    private SmartMotorComponent chainMotor;
+    private double targetTiltAngle = 0; //TODO: Find what angle this is
+    private double targetChainOutput = 0; //TODO: LOL
 
-    public ClimberImpl(SmartMotorComponent smartMotor, SmartMotorComponent smartMotor2) {
-        this.smartMotor = smartMotor;
-        this.smartMotor2 = smartMotor2;
+    public ClimberImpl(SmartMotorComponent tiltMotor, SmartMotorComponent chainMotor) {
+        this.tiltMotor = tiltMotor;
+        this.chainMotor = chainMotor;
     }
 
     @Override
     public void setAngle(double angle) {
-        targetAngle = angle;
-        smartMotor.setAngle(angle);
+        targetTiltAngle = angle;
+        tiltMotor.setAngle(angle);
     }
 
     @Override
     public void setOutput(double output) {
-        targetOutput = output;
-        smartMotor2.setOutput(output);
+        targetChainOutput = output;
+        chainMotor.setOutput(output);
     }
+
+
 
     @Override
-    public void initSendable(SendableBuilder builder){
-        builder.addBooleanProperty("Active", () -> !(targetAngle >= 0), null); //TODO: idk how to make it "active" if its either below or above I think this only selects one or the other
-        builder.addDoubleProperty("Target angle", () -> targetAngle, null);
-        builder.addDoubleProperty("Target output", () -> targetOutput, null);
-        builder.addDoubleProperty("currentAngle", () -> smartMotor.getAngle(), null);
-        builder.addDoubleProperty("currentOutput", () -> smartMotor2.getOutput(), null);
+    public void initSendable(SendableBuilder builder) {
+        builder.addBooleanProperty("Active", () -> !(targetTiltAngle >= 0), null); //TODO: idk how to make it "active" if its either below or above I think this only selects one or the other
+        builder.addDoubleProperty("Target tilt angle", () -> targetTiltAngle, null);
+        builder.addDoubleProperty("Target chain output", () -> targetChainOutput, null);
+        builder.addDoubleProperty("current tilt angle", () -> tiltMotor.getAngle(), null);
+        builder.addDoubleProperty("current chain output", chainMotor::getOutput, null);
     }
-
 }

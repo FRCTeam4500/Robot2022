@@ -1,6 +1,8 @@
 package frc.robot.container;
 
 
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -51,6 +53,10 @@ import frc.robot.utility.PolarVelocityCalculator;
 import frc.robot.subsystem.climber.Climber;
 import frc.robot.subsystem.climber.HardwareClimberFactory;
 import frc.robot.subsystem.climber.command.ClimberSetAngleCommand;
+import frc.robot.subsystem.climber.command.ClimberSetOutputCommand;
+import frc.robot.subsystem.camera.HardwareCameraFactory;
+import frc.robot.subsystem.camera.Camera;
+
 public class PrimaryRobotContainer implements RobotContainer{
 
     //Initialize subsystems
@@ -63,6 +69,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     private Vision vision = HardwareVisionFactory.makeVision();
     private CameraInstance camOne = HardwareCameraFactory.makeCameraInstance();
     private Climber climber = HardwareClimberFactory.makeClimber();
+    private CameraInstance camera = HardwareCameraFactory.makeCameraInstance();
 
     //Initialize Joysticks and Buttons
     private Joystick driveStick = new Joystick(0);
@@ -78,8 +85,11 @@ public class PrimaryRobotContainer implements RobotContainer{
 
     private JoystickButton intakeButton = new JoystickButton(controlStick, 1);
     private JoystickButton shootButton = new JoystickButton(controlStick, 3);
-    private JoystickButton reverseLoadButton = new JoystickButton(controlStick, 4);
+    //private JoystickButton reverseLoadButton = new JoystickButton(controlStick, 4);
     private JoystickButton dumpButton = new JoystickButton(controlStick, 5);
+
+    private JoystickButton chainForward = new JoystickButton(controlStick, 4);
+    private JoystickButton chainBackward = new JoystickButton(controlStick, 6);
     
     private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
 
@@ -90,13 +100,14 @@ public class PrimaryRobotContainer implements RobotContainer{
 
     public PrimaryRobotContainer(){
         configureControls();
+        configureClimber();
         configureSwerve();
         configureIntakeAndArm();
         configureShooting();
         configureAutonomous();
     }
 
-    void configureControls() {
+    void configureControls(){
         info.xSensitivity = 4;
         info.ySensitivity = 4;
         info.zSensitivity = 3.5;
@@ -105,6 +116,15 @@ public class PrimaryRobotContainer implements RobotContainer{
         info.zDeadzone = 0.2;
         Shuffleboard.getTab("Driver Controls").add("Driver Controls", info);
         Shuffleboard.getTab("Driver Controls").add("Messages", messages);
+        //Shuffleboard.getTab("Driver Controls").add("Intake Camera", camera);
+    }
+
+    void configureClimber(){
+        Shuffleboard.getTab("Climber").add("Climber Info", climber);
+        chainBackward.whenPressed(new ClimberSetOutputCommand(climber, -1));
+        chainBackward.whenReleased(new ClimberSetOutputCommand(climber, 0));
+        chainForward.whenPressed(new ClimberSetOutputCommand(climber, 1));
+        chainForward.whenReleased(new ClimberSetOutputCommand(climber, 0));
     }
 
     void configureSwerve(){
@@ -165,9 +185,9 @@ public class PrimaryRobotContainer implements RobotContainer{
 
         //Run shooter and loader in reverse
         Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(10000,50)),
-                new LoaderSetOutputCommand(loader, -1));
-        reverseLoadButton.whenPressed(reverseLoadCommand);
-        reverseLoadButton.whenReleased(() -> {if (loader.getCurrentCommand() != null) loader.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+                new LoaderRunCommand(loader, -1));
+        //reverseLoadButton.whenPressed(reverseLoadCommand);
+        //reverseLoadButton.whenReleased(() -> {loader.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
 
         Command dumpCommand = new DumpBallCommand(turret, shooter, vision, loader);
         dumpButton.whenPressed(dumpCommand);
@@ -181,6 +201,8 @@ public class PrimaryRobotContainer implements RobotContainer{
         tab.add("Loader", loader);
         tab.add("Distance", new DashboardNumberDisplay("Distance", () -> VisionDistanceCalculator.calculateDistance(vision)));
     }
+
+   
 
 
     void configureAutonomous(){
