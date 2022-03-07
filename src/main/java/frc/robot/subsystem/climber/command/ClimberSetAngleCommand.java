@@ -5,15 +5,15 @@ import frc.robot.subsystem.climber.Climber;
 
 public class ClimberSetAngleCommand extends CommandBase {
     private Climber climber;
-    private double angle;
+    private int position;
 
-    public ClimberSetAngleCommand(Climber climber, double angle) {
+    public ClimberSetAngleCommand(Climber climber, int position) {
         this.climber = climber;
-        this.angle = angle;
+        this.position = position;
         addRequirements(climber);
     }
 
     public void initialize() {
-        climber.setAngle(angle);
+        climber.setPosition(position);
     }
 }

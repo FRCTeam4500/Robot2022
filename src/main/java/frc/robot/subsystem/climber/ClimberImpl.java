@@ -16,9 +16,9 @@ public class ClimberImpl implements Climber {
     }
 
     @Override
-    public void setAngle(double angle) {
-        targetTiltAngle = angle;
-        tiltMotor.setAngle(angle);
+    public void setPosition(int position) {
+        targetTiltAngle = position;
+        tiltMotor.setAngle(position);
     }
 
     @Override
@@ -27,12 +27,15 @@ public class ClimberImpl implements Climber {
         chainMotor.setOutput(output);
     }
 
+    public void setTiltOutput(double output){
+        tiltMotor.setOutput(output);
+    }
 
 
     @Override
     public void initSendable(SendableBuilder builder) {
         builder.addBooleanProperty("Active", () -> !(targetTiltAngle >= 0), null); //TODO: idk how to make it "active" if its either below or above I think this only selects one or the other
-        builder.addDoubleProperty("Target tilt angle", () -> targetTiltAngle, null);
+        builder.addDoubleProperty("Target tilt position", () -> targetTiltAngle, null);
         builder.addDoubleProperty("Target chain output", () -> targetChainOutput, null);
         builder.addDoubleProperty("current tilt angle", () -> tiltMotor.getAngle(), null);
         builder.addDoubleProperty("current chain output", chainMotor::getOutput, null);

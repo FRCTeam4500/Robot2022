@@ -11,7 +11,7 @@ public class ClimberSetOutputCommand extends InstantCommand{
 
     public ClimberSetOutputCommand(Climber climber) {
         this.climber = climber;
-        this.speed = ClimberConstants.MAX_OUTPUT;
+        this.speed = ClimberConstants.CHAINS_RUN_SPEED;
     }
 
     public ClimberSetOutputCommand(Climber climber, double output) {

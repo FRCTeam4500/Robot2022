@@ -78,23 +78,26 @@ public class PrimaryRobotContainer implements RobotContainer{
     private ControllerInfo info = new ControllerInfo();
 
     private JoystickButton lockSwerveRotationButton = new JoystickButton(driveStick, 1);
-    private JoystickButton switchDriveModeRobotCentric = new JoystickButton(driveStick, 2);
-    private JoystickButton switchDriveModePolar = new JoystickButton(driveStick, 4);
-    private JoystickButton resetGyro = new JoystickButton(driveStick, 5);
-    private JoystickButton limitSwerveSpeed = new JoystickButton(driveStick, 4);
+    private JoystickButton switchDriveModeRobotCentric = new JoystickButton(driveStick, 4);
+    private JoystickButton switchDriveModePolar = new JoystickButton(driveStick, 8);
+    private JoystickButton resetGyro = new JoystickButton(driveStick, 10);
+    private JoystickButton limitSwerveSpeed = new JoystickButton(driveStick, 2);
 
     private Joystick controlStick = new Joystick(1);
 
     private JoystickButton intakeButton = new JoystickButton(controlStick, 1);
-    private JoystickButton shootButton = new JoystickButton(controlStick, 3);
-    //private JoystickButton reverseLoadButton = new JoystickButton(controlStick, 4);
-    private JoystickButton dumpButton = new JoystickButton(controlStick, 5);
+    private JoystickButton shootButton = new JoystickButton(controlStick, 4);
+    private JoystickButton reverseLoadButton = new JoystickButton(controlStick, 2);
+    private JoystickButton dumpButton = new JoystickButton(controlStick, 3);
 
 
-    private JoystickButton climberTiltUp = new JoystickButton(controlStick, 12);
-    private JoystickButton climberTiltDown = new JoystickButton(controlStick, 11);
-    private JoystickButton climberRunChainsForward = new JoystickButton(controlStick, 6);
-    private JoystickButton climberRunChainsBackward = new JoystickButton(controlStick, 4);
+    private JoystickButton climberTiltUp = new JoystickButton(controlStick, 9);
+    private JoystickButton climberTiltDown = new JoystickButton(controlStick, 10);
+    private JoystickButton climberTiltNegative = new JoystickButton(controlStick, 6);
+    private JoystickButton climberRunChainsForward = new JoystickButton(controlStick, 8);
+    private JoystickButton climberRunChainsBackward = new JoystickButton(controlStick, 7);
+    private JoystickButton climberTiltOutputForward = new JoystickButton(controlStick, 12);
+    private JoystickButton climberTiltOutputReverse = new JoystickButton(controlStick, 11);
     
     private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
 
@@ -110,7 +113,6 @@ public class PrimaryRobotContainer implements RobotContainer{
         configureIntakeAndCameraAndArm();
         configureShooting();
         configureAutonomous();
-        configureClimber();
     }
 
     void configureControls(){
@@ -137,6 +139,8 @@ public class PrimaryRobotContainer implements RobotContainer{
         // When tilt down
         climberTiltDown.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_DOWN_ANGLE));
 
+
+        climberTiltNegative.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_CLIMB_ANGLE));
         // When chains run forward
         climberRunChainsForward.whenPressed(new ClimberChainsRunCommand(climber, ClimberConstants.CHAINS_RUN_SPEED));
         climberRunChainsForward.whenReleased(new ClimberChainsRunCommand(climber, 0));
@@ -144,6 +148,11 @@ public class PrimaryRobotContainer implements RobotContainer{
         // When chains run backwards
         climberRunChainsBackward.whenPressed(new ClimberChainsRunCommand(climber, -ClimberConstants.CHAINS_RUN_SPEED));
         climberRunChainsBackward.whenReleased(new ClimberChainsRunCommand(climber, 0));
+
+        climberTiltOutputForward.whenPressed(() -> climber.setTiltOutput(1));
+        climberTiltOutputForward.whenReleased(() -> climber.setTiltOutput(0));
+        climberTiltOutputReverse.whenPressed(() -> climber.setTiltOutput(-1));
+        climberTiltOutputReverse.whenReleased(() -> climber.setTiltOutput(0));
     }
 
     void configureSwerve() {
@@ -185,7 +194,7 @@ public class PrimaryRobotContainer implements RobotContainer{
         
         Shuffleboard.getTab("Intake").add("Intake", intake);
         Shuffleboard.getTab("Intake").add("Arm", arm);
-        Shuffleboard.getTab("Intake").add("Intake Camera", camOne);
+        //Shuffleboard.getTab("Intake").add("Intake Camera", camOne);
     }
 
     void configureShooting() {
@@ -196,18 +205,19 @@ public class PrimaryRobotContainer implements RobotContainer{
         //manual shooting
         ShooterControl control = new ShooterControl(10000, 50);
         Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
-        //shootButton.whenPressed(shootCommand);
-        //shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        shootButton.whenPressed(shootCommand);
+        shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        Shuffleboard.getTab("Shooting").add("Shooter control", control);
         //TODO: swap all command cancels with null checked ones
         //Automated shooting
-        shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader, calculator).alongWith(new InstantCommand(() -> {swerveCommand.limitSpeed = true;})));
-        shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0); swerveCommand.limitSpeed = false;});
+        //shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader, calculator).alongWith(new InstantCommand(() -> {swerveCommand.limitSpeed = true;})));
+        //shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0); swerveCommand.limitSpeed = false;});
 
         //Run shooter and loader in reverse
         Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(10000,50)),
                 new LoaderSetOutputCommand(loader, -1));
-        //reverseLoadButton.whenPressed(reverseLoadCommand);
-        //reverseLoadButton.whenReleased(() -> {loader.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        reverseLoadButton.whenPressed(reverseLoadCommand);
+        reverseLoadButton.whenReleased(() -> {loader.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
 
         Command dumpCommand = new DumpBallCommand(turret, shooter, vision, loader);
         dumpButton.whenPressed(dumpCommand);
@@ -215,7 +225,7 @@ public class PrimaryRobotContainer implements RobotContainer{
 
         //Shuffleboard
         ShuffleboardTab tab = Shuffleboard.getTab("Shooting");
-        //tab.add("Shooter control", control);
+        //tab
         tab.add("Shooter", shooter);
         tab.add("Turret", turret);
         tab.add("Loader", loader);
