@@ -88,7 +88,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
             zSpeed = ceiling(zSpeed, limitedSpeed);
         }
         if (alignWithTarget){
-            zSpeed = 0.4 * polarAngleAdjustmentController.calculate(turret.getAngle(), turret.getOffset()); //try to align turret with target offset, and thus, robot with target, by moving the swerve
+            zSpeed = polarAngleAdjustmentController.calculate(vision.getHorizontalOffsetFromCrosshair(), turret.getOffset()); //try to align turret with target offset, and thus, robot with target, by moving the swerve
         }
         if (lockRotation)
             zSpeed = 0;
