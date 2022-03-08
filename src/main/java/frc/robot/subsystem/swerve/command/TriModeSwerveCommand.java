@@ -56,7 +56,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
     public boolean limitSpeed = false;
     public boolean alignWithTarget = false;
 
-    private double limitedSpeed = .75;
+    private double limitedSpeed = .5;
 
     public TriModeSwerveCommand(Swerve swerve, Joystick joystick, ControllerInfo controllerInfo, Vision vision, Turret turret, DashboardMessageDisplay messageDisplay){
         this.swerve = swerve;
@@ -73,7 +73,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
          * otherwise there will be a positive feedback loop and the bot will go into an out of control spin cycle,
          * then most likely disassemble itself in a way akin to that of a dryer with a brick in it.
          */
-        polarAngleAdjustmentController = new PIDController(-0.5,0,0);
+        polarAngleAdjustmentController = new PIDController(1,0,0);
         addRequirements(swerve);
     }
 
@@ -88,7 +88,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
             zSpeed = ceiling(zSpeed, limitedSpeed);
         }
         if (alignWithTarget){
-            zSpeed = polarAngleAdjustmentController.calculate(vision.getHorizontalOffsetFromCrosshair(), turret.getOffset()); //try to align turret with target offset, and thus, robot with target, by moving the swerve
+            zSpeed = 2 * polarAngleAdjustmentController.calculate(turret.getAngle(), turret.getOffset()); //try to align turret with target offset, and thus, robot with target, by moving the swerve
         }
         if (lockRotation)
             zSpeed = 0;

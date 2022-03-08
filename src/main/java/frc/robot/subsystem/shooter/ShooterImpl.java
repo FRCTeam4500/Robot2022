@@ -25,7 +25,8 @@ public class ShooterImpl implements Shooter{
     public void setSpeed(double speed) {
         targetSpeed = speed;
         double speedRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(speed);
-        shooterMotor.setAngularVelocity(speedRadPerSec / 2); //divided by 2 for gear ratio
+        //shooterMotor.setAngularVelocity(speedRadPerSec / 2); //divided by 2 for gear ratio
+        shooterMotor.setAngularVelocity(0);
     }
 
     public double getSpeed() {

@@ -69,7 +69,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     private PathFollowingSwerve swerve = HardwareSwerveFactory.makeSwerve();
     private Turret turret = HardwareTurretFactory.makeTurret();
     private Vision vision = HardwareVisionFactory.makeVision();
-    private CameraImpl camOne = HardwareCameraFactory.makeCameraInstance();
+    //private CameraImpl camOne = HardwareCameraFactory.makeCameraInstance();
     private Climber climber = HardwareClimberFactory.makeClimber();
     //private CameraInstance camera = HardwareCameraFactory.makeCameraInstance();
 
@@ -166,7 +166,7 @@ public class PrimaryRobotContainer implements RobotContainer{
         lockSwerveRotationButton.whenPressed(() -> {swerveCommand.lockRotation = true;});
         lockSwerveRotationButton.whenReleased(() -> {swerveCommand.lockRotation = false;});
 
-        limitSwerveSpeed.whenPressed(() -> {swerveCommand.limitSpeed = true; swerveCommand.alignWithTarget = true;});
+        limitSwerveSpeed.whenPressed(() -> {swerveCommand.limitSpeed = true; swerveCommand.alignWithTarget = false;});
         limitSwerveSpeed.whenReleased(() -> {swerveCommand.limitSpeed = false; swerveCommand.alignWithTarget = false;});
 
         resetGyro.whenPressed(new InstantCommand(() -> {swerve.resetRobotAngle();}));
@@ -189,7 +189,7 @@ public class PrimaryRobotContainer implements RobotContainer{
         );
 
         // configure camera
-        camOne.start();
+        //camOne.start();
         
         
         Shuffleboard.getTab("Intake").add("Intake", intake);
@@ -214,7 +214,7 @@ public class PrimaryRobotContainer implements RobotContainer{
         shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0); swerveCommand.limitSpeed = false;});
 
         //Run shooter and loader in reverse
-        Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(10000,50)),
+        Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(20000,50)),
                 new LoaderSetOutputCommand(loader, -1));
         reverseLoadButton.whenPressed(reverseLoadCommand);
         reverseLoadButton.whenReleased(() -> {loader.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});

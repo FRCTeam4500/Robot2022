@@ -13,8 +13,6 @@ import frc.robot.subsystem.intake.command.IntakeSetOutputCommand;
 import frc.robot.subsystem.shooter.command.AutomatedShootingCommand;
 import frc.robot.subsystem.shooter.command.ManualShootingCommand;
 import frc.robot.subsystem.shooter.util.ShooterControl;
-import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajectoryCommand;
-import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajectoryWithEndRotationOffsetCommand;
 import frc.robot.utility.ExtendedTrajectoryUtilities;
 
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
@@ -34,16 +32,17 @@ public class ConsoleThirdPart extends SequentialCommandGroup{
 
     addCommands(
             new ParallelCommandGroup(
-                    NewTrajectoryUtilities.generateSwerveControllerCommand(swerve,path1),
+                    NewTrajectoryUtilities.generateSwerveControllerCommand(swerve,path1, false, new Rotation2d(Math.PI/2)),
                     new IntakeSetOutputCommand(intake)
                     ).withTimeout(3),
-      new WaitCommand(1),
+      new WaitCommand(2),
+      
       new ParallelCommandGroup(
-              NewTrajectoryUtilities.generateSwerveControllerCommand(swerve, path2, true),
+              NewTrajectoryUtilities.generateSwerveControllerCommand(swerve, path2, false, new Rotation2d(Math.PI/4)),
               new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE),
               new IntakeSetOutputCommand(intake, 0)
       ).withTimeout(3),
-            new AutomatedShootingCommand(shooter, vision, loader, calculator)
+            new AutomatedShootingCommand(shooter, vision, loader, calculator).withTimeout(2)
     );
     }
     

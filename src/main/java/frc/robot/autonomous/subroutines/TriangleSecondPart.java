@@ -20,9 +20,6 @@ import frc.robot.subsystem.shooter.command.AutomatedShootingCommand;
 import frc.robot.subsystem.shooter.command.ShooterSpinDownCommand;
 import frc.robot.subsystem.shooter.util.ShooterControl;
 import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
-import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajectoryCommand;
-import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowDottedTrajectoryWithEndRotationOffsetCommand;
-import frc.robot.subsystem.swerve.pathfollowingswerve.command.FollowTrajectoryCommand;
 import frc.robot.subsystem.turret.Turret;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.utility.ExtendedTrajectoryUtilities;
@@ -44,7 +41,7 @@ public class TriangleSecondPart extends SequentialCommandGroup {
                 ).withTimeout(2),
                 new InstantCommand(() -> swerve.moveRobotCentric(0,0,0)),
                 new InstantCommand(() -> turret.setAngle(0)),
-                new WaitCommand(0.5),
+                new WaitCommand(1),
                 new ParallelCommandGroup(
                         new AutomatedShootingCommand(shooter, vision, loader, calculator),
 
