@@ -166,8 +166,8 @@ public class PrimaryRobotContainer implements RobotContainer{
         lockSwerveRotationButton.whenPressed(() -> {swerveCommand.lockRotation = true;});
         lockSwerveRotationButton.whenReleased(() -> {swerveCommand.lockRotation = false;});
 
-        limitSwerveSpeed.whenPressed(() -> {swerveCommand.limitSpeed = true;});
-        limitSwerveSpeed.whenReleased(() -> {swerveCommand.limitSpeed = false;});
+        limitSwerveSpeed.whenPressed(() -> {swerveCommand.limitSpeed = true; swerveCommand.alignWithTarget = true;});
+        limitSwerveSpeed.whenReleased(() -> {swerveCommand.limitSpeed = false; swerveCommand.alignWithTarget = false;});
 
         resetGyro.whenPressed(new InstantCommand(() -> {swerve.resetRobotAngle();}));
         swerve.setDefaultCommand(swerveCommand);

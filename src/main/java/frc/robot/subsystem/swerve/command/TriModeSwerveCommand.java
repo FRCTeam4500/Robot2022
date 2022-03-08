@@ -54,6 +54,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
 
     public boolean lockRotation = false;
     public boolean limitSpeed = false;
+    public boolean alignWithTarget = false;
 
     private double limitedSpeed = .75;
 
@@ -85,6 +86,9 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
             xSpeed = ceiling(xSpeed, limitedSpeed);
             ySpeed = ceiling(ySpeed, limitedSpeed);
             zSpeed = ceiling(zSpeed, limitedSpeed);
+        }
+        if (alignWithTarget){
+            zSpeed = 0.4 * polarAngleAdjustmentController.calculate(turret.getAngle(), turret.getOffset()); //try to align turret with target offset, and thus, robot with target, by moving the swerve
         }
         if (lockRotation)
             zSpeed = 0;
@@ -169,5 +173,6 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
         builder.addDoubleProperty("controller y", joystick::getY, null);
         builder.addDoubleProperty("controller z", joystick::getZ, null);
         builder.addBooleanProperty("Limit Speed", () -> {return limitSpeed;}, null);
+        builder.addBooleanProperty("align with target", () -> alignWithTarget, null );
     }
 }

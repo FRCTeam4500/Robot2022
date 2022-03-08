@@ -31,11 +31,14 @@ public class TurretDefaultCommand extends CommandBase {
 
     public void execute(){
         if (vision.hasValidTargets()){
+            double shooterOffset = ShooterParameterCalculator.getTurretOffset(VisionDistanceCalculator.calculateDistance(vision), calculator);
+            turret.setOffset(shooterOffset);
             turret.setOutput(controller.calculate(
-                    vision.getHorizontalOffsetFromCrosshair(), ShooterParameterCalculator.getTurretOffset(VisionDistanceCalculator.calculateDistance(vision), calculator)));
+                    vision.getHorizontalOffsetFromCrosshair(), shooterOffset));
         }
         else{
-            turret.setAngle(0);
+            turret.setOffset(0);
+            //turret.setAngle(0);
         } 
     }
 }

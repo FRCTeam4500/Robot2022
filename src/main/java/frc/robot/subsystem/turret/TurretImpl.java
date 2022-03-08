@@ -41,7 +41,13 @@ public class TurretImpl implements Turret{
         motor.setOutput(output);
     }
 
+    public void setOffset(double offset){
+        targetOffset = offset;
+    }
 
+    public double getOffset(){
+        return targetOffset;
+    }
 
 
     public void initSendable(SendableBuilder builder){
