@@ -30,4 +30,7 @@ public class Rainbow implements LightRoutine {
 
         firstPixelHue %= 180;
     }
+    public int getPeriod(){
+        return 60;
+    }
 }
