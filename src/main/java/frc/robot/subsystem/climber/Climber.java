@@ -7,4 +7,5 @@ public interface Climber extends Subsystem, Sendable {
     void setPosition(int position);
     void setOutput(double output);
     void setTiltOutput(double output);
+    void setChainPosition(int position);
 }

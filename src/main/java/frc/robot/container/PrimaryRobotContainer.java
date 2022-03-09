@@ -241,7 +241,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     void configureLights(){
         turretLights.setCurrentRoutine(Lights.Routines.blueorbit);
     }
-    c
+
     void configureAutonomous(){
         autonChooser.setDefaultOption("First Ball", new FirstBallAuto(swerve, arm, shooter, intake, vision, loader, turretLights, calculator));
         autonChooser.addOption("Triangle Auto", new TriangleAuto(swerve, arm, intake, shooter, vision, loader, turret, turretLights, calculator));
