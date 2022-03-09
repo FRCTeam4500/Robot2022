@@ -44,6 +44,17 @@ public class NewTrajectoryUtilities {
     }
 
     /**
+     * Generates a swerve path following command
+     * @param swerve The swerve
+     * @param path The path to folow
+     * @param endRotationOffset the offset for the end rotation angle
+     * @return SequentialCommandGroup consisting of the swerve command and a command to stop the swerve at the end
+     */
+    public static SequentialCommandGroup generateSwerveControllerCommand(PathFollowingSwerve swerve, Trajectory path, Rotation2d endRotationOffset){
+        return generateSwerveControllerCommand(swerve, path, false, endRotationOffset);
+    }
+
+    /**
      * Generates a Swerve path following command. This command does not rotate continuously, it targets the end rotation of the path.
      * If you want continuous rotation, use the SwerveControllerCommand constructor which takes rotation input.
      * It's the first one in the file.

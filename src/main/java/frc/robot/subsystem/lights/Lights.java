@@ -50,13 +50,17 @@ public class Lights extends SubsystemBase {
         }
     }
 
-    enum Routines{
+    public enum Routines{
         rainbow,
         blueorange,
+        bigblueorange,
+        stopblueorange,
         blueorangereverse,
         bluesine,
         orangesinereverse,
         blueflash,
+        orangeflash,
+        blueorbit,
         orangeorbit,
         redflash,
         random,
@@ -72,13 +76,17 @@ public class Lights extends SubsystemBase {
     private void initMap(){
         lightRoutines.put(Routines.rainbow, new Rainbow());
         lightRoutines.put(Routines.blueorange, new Overlap(6, claytonBlueBright, claytonOrangeBright));
-        lightRoutines.put(Routines.blueorangereverse, new OverlapReverse(6, claytonOrangeBright,claytonBlueBright));
+        lightRoutines.put(Routines.blueorangereverse, new Overlap(6, claytonOrangeBright,claytonBlueBright, true));
         lightRoutines.put(Routines.bluesine, new Sine(10, claytonBlueBright));
-        lightRoutines.put(Routines.orangesinereverse, new SineReverse(10, claytonOrangeBright));
+        lightRoutines.put(Routines.orangesinereverse, new Sine(10, claytonOrangeBright, true));
         lightRoutines.put(Routines.random, new Random());
         lightRoutines.put(Routines.blueflash, new Flash(10, claytonBlueBright, wpiCol(0,0,0)));
-        lightRoutines.put(Routines.orangeorbit, new Orbit(5, claytonOrangeBright, new Color(0,0,0)));
+        lightRoutines.put(Routines.orangeorbit, new Orbit(5, claytonOrangeBright, new Color(0,0,0), true));
         lightRoutines.put(Routines.redflash,new Flash(10, wpiCol(255,0,0), wpiCol(0,0,0)));
+        lightRoutines.put(Routines.orangeflash, new Flash(10, claytonOrangeBright, wpiCol(0,0,0)));
+        lightRoutines.put(Routines.blueorbit, new Orbit(5, claytonBlueBright, wpiCol(0,0,0)));
+        lightRoutines.put(Routines.bigblueorange, new Overlap(12, claytonBlueBright, claytonOrangeBright, 2));
+        lightRoutines.put(Routines.stopblueorange, new Alternate(6, claytonBlueBright, claytonOrangeBright));
     }
 
 
