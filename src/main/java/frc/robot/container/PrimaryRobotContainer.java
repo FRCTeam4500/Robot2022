@@ -69,7 +69,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     private PathFollowingSwerve swerve = HardwareSwerveFactory.makeSwerve();
     private Turret turret = HardwareTurretFactory.makeTurret();
     private Vision vision = HardwareVisionFactory.makeVision();
-    //private CameraImpl camOne = HardwareCameraFactory.makeCameraInstance();
+    private CameraImpl camOne = HardwareCameraFactory.makeCameraInstance();
     private Climber climber = HardwareClimberFactory.makeClimber();
     //private CameraInstance camera = HardwareCameraFactory.makeCameraInstance();
 
@@ -189,7 +189,7 @@ public class PrimaryRobotContainer implements RobotContainer{
         );
 
         // configure camera
-        //camOne.start();
+        camOne.start();
         
         
         Shuffleboard.getTab("Intake").add("Intake", intake);
