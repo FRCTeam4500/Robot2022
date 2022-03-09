@@ -37,7 +37,9 @@ public class CameraImpl {
         new Thread(() -> {
             CvSink cvSink = CameraServer.getVideo();
             CvSource outputStream = CameraServer.putVideo("Camera Stream", CameraConstants.width, CameraConstants.height);
+
             Mat source = new Mat();
+            Mat rotatedSource = new Mat();
 
             while(!Thread.interrupted()) {
                 if (cvSink.grabFrame(source) == 0) {
@@ -45,11 +47,11 @@ public class CameraImpl {
                     continue; // skip the rest of the current iteration
                 }
 
-                Core.rotate(source, source, 90); // I don't know if this works
+                Core.rotate(source, rotatedSource, 90); // I don't know if this works
 
-                cvSink.grabFrame(source);
+                cvSink.grabFrame(rotatedSource);
 
-                outputStream.putFrame(source);
+                outputStream.putFrame(rotatedSource);
 
             }
         }).start();
