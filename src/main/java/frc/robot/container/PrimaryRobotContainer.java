@@ -48,6 +48,7 @@ import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.vision.util.VisionDistanceCalculator;
 import frc.robot.utility.ControllerInfo;
 import frc.robot.utility.PolarVelocityCalculator;
+import frc.robot.subsystem.loader.command.LoaderSetOutputCommand;
 
 
 import frc.robot.subsystem.climber.Climber;
@@ -185,7 +186,7 @@ public class PrimaryRobotContainer implements RobotContainer{
 
         //Run shooter and loader in reverse
         Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(10000,50)),
-                new LoaderRunCommand(loader, -1));
+                new LoaderSetOutputCommand(loader, -1));
         //reverseLoadButton.whenPressed(reverseLoadCommand);
         //reverseLoadButton.whenReleased(() -> {loader.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
 
