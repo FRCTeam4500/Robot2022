@@ -14,6 +14,7 @@ import frc.robot.subsystem.arm.ArmConstants;
 import frc.robot.subsystem.arm.command.ArmSetAngleCommand;
 import frc.robot.subsystem.intake.Intake;
 import frc.robot.subsystem.intake.command.IntakeRunCommand;
+import frc.robot.subsystem.lights.Lights;
 import frc.robot.subsystem.loader.Loader;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.command.AutomatedShootingCommand;
@@ -32,7 +33,7 @@ import frc.robot.utility.PolarVelocityCalculator;
 
 public class TriangleSecondPart extends SequentialCommandGroup {
 
-    public TriangleSecondPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader, Turret turret, PolarVelocityCalculator calculator) {
+    public TriangleSecondPart(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader, Turret turret, Lights lights, PolarVelocityCalculator calculator) {
         Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("TriangleSecondPart");
         addCommands(
                 new ParallelCommandGroup(
@@ -42,11 +43,13 @@ public class TriangleSecondPart extends SequentialCommandGroup {
                 new InstantCommand(() -> swerve.moveRobotCentric(0,0,0)),
                 new InstantCommand(() -> turret.setAngle(0)),
                 new WaitCommand(1),
+                new InstantCommand(() -> lights.setCurrentRoutine(Lights.Routines.blueflash)),
                 new ParallelCommandGroup(
                         new AutomatedShootingCommand(shooter, vision, loader, calculator),
 
                         new IntakeRunCommand(intake, 0)
                 ).withTimeout(2),
+                new InstantCommand(() -> lights.setCurrentRoutine(Lights.Routines.bluesine)),
                 new ShooterSpinDownCommand(shooter)
         );
     }

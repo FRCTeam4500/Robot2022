@@ -1,7 +1,9 @@
 package frc.robot.autonomous.subroutines;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.subsystem.arm.Arm;
+import frc.robot.subsystem.lights.Lights;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.loader.Loader;
 import frc.robot.subsystem.intake.Intake;
@@ -12,12 +14,13 @@ import frc.robot.subsystem.intake.command.IntakeRunCommand;
 import frc.robot.subsystem.arm.ArmConstants;
 
 public class ResetRobot extends ParallelCommandGroup{
-    public ResetRobot(Arm arm, Shooter shooter, Loader loader, Intake intake){
+    public ResetRobot(Arm arm, Shooter shooter, Loader loader, Intake intake, Lights lights){
         addCommands(
             new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE),
             new ShooterSpinDownCommand(shooter),
             new LoaderSetOutputCommand(loader, 0),
-            new IntakeRunCommand(intake, 0)
+            new IntakeRunCommand(intake, 0),
+                new InstantCommand(() -> lights.setCurrentRoutine(Lights.Routines.blueorbit))
         );
     }
 }
