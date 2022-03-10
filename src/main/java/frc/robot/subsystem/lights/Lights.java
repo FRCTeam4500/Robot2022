@@ -1,5 +1,7 @@
 package frc.robot.subsystem.lights;
 
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color;
@@ -12,7 +14,7 @@ import java.util.Map;
 import static frc.robot.subsystem.lights.LightUtils.*;
 
 
-public class Lights extends SubsystemBase {
+public class Lights extends SubsystemBase implements Sendable {
 
     private AddressableLED lights;
     private AddressableLEDBuffer buffer;
@@ -22,19 +24,24 @@ public class Lights extends SubsystemBase {
     private int period = 1;
 
     private LightRoutine currentLightRoutine;
+    private Routines currentEnum;
 
 
     public Lights(int period, int port, int size){
         initMap();
         currentLightRoutine = lightRoutines.get(Routines.rainbow);
         lights = new AddressableLED(port);
+        lights.setLength(size);
         buffer = new AddressableLEDBuffer(size);
+        lights.start();
         this.size = size;
     }
 
     public void periodic(){
         increment();
         currentLightRoutine.updateLEDData(buffer,cycleAdjust);
+        //System.out.println(buffer.getLED(1).red);
+        //System.out.println(cycle);
         lights.setData(buffer);
     }
 
@@ -68,6 +75,7 @@ public class Lights extends SubsystemBase {
     }
 
     public void setCurrentRoutine(Routines routine){
+        currentEnum = routine;
         currentLightRoutine = lightRoutines.get(routine);
     }
 
@@ -84,9 +92,14 @@ public class Lights extends SubsystemBase {
         lightRoutines.put(Routines.orangeorbit, new Orbit(5, claytonOrangeBright, new Color(0,0,0), true));
         lightRoutines.put(Routines.redflash,new Flash(10, wpiCol(255,0,0), wpiCol(0,0,0)));
         lightRoutines.put(Routines.orangeflash, new Flash(10, claytonOrangeBright, wpiCol(0,0,0)));
-        lightRoutines.put(Routines.blueorbit, new Orbit(5, claytonBlueBright, wpiCol(0,0,0)));
+        lightRoutines.put(Routines.blueorbit, new Orbit(5, claytonBlueBright, wpiCol(0,0,0), 4));
         lightRoutines.put(Routines.bigblueorange, new Overlap(12, claytonBlueBright, claytonOrangeBright, 2));
         lightRoutines.put(Routines.stopblueorange, new Alternate(6, claytonBlueBright, claytonOrangeBright));
+    }
+
+    public void initSendable(SendableBuilder builder){
+        builder.addStringProperty("Routine", () -> currentEnum.name(), null);
+        builder.addDoubleProperty("color 1", () -> {return buffer.getLED(1).red;}, null);
     }
 
 

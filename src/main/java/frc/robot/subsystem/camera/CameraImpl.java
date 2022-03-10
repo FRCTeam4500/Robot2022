@@ -34,7 +34,7 @@ public class CameraImpl {
     public void createSimpleStream() {
         /**UsbCamera camera = CameraServer.startAutomaticCapture(id);
         camera.setResolution(CameraConstants.width, CameraConstants.height); */
-
+/**
         UsbCamera camera = CameraServer.startAutomaticCapture(id);
         camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, CameraConstants.width, CameraConstants.height, 32);
 
@@ -55,6 +55,7 @@ public class CameraImpl {
                 outputStream.putFrame(source);
             }
         }).start();
+        */
     }
 
 

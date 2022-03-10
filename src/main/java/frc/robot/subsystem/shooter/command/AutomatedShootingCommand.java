@@ -22,9 +22,9 @@ public class AutomatedShootingCommand extends SequentialCommandGroup {
         addRequirements(shooter, loader);
         addCommands(
             new ParallelCommandGroup(
-                new ShooterContinuousRunCommand(shooter, () -> {return ShooterParameterCalculator.getSpeed(
-                        ShooterParameterCalculator.getAdjustedDistance(VisionDistanceCalculator.calculateDistance(vision), calculator)
-                );}),
+                new ShooterContinuousRunCommand(shooter, () -> ShooterParameterCalculator.getSpeed(
+                    VisionDistanceCalculator.calculateDistance(vision))
+                ),
                 new LoaderRunConditionalCommand(loader, shooter::atSpeed)) // () -> {return shooter.atSpeed();}  shoots when shooter is at speed
         );
     }

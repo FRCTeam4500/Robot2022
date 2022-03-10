@@ -53,5 +53,6 @@ public class TurretImpl implements Turret{
     public void initSendable(SendableBuilder builder){
         builder.addDoubleProperty("Target Angle", () -> targetAngle, null);
         builder.addDoubleProperty("Current Angle", () -> getAngle(), null);
+        builder.addDoubleProperty("Target Offset", () -> getOffset(), null);
     }
 }

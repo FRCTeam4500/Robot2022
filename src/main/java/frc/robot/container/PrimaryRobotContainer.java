@@ -108,7 +108,8 @@ public class PrimaryRobotContainer implements RobotContainer{
     private PolarVelocityCalculator calculator;
     private TriModeSwerveCommand swerveCommand;
 
-    private Lights.Routines defaultRoutine = Lights.Routines.blueorange;
+    //private Lights.Routines defaultRoutine = Lights.Routines.blueorange;
+    private Lights.Routines defaultRoutine = Lights.Routines.rainbow;
 
     public PrimaryRobotContainer(){
         configureControls();
@@ -209,15 +210,15 @@ public class PrimaryRobotContainer implements RobotContainer{
         //loader.setDefaultCommand(new LoaderRunCommand(loader, 0));
 
         //manual shooting
-        ShooterControl control = new ShooterControl(10000, 50);
-        Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
-        shootButton.whenPressed(shootCommand);
-        shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
-        Shuffleboard.getTab("Shooting").add("Shooter control", control);
+        //ShooterControl control = new ShooterControl(10000, 50);
+        //Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
+        //shootButton.whenPressed(shootCommand);
+        //shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        //Shuffleboard.getTab("Shooting").add("Shooter control", control);
         //TODO: swap all command cancels with null checked ones
         //Automated shooting
-        //shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader, calculator).alongWith(new InstantCommand(() -> {swerveCommand.limitSpeed = true;})));
-        //shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0); swerveCommand.limitSpeed = false;});
+        shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader, calculator).alongWith(new InstantCommand(() -> {swerveCommand.limitSpeed = true;})));
+        shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0); swerveCommand.limitSpeed = false;});
 
         //Run shooter and loader in reverse
         Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(20000,50)),
@@ -240,6 +241,7 @@ public class PrimaryRobotContainer implements RobotContainer{
 
     void configureLights(){
         turretLights.setCurrentRoutine(Lights.Routines.blueorbit);
+        Shuffleboard.getTab("Light").add("light", turretLights);
     }
 
     void configureAutonomous(){

@@ -26,7 +26,8 @@ public class TurretDefaultCommand extends CommandBase {
         this.vision = vision;
         this.calculator = calculator;
         addRequirements(turret);
-        controller = new ProfiledPIDController(-1.8, 0, 0, new TrapezoidProfile.Constraints(5,1)); 
+        controller = new ProfiledPIDController(-3.5, 0, 0, new TrapezoidProfile.Constraints(5,1)); 
+       // controller = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(5,1)); 
     }
 
     public void execute(){
@@ -34,11 +35,11 @@ public class TurretDefaultCommand extends CommandBase {
             double shooterOffset = ShooterParameterCalculator.getTurretOffset(VisionDistanceCalculator.calculateDistance(vision), calculator);
             turret.setOffset(shooterOffset);
             turret.setOutput(controller.calculate(
-                    vision.getHorizontalOffsetFromCrosshair(), shooterOffset));
+                    vision.getHorizontalOffsetFromCrosshair(), 0)); //set 0 to turret offset for shoot while move
         }
         else{
             turret.setOffset(0);
-            //turret.setAngle(0);
+            turret.setAngle(0);
         } 
     }
 }
