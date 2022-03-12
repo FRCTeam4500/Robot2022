@@ -13,5 +13,5 @@ Back Left Angle: 11
 Back Left Drive: 12
 Loader: 13
 Shooter: 14
-Climber Angle: 15
-Climber Chain: 16
+Climber Angle Left: 15 # Left Facing Front (Intake side)
+Climber Angle Right: 16 # Right Facing Front (Intake side)

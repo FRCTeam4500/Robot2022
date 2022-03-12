@@ -45,12 +45,13 @@ public class TriangleSecondPart extends SequentialCommandGroup {
                 new WaitCommand(1),
                 new InstantCommand(() -> lights.setCurrentRoutine(Lights.Routines.blueflash)),
                 new ParallelCommandGroup(
-                        new AutomatedShootingCommand(shooter, vision, loader, calculator),
+                        new AutomatedShootingCommand(shooter, vision, loader, turret, calculator),
 
                         new IntakeRunCommand(intake, 0)
                 ).withTimeout(2),
                 new InstantCommand(() -> lights.setCurrentRoutine(Lights.Routines.bluesine)),
-                new ShooterSpinDownCommand(shooter)
+                new ShooterSpinDownCommand(shooter),
+                new InstantCommand(() -> loader.setOutput(0))
         );
     }
 }

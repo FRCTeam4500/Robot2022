@@ -7,6 +7,7 @@ import frc.robot.component.SmartMotorComponent;
 public class TurretImpl implements Turret{
     private SmartMotorComponent motor;
     private double targetAngle;
+    private boolean enabled = true;
 
     private double targetOffset;
     public TurretImpl(SmartMotorComponent motor){
@@ -24,7 +25,9 @@ public class TurretImpl implements Turret{
         else{
             targetAngle = angle;
         }
-        motor.setAngle(targetAngle / TurretConstants.TURRET_RATIO);
+        if (enabled)
+            motor.setAngle(targetAngle / TurretConstants.TURRET_RATIO);
+
     }
 
     public double getAngle(){
@@ -38,7 +41,8 @@ public class TurretImpl implements Turret{
      * @param output Percent output of the motor
      */
     public void setOutput(double output){
-        motor.setOutput(output);
+        if (enabled)
+            motor.setOutput(output);
     }
 
     public void setOffset(double offset){
@@ -49,10 +53,15 @@ public class TurretImpl implements Turret{
         return targetOffset;
     }
 
+    public void setEnabled(boolean enabled){
+        this.enabled = enabled;
+    }
+
 
     public void initSendable(SendableBuilder builder){
         builder.addDoubleProperty("Target Angle", () -> targetAngle, null);
         builder.addDoubleProperty("Current Angle", () -> getAngle(), null);
         builder.addDoubleProperty("Target Offset", () -> getOffset(), null);
+        builder.addBooleanProperty("enabled", () -> {return enabled;}, null);
     }
 }

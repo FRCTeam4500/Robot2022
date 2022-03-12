@@ -17,7 +17,7 @@ import frc.robot.utility.PolarVelocityCalculator;
 public class TriangleAuto extends SequentialCommandGroup {
     public TriangleAuto(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader, Turret turret, Lights lights, PolarVelocityCalculator calculator) {
         addCommands(
-                new FirstBall(swerve, arm, intake, shooter, vision, loader, lights, calculator),
+                new FirstBall(swerve, arm, intake, shooter, vision, loader, turret, lights, calculator),
                 new TriangleSecondPart(swerve, arm, intake, shooter, vision, loader, turret, lights, calculator),
                 new ResetRobot(arm, shooter, loader, intake, lights)
         );

@@ -46,7 +46,7 @@ public class ConsoleThirdPart extends SequentialCommandGroup{
               new IntakeSetOutputCommand(intake, 0)
       ).withTimeout(3),
             new InstantCommand(() -> lights.setCurrentRoutine(Lights.Routines.blueflash)),
-            new AutomatedShootingCommand(shooter, vision, loader, calculator).withTimeout(2)
+            new AutomatedShootingCommand(shooter, vision, loader, turret, calculator).withTimeout(2)
     );
     }
     

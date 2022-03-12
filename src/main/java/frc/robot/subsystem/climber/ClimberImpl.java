@@ -1,18 +1,17 @@
 package frc.robot.subsystem.climber;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import frc.robot.component.DoubleMotorComponent;
 import frc.robot.component.SmartMotorComponent;
 import frc.robot.subsystem.arm.ArmConstants;
+import frc.robot.component.DoubleMotorRunOppositeComponent;
 
 public class ClimberImpl implements Climber {
-    private SmartMotorComponent tiltMotor;
-    private SmartMotorComponent chainMotor;
+    private SmartMotorComponent tiltMotor; //TODO: Find out how hooks for other bars work to implement
     private double targetTiltAngle = 0; //TODO: Find what angle this is
-    private double targetChainOutput = 0; //TODO: LOL
 
-    public ClimberImpl(SmartMotorComponent tiltMotor, SmartMotorComponent chainMotor) {
+    public ClimberImpl(SmartMotorComponent tiltMotor) {
         this.tiltMotor = tiltMotor;
-        this.chainMotor = chainMotor;
     }
 
     @Override
@@ -21,32 +20,15 @@ public class ClimberImpl implements Climber {
         tiltMotor.setAngle(position);
     }
 
-    @Override
-    public void setOutput(double output) {
-        targetChainOutput = output;
-        chainMotor.setOutput(output);
-    }
-
+    
     public void setTiltOutput(double output){
         tiltMotor.setOutput(output);
     }
 
-    /**
-     * set chain position, in radians of the chain motor
-     * @param position
-     */
-    public void setChainPosition(int position){
-        chainMotor.setAngle(position);
-    }
-
+   
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.addBooleanProperty("Active", () -> !(targetTiltAngle >= 0), null); //TODO: idk how to make it "active" if its either below or above I think this only selects one or the other
         builder.addDoubleProperty("Target tilt position", () -> targetTiltAngle, null);
-        builder.addDoubleProperty("Target chain output", () -> targetChainOutput, null);
-        builder.addDoubleProperty("current tilt angle", tiltMotor::getAngle, null);
-        builder.addDoubleProperty("current chain output", chainMotor::getOutput, null);
-        builder.addDoubleProperty("current chain position", chainMotor::getAngle, null);
     }
 }

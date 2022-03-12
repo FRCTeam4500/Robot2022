@@ -9,4 +9,5 @@ public interface Turret extends Subsystem, Sendable {
     void setOutput(double output);
     void setOffset(double offset);
     double getOffset();
+    void setEnabled(boolean enabled);
 }

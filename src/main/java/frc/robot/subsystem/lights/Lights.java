@@ -99,7 +99,8 @@ public class Lights extends SubsystemBase implements Sendable {
 
     public void initSendable(SendableBuilder builder){
         builder.addStringProperty("Routine", () -> currentEnum.name(), null);
-        builder.addDoubleProperty("color 1", () -> {return buffer.getLED(1).red;}, null);
+        builder.addDoubleProperty("red", () -> {return buffer.getLED(1).red;}, null);
+        builder.addDoubleProperty("blue", () -> {return buffer.getLED(1).blue;}, null);
     }
 
 

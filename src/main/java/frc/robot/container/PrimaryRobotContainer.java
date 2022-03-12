@@ -23,7 +23,6 @@ import frc.robot.subsystem.arm.command.ArmSetAngleCommand;
 import frc.robot.subsystem.camera.CameraImpl;
 import frc.robot.subsystem.camera.HardwareCameraFactory;
 import frc.robot.subsystem.climber.ClimberConstants;
-import frc.robot.subsystem.climber.command.ClimberChainsRunCommand;
 import frc.robot.subsystem.climber.command.ClimberSetAngleCommand;
 import frc.robot.subsystem.intake.HardwareIntakeFactory;
 import frc.robot.subsystem.intake.Intake;
@@ -55,6 +54,7 @@ import frc.robot.utility.PolarVelocityCalculator;
 
 
 import frc.robot.subsystem.climber.Climber;
+import frc.robot.subsystem.climber.sequence.ClimbToHighBar;
 import frc.robot.subsystem.climber.HardwareClimberFactory;
 import frc.robot.subsystem.climber.command.ClimberSetAngleCommand;
 import frc.robot.subsystem.camera.HardwareCameraFactory;
@@ -96,8 +96,6 @@ public class PrimaryRobotContainer implements RobotContainer{
     private JoystickButton climberTiltUp = new JoystickButton(controlStick, 9);
     private JoystickButton climberTiltDown = new JoystickButton(controlStick, 10);
     private JoystickButton climberTiltNegative = new JoystickButton(controlStick, 6);
-    private JoystickButton climberRunChainsForward = new JoystickButton(controlStick, 8);
-    private JoystickButton climberRunChainsBackward = new JoystickButton(controlStick, 7);
     private JoystickButton climberTiltOutputForward = new JoystickButton(controlStick, 12);
     private JoystickButton climberTiltOutputReverse = new JoystickButton(controlStick, 11);
     
@@ -114,9 +112,9 @@ public class PrimaryRobotContainer implements RobotContainer{
     public PrimaryRobotContainer(){
         configureControls();
         configureClimber();
-        configureSwerve();
-        configureIntakeAndCameraAndArm();
-        configureShooting();
+        //configureSwerve();
+        //configureIntakeAndCameraAndArm();
+        //configureShooting();
         configureAutonomous();
         configureLights();
     }
@@ -141,24 +139,21 @@ public class PrimaryRobotContainer implements RobotContainer{
         Shuffleboard.getTab("Climber").add("climber", climber);
         // When tilt up
         climberTiltUp.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_UP_ANGLE));
-
+        
         // When tilt down
-        climberTiltDown.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_DOWN_ANGLE));
+        //climberTiltDown.whenPressed(new ParallelCommandGroup( new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_DOWN_ANGLE)/*, new ClimberSetChainPositionCommand(climber, 0)*/));
 
 
-        climberTiltNegative.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_CLIMB_ANGLE));
+        //climberTiltNegative.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_CLIMB_ANGLE));
         // When chains run forward
-        climberRunChainsForward.whenPressed(new ClimberChainsRunCommand(climber, ClimberConstants.CHAINS_RUN_SPEED));
-        climberRunChainsForward.whenReleased(new ClimberChainsRunCommand(climber, 0));
-
         // When chains run backwards
-        climberRunChainsBackward.whenPressed(new ClimberChainsRunCommand(climber, -ClimberConstants.CHAINS_RUN_SPEED));
-        climberRunChainsBackward.whenReleased(new ClimberChainsRunCommand(climber, 0));
 
-        climberTiltOutputForward.whenPressed(() -> climber.setTiltOutput(1));
+        /**climberTiltOutputForward.whenPressed(() -> climber.setTiltOutput(1));
         climberTiltOutputForward.whenReleased(() -> climber.setTiltOutput(0));
         climberTiltOutputReverse.whenPressed(() -> climber.setTiltOutput(-1));
-        climberTiltOutputReverse.whenReleased(() -> climber.setTiltOutput(0));
+        climberTiltOutputReverse.whenReleased(() -> climber.setTiltOutput(0));*/
+
+
     }
 
     void configureSwerve() {
@@ -210,15 +205,15 @@ public class PrimaryRobotContainer implements RobotContainer{
         //loader.setDefaultCommand(new LoaderRunCommand(loader, 0));
 
         //manual shooting
-        //ShooterControl control = new ShooterControl(10000, 50);
-        //Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
-        //shootButton.whenPressed(shootCommand);
-        //shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
-        //Shuffleboard.getTab("Shooting").add("Shooter control", control);
+        ShooterControl control = new ShooterControl(10000, 50);
+        Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
+        shootButton.whenPressed(shootCommand);
+        shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
+        Shuffleboard.getTab("Shooting").add("Shooter control", control);
         //TODO: swap all command cancels with null checked ones
         //Automated shooting
-        shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader, calculator).alongWith(new InstantCommand(() -> {swerveCommand.limitSpeed = true;})));
-        shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0); swerveCommand.limitSpeed = false;});
+        //shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader, turret, calculator).alongWith(new InstantCommand(() -> {swerveCommand.limitSpeed = true;})));
+        //shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0); swerveCommand.limitSpeed = false;});
 
         //Run shooter and loader in reverse
         Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(20000,50)),
@@ -245,7 +240,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     }
 
     void configureAutonomous(){
-        autonChooser.setDefaultOption("First Ball", new FirstBallAuto(swerve, arm, shooter, intake, vision, loader, turretLights, calculator));
+        autonChooser.setDefaultOption("First Ball", new FirstBallAuto(swerve, arm, shooter, intake, vision, loader, turret, turretLights, calculator));
         autonChooser.addOption("Triangle Auto", new TriangleAuto(swerve, arm, intake, shooter, vision, loader, turret, turretLights, calculator));
         autonChooser.addOption("Console Auto", new ConsoleAuto(swerve, arm, shooter, intake, vision, loader, turret, turretLights,  calculator));
         Shuffleboard.getTab("Driver Controls").add("Autonomous Route", autonChooser);
@@ -258,6 +253,7 @@ public class PrimaryRobotContainer implements RobotContainer{
         }
         shooter.setSpeed(0);
         loader.setOutput(0);
+        turret.setEnabled(true);
     }
 
     void resetLights(){

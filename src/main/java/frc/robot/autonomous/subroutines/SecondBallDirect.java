@@ -1,36 +1,33 @@
 package frc.robot.autonomous.subroutines;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.autonomous.NewTrajectoryUtilities;
-import frc.robot.autonomous.Paths;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
 import frc.robot.subsystem.arm.Arm;
 import frc.robot.subsystem.arm.ArmConstants;
 import frc.robot.subsystem.arm.command.ArmSetAngleCommand;
 import frc.robot.subsystem.intake.Intake;
 import frc.robot.subsystem.intake.command.IntakeRunCommand;
 import frc.robot.subsystem.intake.command.IntakeSetOutputCommand;
-import frc.robot.subsystem.lights.Lights;
-import frc.robot.subsystem.loader.Loader;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.command.AutomatedShootingCommand;
-import frc.robot.subsystem.swerve.Swerve;
-import frc.robot.subsystem.swerve.pathfollowingswerve.PathFollowingSwerve;
-import frc.robot.subsystem.turret.Turret;
 import frc.robot.subsystem.vision.Vision;
-import frc.robot.subsystem.shooter.command.ManualShootingCommand;
-import frc.robot.subsystem.shooter.command.ShooterSpinDownCommand;
-import frc.robot.subsystem.shooter.util.ShooterControl;
-import frc.robot.utility.ExtendedTrajectoryUtilities;
+import frc.robot.subsystem.loader.Loader;
+import frc.robot.subsystem.turret.Turret;
+import frc.robot.subsystem.lights.Lights;
 import frc.robot.utility.PolarVelocityCalculator;
+import frc.robot.utility.ExtendedTrajectoryUtilities;
+import frc.robot.autonomous.NewTrajectoryUtilities;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 
-public class FirstBall extends SequentialCommandGroup {
 
-    public FirstBall(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader, Turret turret, Lights lights, PolarVelocityCalculator calculator){
+public class SecondBallDirect extends SequentialCommandGroup{
+    public SecondBallDirect(PathFollowingSwerve swerve, Arm arm, Intake intake, Shooter shooter, Vision vision, Loader loader, Turret turret, Lights lights, PolarVelocityCalculator calculator){
         addRequirements(swerve, arm, intake, shooter);
-        Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("FirstBall");
+        Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("SecondBallDirect");
         Command swerveCmd = NewTrajectoryUtilities.generateSwerveControllerCommand(swerve, path);
 
         addCommands(
@@ -57,4 +54,3 @@ public class FirstBall extends SequentialCommandGroup {
         );
     }
 }
-
