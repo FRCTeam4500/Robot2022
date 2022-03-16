@@ -12,7 +12,7 @@ import frc.robot.utility.PolarVelocityCalculator;
 
         /**
          * The function for getting shooter speed is
-         * f(d) = 781d^2 - 1151d + 22502 where d is the horizontal distance from the rim of the target to the robot
+         * f(d) = 442d^2 - 895d + 21219 where d is the horizontal distance from the rim of the target to the robot
          */
 
 
@@ -23,9 +23,9 @@ import frc.robot.utility.PolarVelocityCalculator;
          * @return Target speed for the shooter
          */
         public static double getSpeed(double distance){
-            double speed = 781*Math.pow(distance, 2) - (1151 * distance) + 22502;
-            if (distance < 1) //lower port
-                speed = 10000;
+            double speed = 300*Math.pow(distance, 2) + (461 * distance) + 18636 + 1000;
+            if (distance < 1.7) //lower port
+                speed = 15000;
             return speed;
         }
 

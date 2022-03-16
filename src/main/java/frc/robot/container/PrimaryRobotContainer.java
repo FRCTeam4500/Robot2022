@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autonomous.routines.ConsoleAuto;
 import frc.robot.autonomous.routines.FirstBallAuto;
+import frc.robot.autonomous.routines.SecondBallAuto;
+import frc.robot.autonomous.routines.SecondBallConsole;
 import frc.robot.autonomous.routines.TriangleAuto;
 import frc.robot.dashboard.DashboardMessageDisplay;
 import frc.robot.dashboard.DashboardNumberDisplay;
@@ -93,11 +95,9 @@ public class PrimaryRobotContainer implements RobotContainer{
     private JoystickButton dumpButton = new JoystickButton(controlStick, 3);
 
 
-    private JoystickButton climberTiltUp = new JoystickButton(controlStick, 9);
-    private JoystickButton climberTiltDown = new JoystickButton(controlStick, 10);
-    private JoystickButton climberTiltNegative = new JoystickButton(controlStick, 6);
-    private JoystickButton climberTiltOutputForward = new JoystickButton(controlStick, 12);
-    private JoystickButton climberTiltOutputReverse = new JoystickButton(controlStick, 11);
+    private JoystickButton climberZero = new JoystickButton(controlStick, 6);
+    private JoystickButton climberUp = new JoystickButton(controlStick, 7);
+    private JoystickButton climberClimb = new JoystickButton(controlStick, 5);
     
     private DashboardMessageDisplay messages = new DashboardMessageDisplay(15, 50);
 
@@ -112,9 +112,9 @@ public class PrimaryRobotContainer implements RobotContainer{
     public PrimaryRobotContainer(){
         configureControls();
         configureClimber();
-        //configureSwerve();
-        //configureIntakeAndCameraAndArm();
-        //configureShooting();
+        configureSwerve();
+        configureIntakeAndCameraAndArm();
+        configureShooting();
         configureAutonomous();
         configureLights();
     }
@@ -137,22 +137,13 @@ public class PrimaryRobotContainer implements RobotContainer{
     void configureClimber() {
 
         Shuffleboard.getTab("Climber").add("climber", climber);
-        // When tilt up
-        climberTiltUp.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_UP_ANGLE));
         
-        // When tilt down
-        //climberTiltDown.whenPressed(new ParallelCommandGroup( new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_DOWN_ANGLE)/*, new ClimberSetChainPositionCommand(climber, 0)*/));
 
+        climberZero.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_ZERO_ANGLE));
 
-        //climberTiltNegative.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_CLIMB_ANGLE));
-        // When chains run forward
-        // When chains run backwards
+        climberUp.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_UP_ANGLE).alongWith(new InstantCommand(() -> {turret.setEnabled(false);})));
 
-        /**climberTiltOutputForward.whenPressed(() -> climber.setTiltOutput(1));
-        climberTiltOutputForward.whenReleased(() -> climber.setTiltOutput(0));
-        climberTiltOutputReverse.whenPressed(() -> climber.setTiltOutput(-1));
-        climberTiltOutputReverse.whenReleased(() -> climber.setTiltOutput(0));*/
-
+        climberClimb.whenPressed(new ClimberSetAngleCommand(climber, ClimberConstants.CLIMBER_CLIMB_ANGLE));
 
     }
 
@@ -205,15 +196,15 @@ public class PrimaryRobotContainer implements RobotContainer{
         //loader.setDefaultCommand(new LoaderRunCommand(loader, 0));
 
         //manual shooting
-        ShooterControl control = new ShooterControl(10000, 50);
-        Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
-        shootButton.whenPressed(shootCommand);
-        shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0);});
-        Shuffleboard.getTab("Shooting").add("Shooter control", control);
+        //ShooterControl control = new ShooterControl(10000, 50);
+        //Command shootCommand = new ManualShootingCommand(shooter, vision, loader, control);
+        //shootButton.whenPressed(shootCommand);
+        //shootButton.whenReleased(() -> {resetShooting();});
+        //Shuffleboard.getTab("Shooting").add("Shooter control", control);
         //TODO: swap all command cancels with null checked ones
         //Automated shooting
-        //shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader, turret, calculator).alongWith(new InstantCommand(() -> {swerveCommand.limitSpeed = true;})));
-        //shootButton.whenReleased(() -> {if (shooter.getCurrentCommand() != null) shooter.getCurrentCommand().cancel(); shooter.setSpeed(0); loader.setOutput(0); swerveCommand.limitSpeed = false;});
+        shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader, turret, calculator).alongWith(new InstantCommand(() -> {swerveCommand.limitSpeed = true;})));
+        shootButton.whenReleased(() -> {resetShooting(); swerveCommand.limitSpeed = false;});
 
         //Run shooter and loader in reverse
         Command reverseLoadCommand = new ParallelCommandGroup(new ShooterSpinUpCommand(shooter, new ShooterControl(20000,50)),
@@ -243,6 +234,8 @@ public class PrimaryRobotContainer implements RobotContainer{
         autonChooser.setDefaultOption("First Ball", new FirstBallAuto(swerve, arm, shooter, intake, vision, loader, turret, turretLights, calculator));
         autonChooser.addOption("Triangle Auto", new TriangleAuto(swerve, arm, intake, shooter, vision, loader, turret, turretLights, calculator));
         autonChooser.addOption("Console Auto", new ConsoleAuto(swerve, arm, shooter, intake, vision, loader, turret, turretLights,  calculator));
+        autonChooser.addOption("Second Ball", new SecondBallAuto(swerve, arm, shooter, intake, vision, loader, turret, turretLights, calculator));
+        autonChooser.addOption("Second Ball To Console", new SecondBallConsole(swerve, arm, shooter, intake, vision, loader, turret, turretLights, calculator));
         Shuffleboard.getTab("Driver Controls").add("Autonomous Route", autonChooser);
     }
 

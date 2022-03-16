@@ -18,6 +18,7 @@ public interface Swerve extends Subsystem, Sendable {
     void moveFieldCentric(double xSpeed, double ySpeed, double wSpeed, Translation2d centerOfRotation);
     ChassisSpeeds getSpeeds();
     void resetRobotAngle();
+    void resetRobotAngle(double offset);
     double getRobotAngle();
     void driveByStates(SwerveModuleState[] states);
     SwerveDriveKinematics getKinematics();

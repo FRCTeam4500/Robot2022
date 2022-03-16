@@ -2,6 +2,7 @@ package frc.robot.autonomous.subroutines;
 
 import javax.management.InstanceNotFoundException;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -14,6 +15,7 @@ import frc.robot.subsystem.arm.ArmConstants;
 import frc.robot.subsystem.arm.command.ArmSetAngleCommand;
 import frc.robot.subsystem.intake.Intake;
 import frc.robot.subsystem.intake.command.IntakeRunCommand;
+import frc.robot.subsystem.intake.command.IntakeSetOutputCommand;
 import frc.robot.subsystem.lights.Lights;
 import frc.robot.subsystem.loader.Loader;
 import frc.robot.subsystem.shooter.Shooter;
@@ -37,17 +39,18 @@ public class TriangleSecondPart extends SequentialCommandGroup {
         Trajectory path = ExtendedTrajectoryUtilities.getDeployedTrajectory("TriangleSecondPart");
         addCommands(
                 new ParallelCommandGroup(
-                        NewTrajectoryUtilities.generateSwerveControllerCommand(swerve, path),
-                                new IntakeRunCommand(intake).withTimeout(0.1)
+                        NewTrajectoryUtilities.generateSwerveControllerCommand(swerve, path, false, new Rotation2d()),
+                                new IntakeSetOutputCommand(intake)
                 ).withTimeout(2),
                 new InstantCommand(() -> swerve.moveRobotCentric(0,0,0)),
                 new InstantCommand(() -> turret.setAngle(0)),
-                new WaitCommand(1),
+                new WaitCommand(0.5),
+                new IntakeSetOutputCommand(intake, 0),
+                new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE),
                 new InstantCommand(() -> lights.setCurrentRoutine(Lights.Routines.blueflash)),
                 new ParallelCommandGroup(
-                        new AutomatedShootingCommand(shooter, vision, loader, turret, calculator),
+                        new AutomatedShootingCommand(shooter, vision, loader, turret, calculator)
 
-                        new IntakeRunCommand(intake, 0)
                 ).withTimeout(2),
                 new InstantCommand(() -> lights.setCurrentRoutine(Lights.Routines.bluesine)),
                 new ShooterSpinDownCommand(shooter),

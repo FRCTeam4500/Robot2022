@@ -35,15 +35,17 @@ public class ConsoleThirdPart extends SequentialCommandGroup{
 
     addCommands(
             new ParallelCommandGroup(
-                    NewTrajectoryUtilities.generateSwerveControllerCommand(swerve,path1, new Rotation2d(Math.PI/2)),
+                    new ArmSetAngleCommand(arm, ArmConstants.ARM_DOWN_ANGLE),
+                    NewTrajectoryUtilities.generateSwerveControllerCommand(swerve,path1),
                     new IntakeSetOutputCommand(intake)
                     ).withTimeout(3),
       new WaitCommand(2),
         new InstantCommand(() -> {turret.setAngle(0); lights.setCurrentRoutine(Lights.Routines.orangesinereverse);}),
       new ParallelCommandGroup(
-              NewTrajectoryUtilities.generateSwerveControllerCommand(swerve, path2, new Rotation2d(Math.PI/4)),
+              NewTrajectoryUtilities.generateSwerveControllerCommand(swerve, path2, new Rotation2d()),
               new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE),
-              new IntakeSetOutputCommand(intake, 0)
+              new IntakeSetOutputCommand(intake, 0),
+              new InstantCommand(() -> turret.setAngle(0))
       ).withTimeout(3),
             new InstantCommand(() -> lights.setCurrentRoutine(Lights.Routines.blueflash)),
             new AutomatedShootingCommand(shooter, vision, loader, turret, calculator).withTimeout(2)

@@ -141,6 +141,10 @@ public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
     public void resetRobotAngle(){
         currentGyroZero = gyro.getAngle();
     }
+    /**
+     * Resets robot angle with an offset
+     * @param angle
+     */
     public void resetRobotAngle(double angle){
         currentGyroZero = gyro.getAngle() - angle;
     }

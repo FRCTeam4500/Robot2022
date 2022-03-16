@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import frc.robot.component.DoubleMotorComponent;
 import frc.robot.component.SmartMotorComponent;
 import frc.robot.component.hardware.SparkMaxComponent;
-import frc.robot.component.DoubleMotorRunOppositeComponent;
 
 public class HardwareClimberFactory {
     public static Climber makeClimber() {
@@ -15,10 +14,10 @@ public class HardwareClimberFactory {
 
         SparkMaxComponent rightTiltMotor = new SparkMaxComponent(16, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        rightTiltMotor.setInverted(true);
+        rightTiltMotor.setInverted(false);
+        leftTiltMotor.follow(rightTiltMotor, true);
 
-        DoubleMotorComponent TiltMotors = new DoubleMotorComponent(leftTiltMotor, rightTiltMotor);
 
-        return new ClimberImpl(TiltMotors);
+        return new ClimberImpl(rightTiltMotor);
     }
 }

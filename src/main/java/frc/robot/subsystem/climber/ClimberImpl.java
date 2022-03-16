@@ -4,7 +4,6 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import frc.robot.component.DoubleMotorComponent;
 import frc.robot.component.SmartMotorComponent;
 import frc.robot.subsystem.arm.ArmConstants;
-import frc.robot.component.DoubleMotorRunOppositeComponent;
 
 public class ClimberImpl implements Climber {
     private SmartMotorComponent tiltMotor; //TODO: Find out how hooks for other bars work to implement

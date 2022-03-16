@@ -70,9 +70,9 @@ public class NewTrajectoryUtilities {
             anglekP = 0;
 
         ProfiledPIDController angleControl = new ProfiledPIDController(anglekP,0,0, new TrapezoidProfile.Constraints(SwerveConstants.MAX_ROTATIONAL_SPEED, SwerveConstants.MAX_ROTATIONAL_ACCELERATION));
-        angleControl.enableContinuousInput(-Math.PI/2, Math.PI/2);
+        angleControl.enableContinuousInput(-Math.PI, Math.PI);
 
-        Supplier<Rotation2d> rotation = () -> {return path.getStates().get(path.getStates().size() - 1).poseMeters.getRotation().times(-1).plus(endRotationOffset);};
+        Supplier<Rotation2d> rotation = () -> {return path.getStates().get(path.getStates().size() - 1).poseMeters.getRotation().times(1).plus(endRotationOffset);};
 
     
         return new SwerveControllerCommand(
@@ -88,5 +88,6 @@ public class NewTrajectoryUtilities {
                 ).andThen(() -> swerve.moveRobotCentric(0,0,0)); //stop robot when done
     }
     
+
 
 }

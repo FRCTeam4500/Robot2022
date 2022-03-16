@@ -3,6 +3,7 @@ package frc.robot.subsystem.shooter.command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystem.loader.Loader;
+import frc.robot.subsystem.loader.command.LoaderRunConditionalCommand;
 import frc.robot.subsystem.loader.command.LoaderSetOutputCommand;
 import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.shooter.ShooterConstants;
@@ -22,10 +23,9 @@ public class ManualShootingCommand extends SequentialCommandGroup {
         addCommands(
                 new ParallelCommandGroup( //spins up the shooter and waits for the turret to find a target
                     new ShooterSpinUpCommand(shooter, control).withTimeout(0.80),
-                    new WaitForTargetCommand(vision, ShooterConstants.maximumAllowableOffset).withTimeout(0.40)
-                ),
-                new LoaderSetOutputCommand(loader).withTimeout(1) //shoots
-        );;
+                    new LoaderRunConditionalCommand(loader, shooter::atSpeed)
+                )
+        );
     }
     
     public void end(){

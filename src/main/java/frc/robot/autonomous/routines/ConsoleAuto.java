@@ -1,5 +1,6 @@
 package frc.robot.autonomous.routines;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import frc.robot.autonomous.subroutines.ConsoleThirdPart;
@@ -14,15 +15,17 @@ import frc.robot.subsystem.shooter.Shooter;
 import frc.robot.subsystem.intake.Intake;
 import frc.robot.subsystem.vision.Vision;
 import frc.robot.subsystem.loader.Loader;
+import frc.robot.utility.ExtendedTrajectoryUtilities;
 import frc.robot.utility.PolarVelocityCalculator;
 
 public class ConsoleAuto extends SequentialCommandGroup{
     public ConsoleAuto(PathFollowingSwerve swerve, Arm arm, Shooter shooter, Intake intake, Vision vision, Loader loader, Turret turret, Lights lights, PolarVelocityCalculator calculator){
+        Rotation2d initialRotationOffset = ExtendedTrajectoryUtilities.getDeployedTrajectory("FirstBall").getInitialPose().getRotation();
         addCommands(
             new FirstBall(swerve, arm, intake, shooter, vision, loader, turret, lights, calculator),
             new TriangleSecondPart(swerve, arm, intake, shooter, vision, loader, turret, lights,  calculator),
             new ConsoleThirdPart(swerve, arm, intake, shooter, vision, loader, turret, lights, calculator),
-            new ResetRobot(arm, shooter, loader, intake, lights)
+            new ResetRobot(swerve, arm, shooter, loader, intake, lights, initialRotationOffset)
         );
     }
 }
