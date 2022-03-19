@@ -4,7 +4,7 @@ import frc.robot.subsystem.vision.Vision;
 
 public class VisionDistanceCalculator {
     static double targetHeight = 2.64;
-
+    static double lastValidOffset = 0;
 
     /**
      * Calculates distance from target using trigonometry
@@ -12,8 +12,7 @@ public class VisionDistanceCalculator {
      * @return the horizontal distance from the target, in meters
      */
     public static double calculateDistance(Vision vision){
-        if (!vision.hasValidTargets())
-            return 0;
+
         double offset = vision.getVerticalOffsetFromCrosshair(); //angle offset, in radians
         double heightDiff = targetHeight - vision.getVisionHeight(); //opposite side of triangle
         double distance = heightDiff / Math.tan(vision.getVisionAngle() + offset);

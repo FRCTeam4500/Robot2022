@@ -33,7 +33,8 @@ public class CameraImpl {
     // starts a camera server automaically without changing any default values
     public void createSimpleStream() {
         UsbCamera camera = CameraServer.startAutomaticCapture(id);
-        camera.setResolution(CameraConstants.width, CameraConstants.height);    /**
+        camera.setResolution(CameraConstants.width, CameraConstants.height);
+        camera.setFPS(20);        /**
         UsbCamera camera = CameraServer.startAutomaticCapture(id);
         camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, CameraConstants.width, CameraConstants.height, 32);
 

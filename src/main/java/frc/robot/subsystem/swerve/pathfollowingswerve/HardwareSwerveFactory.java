@@ -1,5 +1,6 @@
 package frc.robot.subsystem.swerve.pathfollowingswerve;
 
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.I2C;
@@ -71,6 +72,7 @@ public class HardwareSwerveFactory {
         angleMotor.configClearPositionOnQuadIdx(true, 10);
 
         TalonFXComponent driveMotor = new TalonFXComponent(driveId);
+        driveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 41, 0.1));
         driveMotor.config_kP(0, .1);
         driveMotor.config_kI(0, 0);
         driveMotor.config_kD(0,0);

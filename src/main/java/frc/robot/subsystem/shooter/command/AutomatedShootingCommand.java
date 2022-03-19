@@ -30,11 +30,15 @@ public class AutomatedShootingCommand extends SequentialCommandGroup {
         this.turret = turret;
         
         Supplier<Double> distance = () -> { //stop updating distance when the shooter is at speed
-            if (!stopUpdate)
-                setPrevDist(VisionDistanceCalculator.calculateDistance(vision)); //update if update is not disabled
-            if (shooter.atSpeed())
-                setStopUpdate(true); //stop updating when turret is at speed
+            double dist = VisionDistanceCalculator.calculateDistance(vision);
+            if (dist != 0d){
+                if (!stopUpdate)
+                    setPrevDist(dist); //update if update is not disabled
+                if (shooter.atSpeed())
+                    setStopUpdate(true); //stop updating when turret is at speed
+            }
             return prevDist;
+            
         };
         
         addRequirements(shooter, loader);

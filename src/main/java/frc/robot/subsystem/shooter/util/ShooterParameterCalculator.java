@@ -23,8 +23,8 @@ import frc.robot.utility.PolarVelocityCalculator;
          * @return Target speed for the shooter
          */
         public static double getSpeed(double distance){
-            double speed = 300*Math.pow(distance, 2) + (461 * distance) + 18636 + 1000;
-            if (distance < 1.7) //lower port
+            double speed = -50*Math.pow(distance, 2) + (2880 * distance) + 17906;
+            if (distance < 1.4) //lower port
                 speed = 15000;
             return speed;
         }

@@ -235,7 +235,6 @@ public class PrimaryRobotContainer implements RobotContainer{
         autonChooser.addOption("Triangle Auto", new TriangleAuto(swerve, arm, intake, shooter, vision, loader, turret, turretLights, calculator));
         autonChooser.addOption("Console Auto", new ConsoleAuto(swerve, arm, shooter, intake, vision, loader, turret, turretLights,  calculator));
         autonChooser.addOption("Second Ball", new SecondBallAuto(swerve, arm, shooter, intake, vision, loader, turret, turretLights, calculator));
-        autonChooser.addOption("Second Ball To Console", new SecondBallConsole(swerve, arm, shooter, intake, vision, loader, turret, turretLights, calculator));
         Shuffleboard.getTab("Driver Controls").add("Autonomous Route", autonChooser);
     }
 
@@ -258,6 +257,12 @@ public class PrimaryRobotContainer implements RobotContainer{
     }
     @Override
     public void teleopInit() {
+        /** 
+        Command auton = autonChooser.getSelected();
+        if (auton != null){
+            auton.cancel();
+        }
+        */
         resetLights();
         new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE).schedule(); //deploy the arm
     }

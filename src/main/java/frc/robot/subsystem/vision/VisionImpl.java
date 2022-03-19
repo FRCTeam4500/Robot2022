@@ -6,6 +6,7 @@ public class VisionImpl implements Vision{
     private  VisionComponent visionComponent;
     private double height;
     private double angle;
+    private double previousOffset = 0;
 
     public VisionImpl(VisionComponent camera, double height, double angle){
         visionComponent = camera;
@@ -18,7 +19,11 @@ public class VisionImpl implements Vision{
     }
 
     public double getHorizontalOffsetFromCrosshair(){
-        return visionComponent.getHorizontalOffsetFromCrosshair();
+        double currentOff = visionComponent.getHorizontalOffsetFromCrosshair();
+        double avgOff = (currentOff + previousOffset) / 2;
+        previousOffset = currentOff;
+        return avgOff;
+
     }
 
     public double getVerticalOffsetFromCrosshair(){
