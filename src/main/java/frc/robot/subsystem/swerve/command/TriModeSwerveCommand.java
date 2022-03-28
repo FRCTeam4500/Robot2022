@@ -1,11 +1,8 @@
 package frc.robot.subsystem.swerve.command;
 
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.dashboard.DashboardMessageDisplay;
 import frc.robot.subsystem.swerve.Swerve;
@@ -28,11 +25,8 @@ import edu.wpi.first.util.sendable.Sendable;
  * When pushing the joystick foward, the robot moves in whatever direction it is facing.
  * For our purposes, the front of the robot is the intake side.
  *
- * Polar:
- * The robot moves in polar space with the goal as the center.
- * When pushing the joystick forwards, the robot moves towards the goal
- * When pushing the joystick right/left, the robot goes counter/clockwise around the goal.
- * This only works when the robot has a vision target, the robot will not move if it doesn't.
+ * AlignToAngle
+ * Aligns to a target angle
  * TODO: make this automatically align the robot rotationally with the goal, to avoid the goal going out of view of the vision
  */
 public class TriModeSwerveCommand extends CommandBase implements Sendable {
@@ -44,19 +38,15 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
     private DashboardMessageDisplay messageDisplay;
     private PolarVelocityCalculator polarCalculator;
 
-    /**
-     * Adjusts the angle of the robot with the goal of making the turret angle equal to 0.
-     * This would mean that the front of the robot is directly facing the target.
-     * This is so that the target does not go out of the field of vision while driving in polar mode.
-     */
-    private PIDController polarAngleAdjustmentController;
+    private PIDController angleAdjustmentController;
     public ControlMode controlMode;
 
     public boolean lockRotation = false;
     public boolean limitSpeed = false;
-    public boolean alignWithTarget = false;
+    public double targetAngle = 0;
 
     private double limitedSpeed = .5;
+
 
     public TriModeSwerveCommand(Swerve swerve, Joystick joystick, ControllerInfo controllerInfo, Vision vision, Turret turret, DashboardMessageDisplay messageDisplay){
         this.swerve = swerve;
@@ -73,7 +63,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
          * otherwise there will be a positive feedback loop and the bot will go into an out of control spin cycle,
          * then most likely disassemble itself in a way akin to that of a dryer with a brick in it.
          */
-        polarAngleAdjustmentController = new PIDController(1,0,0);
+        angleAdjustmentController = new PIDController(1,0,0);
         addRequirements(swerve);
     }
 
@@ -87,9 +77,6 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
             ySpeed = ceiling(ySpeed, limitedSpeed);
             zSpeed = ceiling(zSpeed, limitedSpeed);
         }
-        if (alignWithTarget){
-            zSpeed = 2 * polarAngleAdjustmentController.calculate(turret.getAngle(), turret.getOffset()); //try to align turret with target offset, and thus, robot with target, by moving the swerve
-        }
         if (lockRotation)
             zSpeed = 0;
         switch (controlMode){
@@ -99,8 +86,8 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
             case RobotCentric:
                 moveRobotCentric(xSpeed,ySpeed,zSpeed);
                 break;
-            case Polar:
-                movePolar(xSpeed,ySpeed,zSpeed);
+            case AlignToAngle:
+                moveAlign(xSpeed,ySpeed,zSpeed);
                 break;
         }
     }
@@ -111,28 +98,9 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
     private void moveRobotCentric(double x, double y, double w){
         swerve.moveRobotCentric(y,x,w);
     }
-    private void movePolar(double r, double t, double w){
-        if(vision.hasValidTargets()) {
-            Pair<Double, Double> speeds = polarCalculator.calculateCartesianSpeeds(r, t);
-            double LRSpeed = speeds.getFirst();
-            double FBSpeed = speeds.getSecond();
-            /**
-             * Attempts to move the robot so that the angle between the turret and robot are 0, at which point the robot is directly facing the target.
-             * This assumes that the turret is always seeking out the target, that is, that the angle between turret and target is zero.
-             */
-            double wSpeed = polarAngleAdjustmentController.calculate(turret.getAngle(), 0);
-            moveRobotCentric(FBSpeed, LRSpeed, wSpeed);
-        }
-        else{
-            /**
-             * If the vision has no targets, the robot will move robot-centric in x and y,
-             * but will continue to try to align itself with the turret,
-             * in the hopes that it regains sight of the target.
-             */
-            messageDisplay.addMessage("Could not move polar-ly, No vision targets found", this);
-            double wSpeed = polarAngleAdjustmentController.calculate(turret.getAngle(), 0);
-            moveRobotCentric(r,t,wSpeed);
-        }
+    private void moveAlign(double r, double t, double w) {
+        double wSpeed = 4 * angleAdjustmentController.calculate(swerve.getRobotAngle(), targetAngle);
+        moveRobotCentric(r, t, wSpeed);
     }
     //deadzones the input
     private double withDeadzone(double value, double deadzone){
@@ -145,7 +113,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
     public enum ControlMode{
         FieldCentric,
         RobotCentric,
-        Polar
+        AlignToAngle
     }
 
     private double ceiling(double value, double maximum){
@@ -164,8 +132,8 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
                 case RobotCentric:
                     return "Robot Centric";
 
-                case Polar:
-                    return "Polar";
+                case AlignToAngle:
+                    return "Align To Angle";
             }
             return "";
         }, null);
@@ -173,6 +141,5 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
         builder.addDoubleProperty("controller y", joystick::getY, null);
         builder.addDoubleProperty("controller z", joystick::getZ, null);
         builder.addBooleanProperty("Limit Speed", () -> {return limitSpeed;}, null);
-        builder.addBooleanProperty("align with target", () -> alignWithTarget, null );
     }
 }

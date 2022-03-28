@@ -83,7 +83,7 @@ public class PrimaryRobotContainer implements RobotContainer{
 
     private JoystickButton lockSwerveRotationButton = new JoystickButton(driveStick, 1);
     private JoystickButton switchDriveModeRobotCentric = new JoystickButton(driveStick, 4);
-    private JoystickButton switchDriveModePolar = new JoystickButton(driveStick, 8);
+    private JoystickButton alignSwerveToAngle = new JoystickButton(driveStick, 8);
     private JoystickButton resetGyro = new JoystickButton(driveStick, 10);
     private JoystickButton limitSwerveSpeed = new JoystickButton(driveStick, 2);
 
@@ -157,6 +157,9 @@ public class PrimaryRobotContainer implements RobotContainer{
         lockSwerveRotationButton.whenPressed(() -> {swerveCommand.lockRotation = true; turretLights.setCurrentRoutine(Lights.Routines.stopblueorange);});
         lockSwerveRotationButton.whenReleased(() -> {swerveCommand.lockRotation = false; resetLights();});
 
+        alignSwerveToAngle.whenPressed(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = 0;});
+        alignSwerveToAngle.whenReleased(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;});
+
         limitSwerveSpeed.whenPressed(() -> {swerveCommand.limitSpeed = true; turretLights.setCurrentRoutine(Lights.Routines.bigblueorange);});
         limitSwerveSpeed.whenReleased(() -> {swerveCommand.limitSpeed = false; resetLights();});
 
@@ -201,7 +204,6 @@ public class PrimaryRobotContainer implements RobotContainer{
         //shootButton.whenPressed(shootCommand);
         //shootButton.whenReleased(() -> {resetShooting();});
         //Shuffleboard.getTab("Shooting").add("Shooter control", control);
-        //TODO: swap all command cancels with null checked ones
         //Automated shooting
         shootButton.whenPressed(new AutomatedShootingCommand(shooter, vision, loader, turret, calculator).alongWith(new InstantCommand(() -> {swerveCommand.limitSpeed = true;})));
         shootButton.whenReleased(() -> {resetShooting(); swerveCommand.limitSpeed = false;});
@@ -257,12 +259,11 @@ public class PrimaryRobotContainer implements RobotContainer{
     }
     @Override
     public void teleopInit() {
-        /** 
         Command auton = autonChooser.getSelected();
         if (auton != null){
             auton.cancel();
         }
-        */
+        resetShooting();
         resetLights();
         new ArmSetAngleCommand(arm, ArmConstants.ARM_UP_ANGLE).schedule(); //deploy the arm
     }
