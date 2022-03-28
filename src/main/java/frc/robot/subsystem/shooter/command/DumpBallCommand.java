@@ -34,7 +34,7 @@ public class DumpBallCommand extends CommandBase{
 
 
     public void execute(){
-        turret.setAngle(targetAngle);
+        turret.setAngle(0);
         shooter.setSpeed(15000);
         if (shooter.atSpeed()){
             loader.setOutput(1);

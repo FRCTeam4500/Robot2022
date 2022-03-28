@@ -1,6 +1,8 @@
 package frc.robot.subsystem.swerve.command;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -45,7 +47,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
     public boolean limitSpeed = false;
     public double targetAngle = 0;
 
-    private double limitedSpeed = .5;
+    private double limitedSpeed = .75;
 
 
     public TriModeSwerveCommand(Swerve swerve, Joystick joystick, ControllerInfo controllerInfo, Vision vision, Turret turret, DashboardMessageDisplay messageDisplay){
@@ -57,13 +59,8 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
         this.messageDisplay = messageDisplay;
         polarCalculator = new PolarVelocityCalculator(swerve, vision, turret);
         controlMode = ControlMode.FieldCentric; //default control mode is field-centric
-        /**
-        * TODO: tune this loop so the robot aligns with the target at the right speed
-         * The robot MUST turn slower then and in the opposite direction of the turret,
-         * otherwise there will be a positive feedback loop and the bot will go into an out of control spin cycle,
-         * then most likely disassemble itself in a way akin to that of a dryer with a brick in it.
-         */
         angleAdjustmentController = new PIDController(1,0,0);
+        angleAdjustmentController.enableContinuousInput(-Math.PI, Math.PI);
         addRequirements(swerve);
     }
 
