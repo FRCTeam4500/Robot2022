@@ -84,6 +84,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     private JoystickButton lockSwerveRotationButton = new JoystickButton(driveStick, 1);
     private JoystickButton switchDriveModeRobotCentric = new JoystickButton(driveStick, 4);
     private JoystickButton alignSwerveToAngle = new JoystickButton(driveStick, 8);
+    private JoystickButton alignSwerveReverse = new JoystickButton(driveStick, 7);
     private JoystickButton resetGyro = new JoystickButton(driveStick, 10);
     private JoystickButton limitSwerveSpeed = new JoystickButton(driveStick, 2);
 
@@ -159,6 +160,9 @@ public class PrimaryRobotContainer implements RobotContainer{
 
         alignSwerveToAngle.whenPressed(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = 0;});
         alignSwerveToAngle.whenReleased(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;});
+
+        alignSwerveReverse.whenPressed(() -> {swerveCommand.controlMode = ControlMode.AlignToAngle; swerveCommand.targetAngle = Math.PI;});
+        alignSwerveReverse.whenReleased(() -> {swerveCommand.controlMode = ControlMode.FieldCentric;});
 
         limitSwerveSpeed.whenPressed(() -> {swerveCommand.limitSpeed = true; turretLights.setCurrentRoutine(Lights.Routines.bigblueorange);});
         limitSwerveSpeed.whenReleased(() -> {swerveCommand.limitSpeed = false; resetLights();});
