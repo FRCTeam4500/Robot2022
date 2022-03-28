@@ -58,7 +58,7 @@ import frc.robot.utility.PolarVelocityCalculator;
         }
 
         public static double getTurretOffsetForSideShot(double distance){
-            double offset = 0.25; //offset from center of hub in meters
+            double offset = 0.18; //offset from center of hub in meters
             double hubRadius = 0.6; //radius of hub
             return Math.atan(offset/(distance + hubRadius));
         }

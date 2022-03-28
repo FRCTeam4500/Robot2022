@@ -97,7 +97,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
     }
     private void moveAlign(double r, double t, double w) {
         double wSpeed = 4 * angleAdjustmentController.calculate(swerve.getRobotAngle(), targetAngle);
-        moveRobotCentric(r, t, wSpeed);
+        moveFieldCentric(r, t, wSpeed);
     }
     //deadzones the input
     private double withDeadzone(double value, double deadzone){

@@ -26,7 +26,7 @@ public class TurretDefaultCommand extends CommandBase {
         this.vision = vision;
         this.calculator = calculator;
         addRequirements(turret);
-        controller = new ProfiledPIDController(-1.5, 0, 0, new TrapezoidProfile.Constraints(1,1));
+        controller = new ProfiledPIDController(-2.5, 0, 0, new TrapezoidProfile.Constraints(1,1));
        // controller = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(5,1)); 
     }
 
