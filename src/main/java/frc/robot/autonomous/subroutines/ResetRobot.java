@@ -27,7 +27,7 @@ public class ResetRobot extends ParallelCommandGroup{
             //initial rotation is the rotation from 0 of the first pose of the path, this will be the gyro zero initially
                 // the current robot angle is the angle offset from zero, so initial plus current will equal total offset from zero
                 //since the physical gyro zero will be wherever the robot was facing when it turned on, the actual zero will be to the left of the physical zero, whether that is negative or positive depends on whether clockwise os negative or positivec
-            new InstantCommand(() -> swerve.resetRobotAngle(-(-initialRotation.getRadians() + swerve.getRobotAngle()))) //we might have to play with the signs of these
+            new InstantCommand(() -> swerve.resetRobotAngle((-initialRotation.getRadians() + swerve.getRobotAngle()))) //we might have to play with the signs of these
         );
     }
 }
