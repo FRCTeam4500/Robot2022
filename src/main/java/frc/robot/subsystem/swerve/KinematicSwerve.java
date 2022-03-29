@@ -159,8 +159,8 @@ public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
     public void initSendable(SendableBuilder builder) {
         builder.addDoubleProperty("Gyro Angle", gyro::getAngle, null);
         builder.addDoubleProperty("Current X", () -> currentSpeeds.vxMetersPerSecond, null);
-        builder.addDoubleProperty("Current X", () -> currentSpeeds.vyMetersPerSecond, null);
-        builder.addDoubleProperty("Current X", () -> currentSpeeds.omegaRadiansPerSecond, null);
+        builder.addDoubleProperty("Current Y", () -> currentSpeeds.vyMetersPerSecond, null);
+        builder.addDoubleProperty("Current Z", () -> currentSpeeds.omegaRadiansPerSecond, null);
     }
 
     public ChassisSpeeds getSpeeds(){
@@ -176,6 +176,7 @@ public class KinematicSwerve extends SubsystemBase implements Swerve, Sendable {
     public SwerveDriveKinematics getKinematics(){
         return kinematics;
     }
+
 
 }
 
