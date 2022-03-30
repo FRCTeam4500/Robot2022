@@ -40,8 +40,9 @@ public class Lights extends SubsystemBase implements Sendable {
     public void periodic(){
         increment();
         currentLightRoutine.updateLEDData(buffer,cycleAdjust);
-        //System.out.println(buffer.getLED(1).red);
-        //System.out.println(cycle);
+        //System.out.println(buffer.getLED(1).blue);
+        //System.out.println(cycleAdjust);
+        //System.out.println(buffer.getLength());
         lights.setData(buffer);
     }
 
@@ -99,8 +100,8 @@ public class Lights extends SubsystemBase implements Sendable {
 
     public void initSendable(SendableBuilder builder){
         builder.addStringProperty("Routine", () -> currentEnum.name(), null);
-        builder.addDoubleProperty("red", () -> {return buffer.getLED(1).red;}, null);
-        builder.addDoubleProperty("blue", () -> {return buffer.getLED(1).blue;}, null);
+        builder.addDoubleProperty("red", () -> {return buffer.getLED(2).red;}, null);
+        builder.addDoubleProperty("blue", () -> {return buffer.getLED(2).blue;}, null);
     }
 
 

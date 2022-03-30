@@ -49,7 +49,7 @@ public class Overlap implements LightRoutine {
         if (reverse)
             currentCycle = period - (cycle % period); //reverse
         for (int i = 0; i < buffer.getLength(); i++){
-            if ((i / period/2) % 2 == 0) {
+            if ((i / (period/2)) % 2 == 0) {
                 buffer.setLED((i + currentCycle) % buffer.getLength(), color1);
             }
             else{
