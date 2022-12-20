@@ -36,8 +36,8 @@ public class NewRobotContainer implements RobotContainer {
     public NewRobotContainer() { 
         
         configureTankDrive();
-        configureShooter();
-        configureVision();
+        // configureShooter();
+        // configureVision();
 
     }
 
