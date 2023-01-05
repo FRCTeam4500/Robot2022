@@ -7,6 +7,6 @@ package frc.robot.subsystem.camera;
 /** Add your docs here. */
 public class HardwareCameraFactory {
     public static int makeCameraInstance() {
-        return  CameraImpl(0);
+        return new CameraImpl(0);
     }
 }
