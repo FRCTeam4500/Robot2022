@@ -34,35 +34,9 @@ public class CameraImpl {
     public void createSimpleStream() {
         UsbCamera camera = CameraServer.startAutomaticCapture(id);
         camera.setResolution(CameraConstants.width, CameraConstants.height);
-        camera.setFPS(20);        /**
-        UsbCamera camera = CameraServer.startAutomaticCapture(id);
-        camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, CameraConstants.width, CameraConstants.height, 32);
-
-        new Thread(() -> {
-            UsbCamera camera = CameraServer.startAutomaticCapture();
-            camera.setVideoMode(VideoMode.PixelFormat.kMJPEG, CameraConstants.width, CameraConstants.height, 32);
-            
-            CvSink cvSink = CameraServer.getVideo();
-            CvSource outputStream = CameraServer.putVideo("Camera Stream", CameraConstants.width, CameraConstants.height);
-            
-            Mat source = new Mat();
-
-            while(!Thread.interrupted()) {
-                Core.rotate(source, source, Core.ROTATE_90_COUNTERCLOCKWISE);
-
-                cvSink.grabFrame(source);
-
-                outputStream.putFrame(source);
-            }
-        }).start();
-        */
+        camera.setFPS(20);
     }
 
 
-    /** see robot2019/src/main/java/frc/robot/utility/CameraImpl.java
-     * createComplexStream()
-     * I believe this makes a crosshair on the camera, we dont need this but if we need an example
-     * use that.
-     */
 
 }
