@@ -1,18 +1,7 @@
 package frc.robot.subsystem.camera;
 
-import edu.wpi.first.cscore.CvSink;
-import edu.wpi.first.cscore.CvSource;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.VideoMode;
-
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import edu.wpi.first.cscore.CvSink;
-import edu.wpi.first.cscore.CvSource;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
+import edu.wpi.first.cscore.UsbCamera;
 
 /** This class holds the camera on the intake of the 2022 robot 
  * The camera server can be accessed on shuffleboard, does not specifically need to be sent

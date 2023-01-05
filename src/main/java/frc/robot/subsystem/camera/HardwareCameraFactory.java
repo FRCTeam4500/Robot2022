@@ -4,11 +4,9 @@
 
 package frc.robot.subsystem.camera;
 
-import edu.wpi.first.cscore.UsbCamera;
-
 /** Add your docs here. */
 public class HardwareCameraFactory {
-    public static CameraImpl makeCameraInstance() {
+    public static int makeCameraInstance() {
         return new CameraImpl(0);
     }
 }
