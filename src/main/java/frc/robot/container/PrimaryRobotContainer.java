@@ -71,7 +71,7 @@ public class PrimaryRobotContainer implements RobotContainer{
     private CameraImpl camOne = HardwareCameraFactory.makeCameraInstance();
     private Climber climber = HardwareClimberFactory.makeClimber();
     //private CameraInstance camera = HardwareCameraFactory.makeCameraInstance();
-    private Lights turretLights = new Lights(1, 0, 60);
+    private Lights turretLights = new Lights(1, 1, 60);
 
     //Initialize Joysticks and Buttons
     private Joystick driveStick = new Joystick(0);
@@ -103,8 +103,8 @@ public class PrimaryRobotContainer implements RobotContainer{
     private PolarVelocityCalculator calculator;
     private TriModeSwerveCommand swerveCommand;
 
-    //private Lights.Routines defaultRoutine = Lights.Routines.blueorange;
-    private Lights.Routines defaultRoutine = Lights.Routines.rainbow;
+    private Lights.Routines defaultRoutine = Lights.Routines.blueorange;
+    //private Lights.Routines defaultRoutine = Lights.Routines.rainbow;
 
     public PrimaryRobotContainer(){
         configureControls();

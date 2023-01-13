@@ -1,5 +1,6 @@
 package frc.robot.subsystem.swerve.command;
 
+import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -66,6 +67,34 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
 
     @Override
     public void execute(){
+
+        double angle = joystick.getPOV();
+
+        if (angle == -1){
+            targetAngle = 0;
+            controlMode = ControlMode.FieldCentric;
+        }
+
+        else if (angle == 0){
+            targetAngle = 0;
+            controlMode = ControlMode.AlignToAngle;
+        }
+
+        else if (angle > 0 && angle < 180){
+            targetAngle = -Math.PI/2;
+            controlMode = ControlMode.AlignToAngle;
+        }
+
+        else if (angle == 180){
+            targetAngle = Math.PI;
+            controlMode = ControlMode.AlignToAngle;
+        }
+
+        else if (angle > 180){
+            targetAngle = Math.PI/2;
+            controlMode = ControlMode.AlignToAngle;
+        }
+
         double xSpeed = -withDeadzone(joystick.getX(), info.xDeadzone) * info.xSensitivity;
         double ySpeed = -withDeadzone(joystick.getY(), info.yDeadzone) * info.ySensitivity;
         double zSpeed = -withDeadzone(joystick.getZ(), info.zDeadzone) * info.zSensitivity;
@@ -84,7 +113,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
                 moveRobotCentric(xSpeed,ySpeed,zSpeed);
                 break;
             case AlignToAngle:
-                moveAlign(xSpeed,ySpeed,zSpeed);
+                moveAlign(xSpeed,ySpeed);
                 break;
         }
     }
@@ -95,7 +124,7 @@ public class TriModeSwerveCommand extends CommandBase implements Sendable {
     private void moveRobotCentric(double x, double y, double w){
         swerve.moveRobotCentric(y,x,w);
     }
-    private void moveAlign(double r, double t, double w) {
+    private void moveAlign(double r, double t) {
         double wSpeed = 4 * angleAdjustmentController.calculate(swerve.getRobotAngle(), targetAngle);
         moveFieldCentric(r, t, wSpeed);
     }
